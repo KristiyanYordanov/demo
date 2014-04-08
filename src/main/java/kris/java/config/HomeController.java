@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 
 
+	@Autowired
+	PlayerService playerService;
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -50,6 +52,8 @@ public class HomeController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/home1", method = RequestMethod.GET)
 	public String home1(ModelMap model) {
+		List<Player> list = playerService.findAll();
+		model.addAttribute("players", list);
 		return "home1";
 	}
 

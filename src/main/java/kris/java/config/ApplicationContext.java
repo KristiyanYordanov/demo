@@ -27,10 +27,10 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import com.google.common.base.Preconditions;
 
 @Configuration
-@ComponentScan(basePackages = { "kris.java.config"})
+@ComponentScan(basePackages = { "kris.java.config", "kris.java.persistence"})
 @EnableWebMvc
 @EnableTransactionManagement
-@PropertySource({ "classpath:persistence-mysql.properties" })
+@PropertySource({ "classpath:persistence-postgresql.properties" })
 public class ApplicationContext extends WebMvcConfigurerAdapter {
  
 	@Autowired

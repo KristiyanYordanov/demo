@@ -9,9 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Player implements Serializable {
+public class DocPlayer implements Serializable {
 
-	public Player(long id, String name, String location, String pos, int stars,
+	public DocPlayer(long id, String name, String location, String pos, int stars,
 			String height, Double fortyDash, int weight, int gradYear,
 			Double rating) {
 		super();
@@ -27,7 +27,7 @@ public class Player implements Serializable {
 		this.rating = rating;
 	}
 
-	public Player() {
+	public DocPlayer() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

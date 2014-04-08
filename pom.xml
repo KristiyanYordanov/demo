@@ -69,6 +69,12 @@
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>3.2.0.RELEASE</version>
 		</dependency>
+		<!-- CSV parser -->
+		<dependency>
+			<groupId>net.sf.supercsv</groupId>
+			<artifactId>super-csv</artifactId>
+			<version>2.1.0</version>
+		</dependency>
 		<!-- persistence -->
 
 		<dependency>
@@ -80,6 +86,12 @@
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.18.1-GA</version>
+		</dependency>
+		<!-- PostgreSQL JDBC 4 -->
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.1-901.jdbc4</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
