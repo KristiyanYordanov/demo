@@ -31,6 +31,26 @@
 	<global-method-security secured-annotations="enabled"
 		pre-post-annotations="enabled" />
 
+	<beans:bean name="bcryptEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+	<authentication-manager>
+		<authentication-provider>
+			<password-encoder ref="bcryptEncoder" />
+			<user-service>
+				<user name="user"
+					password="$2a$12$ivaXgiRpXqSc0B4035oE5.a6yi3Ezz3siRZen9kcz.3NS5QPEKG2S"
+					authorities="ROLE_USER, ROLE_ADMIN" />
+				<user name="user1"
+					password="$2a$12$wgyQ4ARuR2uf1OQgqIbkiOdPp39l3SQDmiaPjbNXnKzzpbQbnoTju"
+					authorities="ROLE_USER" />
+				<user name="user2"
+					password="$2a$12$wgyQ4ARuR2uf1OQgqIbkiOdPp39l3SQDmiaPjbNXnKzzpbQbnoTju"
+					authorities="" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+
 
 
 </beans:beans>
