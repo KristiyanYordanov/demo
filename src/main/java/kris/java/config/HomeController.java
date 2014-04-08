@@ -1,8 +1,12 @@
 package kris.java.config;
 
 import java.security.Principal;
-import java.util.logging.Logger;
+import java.util.List;
 
+import kris.java.persistence.model.Player;
+import kris.java.persistence.service.PlayerService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HomeController {
 
+	@Autowired
+	PlayerService playerService;
 
 	/**
 	 * Simply selects the home view to render by returning its name.

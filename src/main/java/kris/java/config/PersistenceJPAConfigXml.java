@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 //@Configuration
 @EnableTransactionManagement
-@ComponentScan({ "org.baeldung.persistence" })
+@ComponentScan({ "kris.java.persistence" })
 @ImportResource({ "classpath:jpaConfig.xml" })
 public class PersistenceJPAConfigXml {
 

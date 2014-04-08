@@ -27,7 +27,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import com.google.common.base.Preconditions;
 
 @Configuration
-@ComponentScan(basePackages = { "kris.java.config" })
+@ComponentScan(basePackages = { "kris.java.config"})
 @EnableWebMvc
 @EnableTransactionManagement
 @PropertySource({ "classpath:persistence-mysql.properties" })
@@ -46,7 +46,7 @@ public class ApplicationContext extends WebMvcConfigurerAdapter {
 	public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
 		final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(dataSource());
-		em.setPackagesToScan(new String[] { "org.baeldung.persistence.model" });
+		em.setPackagesToScan(new String[] { "kris.java.persistence.model" });
 
 		final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		em.setJpaVendorAdapter(vendorAdapter);
