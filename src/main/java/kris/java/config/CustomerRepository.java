@@ -1,10 +1,9 @@
-package kris.java.persistence.service;
+package kris.java.config;
 
 import java.util.List;
-import kris.java.config.Customer;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-
 @Repository
 public interface CustomerRepository extends MongoRepository<Customer, String> {
 

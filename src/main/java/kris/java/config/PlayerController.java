@@ -27,8 +27,8 @@ import org.springframework.web.servlet.view.RedirectView;
 @RequestMapping("players")
 public class PlayerController {
 
-	@Autowired
-	PlayerService playerService;
+//	@Autowired
+//	PlayerService playerService;
 	
 	@RequestMapping(value = "/user/player", method = RequestMethod.GET)
 	public String player(ModelMap model) throws Exception {
@@ -38,7 +38,7 @@ public class PlayerController {
 		model.addAttribute("fileHeader",Arrays.toString(playerModel.getHeaders()));
 		for(Player entity: res)
 		{
-			playerService.create(entity);
+//			playerService.create(entity);
 		}
 		return "user/player";
 	}
