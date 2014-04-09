@@ -3,12 +3,15 @@
 	xmlns:security="http://www.springframework.org/schema/security"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		  http://www.springframework.org/schema/security
-           http://www.springframework.org/schema/security/spring-security.xsd">
+           http://www.springframework.org/schema/security/spring-security.xsd
+            http://www.springframework.org/schema/data/mongo
+          http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -22,5 +25,9 @@
 	<context:component-scan base-package="kris.java.config" />
 	
 	<security:global-method-security secured-annotations="enabled" pre-post-annotations="enabled"/>
+	
+	<mongo:mongo host="127.0.0.1" port="27017" />
+	<mongo:db-factory dbname="yourdb" />
+ 
 	
 </beans:beans>
