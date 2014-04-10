@@ -3,9 +3,6 @@ package kris.java.config;
 import java.security.Principal;
 import java.util.List;
 
-import kris.java.persistence.model.Player;
-import kris.java.persistence.service.PlayerService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -22,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 
 	@Autowired
-	CustomerRepository repository;
+	PlayerRepository playerRepository;
 
-//	@Autowired
-//	PlayerService playerService;
+	// @Autowired
+	// PlayerService playerService;
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -34,33 +31,7 @@ public class HomeController {
 		String name = principal.getName();
 		model.addAttribute("username", name);
 		model.addAttribute("message", "Spring Security Custom Form example");
-		
-		//
-		repository.deleteAll();
 
-		// save a couple of customers
-		repository.save(new Customer("Alice", "Smith"));
-		repository.save(new Customer("Bob", "Smith"));
-
-		// fetch all customers
-		System.out.println("Customers found with findAll():");
-		System.out.println("-------------------------------");
-		for (Customer customer : repository.findAll()) {
-			System.out.println(customer);
-		}
-		System.out.println();
-
-		// fetch an individual customer
-		System.out.println("Customer found with findByFirstName('Alice'):");
-		System.out.println("--------------------------------");
-		System.out.println(repository.findByFirstName("Alice"));
-
-		System.out.println("Customers found with findByLastName('Smith'):");
-		System.out.println("--------------------------------");
-		for (Customer customer : repository.findByLastName("Smith")) {
-			System.out.println(customer);
-		}
-		//
 		return "home";
 
 	}
@@ -75,14 +46,18 @@ public class HomeController {
 		model.addAttribute("username", name);
 		model.addAttribute("message", "Spring Security Custom Form example");
 		return "home";
-
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/home1", method = RequestMethod.GET)
 	public String home1(ModelMap model) {
-//		List<Player> list = playerService.findAll();
-//		model.addAttribute("players", list);
+//		 List<Player> list = playerService.findAll();
+//		 model.addAttribute("players", list);
+		List<PlayerDoc> list = playerRepository.findAll();
+		model.addAttribute("players", list);
+		
+		PlayerDoc list1 = playerRepository.findByName("Wesley Scott"); 
+		model.addAttribute("player", list1);
 		return "home1";
 	}
 

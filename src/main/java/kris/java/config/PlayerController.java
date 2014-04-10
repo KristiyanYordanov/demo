@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import kris.java.persistence.model.Player;
-import kris.java.persistence.service.PlayerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,19 +26,27 @@ import org.springframework.web.servlet.view.RedirectView;
 @RequestMapping("players")
 public class PlayerController {
 
-//	@Autowired
-//	PlayerService playerService;
-	
+	// @Autowired
+	// PlayerService playerService;
+	@Autowired
+	PlayerRepository playerRepository;
+
 	@RequestMapping(value = "/user/player", method = RequestMethod.GET)
 	public String player(ModelMap model) throws Exception {
 		PlayerModel playerModel = new PlayerModel();
-		List<Player> res = playerModel.readWithCsvBeanReader();
-		model.addAttribute("players", res);
-		model.addAttribute("fileHeader",Arrays.toString(playerModel.getHeaders()));
-		for(Player entity: res)
-		{
-//			playerService.create(entity);
+		// List<Player> res = playerModel.readWithCsvBeanReader();
+		List<PlayerDoc> res = playerModel.readWithCsvBeanReaderForPlayerDoc();
+		System.out.println("res size= " + res.size());
+
+		for (PlayerDoc entity : res) {
+			// playerService.create(entity);
+			playerRepository.save(entity);
 		}
+
+		model.addAttribute("players", res);
+		model.addAttribute("fileHeader",
+				Arrays.toString(playerModel.getHeaders()));
+
 		return "user/player";
 	}
 
@@ -48,10 +55,12 @@ public class PlayerController {
 		if (!file.isEmpty()) {
 			try {
 				byte[] bytes = file.getBytes();
-				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File("test" + "-uploaded")));
+				BufferedOutputStream stream = new BufferedOutputStream(
+						new FileOutputStream(new File("test" + "-uploaded")));
 				stream.write(bytes);
 				stream.close();
-				Reader reader = new InputStreamReader(new ByteArrayInputStream(bytes));
+				Reader reader = new InputStreamReader(new ByteArrayInputStream(
+						bytes));
 				BufferedReader bf = new BufferedReader(reader);
 				String line = bf.readLine();
 				while (line != null) {
