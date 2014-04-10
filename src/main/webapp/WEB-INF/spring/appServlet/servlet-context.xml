@@ -26,6 +26,7 @@
 	
 	<security:global-method-security secured-annotations="enabled" pre-post-annotations="enabled"/>
 	
+	<!-- Mongo config -->
 	<mongo:mongo host="127.0.0.1" port="27017" />
 	<mongo:db-factory dbname="yourdb" />
  
