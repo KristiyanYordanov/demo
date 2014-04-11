@@ -20,7 +20,12 @@
 	<br>
 	<a href="<c:url value="/players/user/player" />"> player</a>
 	<br>
+	<a href="<c:url value="/returnjsonpage" />"> returnjsonpage</a>
+	<br>
+	<a href="<c:url value="/tryjson" />"> tryjson</a>
+	<br>
 
+	 
 	<form name='fo' action="<c:url value='/j_spring_security_logout' />"
 		method='POST'>
 		<input type="submit" value="Logout" />

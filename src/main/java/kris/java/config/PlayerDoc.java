@@ -1,9 +1,11 @@
 package kris.java.config;
 
+import java.io.Serializable;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "playerdoc")
-public class PlayerDoc extends BaseMongoObject {
+public class PlayerDoc extends BaseMongoObject implements Serializable {
 
 	public PlayerDoc(String name, String location, String pos, int stars,
 			String height, Double fortyDash, int weight, int gradYear,
@@ -22,6 +24,13 @@ public class PlayerDoc extends BaseMongoObject {
 
 	public PlayerDoc() {
 		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public PlayerDoc(String name, String location) {
+		super();
+		this.name = name;
+		this.location = location;
 		// TODO Auto-generated constructor stub
 	}
 

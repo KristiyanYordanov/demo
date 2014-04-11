@@ -96,18 +96,18 @@ public class ApplicationContext extends WebMvcConfigurerAdapter {
 		return hibernateProperties;
 	}
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/assets/**")
-				.addResourceLocations("classpath:/META-INF/resources/webjars/")
-				.setCachePeriod(31556926);
-		registry.addResourceHandler("/css/**").addResourceLocations("/css/")
-				.setCachePeriod(31556926);
-		registry.addResourceHandler("/img/**").addResourceLocations("/img/")
-				.setCachePeriod(31556926);
-		registry.addResourceHandler("/js/**").addResourceLocations("/js/")
-				.setCachePeriod(31556926);
-	}
+//	@Override
+//	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//		registry.addResourceHandler("/resources/**")
+//				.addResourceLocations("classpath:/META-INF/resources/webjars/")
+//				.setCachePeriod(31556926);
+//		registry.addResourceHandler("/css/**").addResourceLocations("/css/")
+//				.setCachePeriod(31556926);
+//		registry.addResourceHandler("/img/**").addResourceLocations("/img/")
+//				.setCachePeriod(31556926);
+//		registry.addResourceHandler("/js/**").addResourceLocations("/js/")
+//				.setCachePeriod(31556926);
+//	}
 
 	@Override
 	public void configureDefaultServletHandling(
