@@ -1,9 +1,10 @@
 package kris.java.config;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
-
-import kris.java.persistence.model.Player;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -119,7 +119,25 @@ public class HomeController {
 	public   String getShopInJSON1(ModelMap model) {
 		return "tryjson";
 	}
-	
-	
+	@RequestMapping(value="/getjsonexample", method = RequestMethod.GET)
+	public @ResponseBody String getShopInJSON122(ModelMap model) throws IOException {
+	   BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\kris\\Desktop\\exampejson.json"));
+	   String res = "";
+	    try {
+	        StringBuilder sb = new StringBuilder();
+	        String line = br.readLine();
+
+	        while (line != null) {
+	            sb.append(line);
+	            sb.append(System.lineSeparator());
+	            line = br.readLine();
+	        }
+	        res = sb.toString();
+	    } finally {
+	        br.close();
+	    }
+	    System.out.println(res);
+		return res;
+	}
 
 }
