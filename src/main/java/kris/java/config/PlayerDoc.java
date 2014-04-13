@@ -124,12 +124,24 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 		return result;
 	}
 
+	
+
 	@Override
 	public String toString() {
-		return "Player [id=" + ", name=" + name + ", location=" + location
-				+ ", pos=" + pos + ", stars=" + stars + ", height=" + height
-				+ ", fortyDash=" + fortyDash + ", weight=" + weight
-				+ ", gradYear=" + gradYear + ", rating=" + rating + "]";
+		return "[\"" + (name != null ?  name + "\",\"" : "\",\"")
+				+ (location != null ?   location + "\"" : "")
+//				+ (location != null ?   location + "\",\"" : "\",\"")
+//				+ (pos != null ? "pos=" + pos + "\",\" " : "\"") 
+//				+ (height != null ?  height + ", " : ",")
+//				+ (fortyDash != null ?  fortyDash + ", " : ",")
+//				+ (weight != 0 ?  + weight + ", " : ",")
+//				+ (stars != 0 ?  + stars + ", " : ",")
+//				+ (rating != null ? "=" + rating : "")
+				+ "]";
 	}
 
+	public static void main(String[] argc) {
+		PlayerDoc d= new PlayerDoc("Ivan", "Pesho");
+		System.out.println(d);
+	}
 }
