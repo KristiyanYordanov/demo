@@ -1,6 +1,5 @@
 package kris.java.config;
 
-import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
@@ -12,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -136,6 +136,8 @@ public class HomeController {
 			@RequestParam(value = "sSortDir_0") String sSortDir,
 			@RequestParam(value = "iDisplayLength") String iDisplayLength,
 			@RequestParam(value = "iDisplayStart") String iDisplayStart,
+			@RequestParam(value = "iSortCol_0") String iSortCol_0,
+			@RequestParam(value = "sSortDir_0") String sSortDir_0,
 			@RequestParam(value = "sEcho") String sEcho) throws IOException,
 			JSONException {
 //		System.out.println("sortColumn = " + sortColumn);// number of sorting
@@ -153,6 +155,7 @@ public class HomeController {
 																// increase with
 																// iDisplayLength
 		System.out.println("sEcho = " + sEcho);
+		
 
 		Map<String, String[]> parameters = request.getParameterMap();
 		for (String key : parameters.keySet()) {
@@ -162,7 +165,24 @@ public class HomeController {
 //				 System.out.println(" -> " + val);
 			}
 		}
-		List<PlayerDoc> list = playerRepository.findAll();
+		
+		System.out.println("sSortDir_0 = " + sSortDir_0);
+		System.out.println("iSortCol_0 = " + iSortCol_0);
+		Sort sort = null;
+		if (iSortCol_0.equals("0") && sSortDir_0.equals("asc")) {
+//			Sort sortByNameAsc = new Sort(Sort.Direction.ASC, "name"); 
+			sort = new Sort(Sort.Direction.ASC, "name");
+			System.out.println("asc");
+		}
+		else if (iSortCol_0.equals("0") && sSortDir_0.equals("desc")){
+//			Sort sortByNameDesc = new Sort(Sort.Direction.DESC, "name");
+			sort = new Sort(Sort.Direction.DESC, "name");
+			System.out.println("desc");
+		}
+		
+		
+		List<PlayerDoc> list = playerRepository.findAll(sort);
+		
 //		model.addAttribute("players", list.subList(new Integer(iDisplayStart), new Integer(iDisplayLength)));
 		String[] cols = { "id", "firstName", "lastName", "gender", "address",
 				"grade" };
@@ -181,6 +201,10 @@ public class HomeController {
 			innerArray.put(p);
 		}
 
+		
+		
+		
+		
 		DataTableJsonObject e = new DataTableJsonObject();
 		e.setITotalRecords(list.size());
 		e.setITotalDisplayRecords(list.size());
@@ -190,7 +214,6 @@ public class HomeController {
 		System.out.println("iDisplayStart = " + start);
 		System.out.println("iDisplayLength +iDisplayStart = " +  length);
 		e.setAaData(list.subList(start, length));
-		
 
 //		Util.writeInFileBuffered(jsonObject.toString(), new File(
 //				"C:\\Users\\kris\\Desktop\\jsonObject.txt"));
