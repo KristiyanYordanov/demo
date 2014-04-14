@@ -138,32 +138,32 @@ public class HomeController {
 			@RequestParam(value = "iDisplayStart") String iDisplayStart,
 			@RequestParam(value = "sEcho") String sEcho) throws IOException,
 			JSONException {
-		System.out.println("sortColumn = " + sortColumn);// number of sorting
+//		System.out.println("sortColumn = " + sortColumn);// number of sorting
 															// column zero basec
-		System.out.println("sSearch = " + sSearch); // search string every
+//		System.out.println("sSearch = " + sSearch); // search string every
 													// column
-		System.out.println("sSortDir = " + sSortDir); // sorting direction asc
+//		System.out.println("sSortDir = " + sSortDir); // sorting direction asc
 														// or desc
-		System.out.println("iDisplayLength = " + iDisplayLength); // chosen from
+//		System.out.println("iDisplayLength = " + iDisplayLength); // chosen from
 																	// drop down
 																	// menu 10,
 																	// 25, 50,
 																	// 100
-		System.out.println("iDisplayStart = " + iDisplayStart); // every page
+//		System.out.println("iDisplayStart = " + iDisplayStart); // every page
 																// increase with
 																// iDisplayLength
 		System.out.println("sEcho = " + sEcho);
 
 		Map<String, String[]> parameters = request.getParameterMap();
 		for (String key : parameters.keySet()) {
-			// System.out.println(key);
+//			 System.out.println(key);
 			String[] vals = parameters.get(key);
 			for (String val : vals) {
-				// System.out.println(" -> " + val);
+//				 System.out.println(" -> " + val);
 			}
 		}
 		List<PlayerDoc> list = playerRepository.findAll();
-		model.addAttribute("players", list);
+//		model.addAttribute("players", list.subList(new Integer(iDisplayStart), new Integer(iDisplayLength)));
 		String[] cols = { "id", "firstName", "lastName", "gender", "address",
 				"grade" };
 		String indexColumn = "id";
@@ -183,23 +183,28 @@ public class HomeController {
 
 		DataTableJsonObject e = new DataTableJsonObject();
 		e.setITotalRecords(list.size());
-		e.setITotalDisplayRecords(new Integer(iDisplayLength));
-		e.setSEcho("1");
-		e.setAaData(list);
+		e.setITotalDisplayRecords(list.size());
+		e.setSEcho(sEcho);
+		int start = new Integer(iDisplayStart);
+		int length = new Integer(new Integer(iDisplayLength)+new Integer(iDisplayStart));
+		System.out.println("iDisplayStart = " + start);
+		System.out.println("iDisplayLength +iDisplayStart = " +  length);
+		e.setAaData(list.subList(start, length));
+		
 
-		Util.writeInFileBuffered(jsonObject.toString(), new File(
-				"C:\\Users\\kris\\Desktop\\jsonObject.txt"));
-		Util.writeInFileBuffered(jsonArray.toString(), new File(
-				"C:\\Users\\kris\\Desktop\\jsonArray.txt"));
-		Util.writeInFileBuffered(e.toString().toString(), new File(
-				"C:\\Users\\kris\\Desktop\\json.txt"));
+//		Util.writeInFileBuffered(jsonObject.toString(), new File(
+//				"C:\\Users\\kris\\Desktop\\jsonObject.txt"));
+//		Util.writeInFileBuffered(jsonArray.toString(), new File(
+//				"C:\\Users\\kris\\Desktop\\jsonArray.txt"));
+//		Util.writeInFileBuffered(e.toString().toString(), new File(
+//				"C:\\Users\\kris\\Desktop\\json.txt"));
 		// System.out.println("jsonObject = " + jsonObject );
 		// System.out.println("jsonArray = " + jsonArray );
 		String res = "";
-		res = Util.readFromFileBuffered(new File(
-				"C:\\Users\\kris\\Desktop\\exampejson.json"));
+//		res = Util.readFromFileBuffered(new File(
+//				"C:\\Users\\kris\\Desktop\\exampejson.json"));
 		// System.out.println(res);
-		// res = e.toString();
+		 res = e.toString();
 		return res;
 	}
 
