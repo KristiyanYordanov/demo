@@ -19,11 +19,10 @@
 			<th>name</th>
 			<th>location</th>
 			<th>pos(s)</th>
-			<th>starsn</th>
 			<th>height </th>
 			<th>fortyDash </th>
 			<th>weight </th>
-			<th>gradYear </th>
+			<th>stars</th>
 			<th>rating </th>
 		</tr>
 	</thead>
@@ -34,14 +33,13 @@
 	</tbody>
 	<tfoot>
 		<tr>
-			<th>name</th>
+		<th>name</th>
 			<th>location</th>
 			<th>pos(s)</th>
-			<th>starsn</th>
 			<th>height </th>
 			<th>fortyDash </th>
 			<th>weight </th>
-			<th>gradYear </th>
+			<th>stars</th>
 			<th>rating </th>
 		</tr>
 	</tfoot>

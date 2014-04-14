@@ -21,7 +21,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
@@ -96,18 +95,18 @@ public class ApplicationContext extends WebMvcConfigurerAdapter {
 		return hibernateProperties;
 	}
 
-//	@Override
-//	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//		registry.addResourceHandler("/resources/**")
-//				.addResourceLocations("classpath:/META-INF/resources/webjars/")
-//				.setCachePeriod(31556926);
-//		registry.addResourceHandler("/css/**").addResourceLocations("/css/")
-//				.setCachePeriod(31556926);
-//		registry.addResourceHandler("/img/**").addResourceLocations("/img/")
-//				.setCachePeriod(31556926);
-//		registry.addResourceHandler("/js/**").addResourceLocations("/js/")
-//				.setCachePeriod(31556926);
-//	}
+	// @Override
+	// public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	// registry.addResourceHandler("/resources/**")
+	// .addResourceLocations("classpath:/META-INF/resources/webjars/")
+	// .setCachePeriod(31556926);
+	// registry.addResourceHandler("/css/**").addResourceLocations("/css/")
+	// .setCachePeriod(31556926);
+	// registry.addResourceHandler("/img/**").addResourceLocations("/img/")
+	// .setCachePeriod(31556926);
+	// registry.addResourceHandler("/js/**").addResourceLocations("/js/")
+	// .setCachePeriod(31556926);
+	// }
 
 	@Override
 	public void configureDefaultServletHandling(

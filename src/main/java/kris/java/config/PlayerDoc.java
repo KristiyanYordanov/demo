@@ -7,6 +7,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "playerdoc")
 public class PlayerDoc extends BaseMongoObject implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public PlayerDoc(String name, String location, String pos, int stars,
 			String height, Double fortyDash, int weight, int gradYear,
 			Double rating) {
@@ -26,7 +31,7 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public PlayerDoc(String name, String location) {
 		super();
 		this.name = name;
@@ -124,24 +129,21 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 		return result;
 	}
 
-	
-
 	@Override
 	public String toString() {
-		return "[\"" + (name != null ?  name + "\",\"" : "\",\"")
-				+ (location != null ?   location + "\"" : "")
-//				+ (location != null ?   location + "\",\"" : "\",\"")
-//				+ (pos != null ? "pos=" + pos + "\",\" " : "\"") 
-//				+ (height != null ?  height + ", " : ",")
-//				+ (fortyDash != null ?  fortyDash + ", " : ",")
-//				+ (weight != 0 ?  + weight + ", " : ",")
-//				+ (stars != 0 ?  + stars + ", " : ",")
-//				+ (rating != null ? "=" + rating : "")
-				+ "]";
+		return "[\"" + (name != null ? name + "\",\"" : "\",\"")
+
+		+ (location != null ? location + "\", \"" : "\",\"")
+				+ (pos != null ? pos + "\",\" " : "\"")
+				+ (height != null ? height + ", \"" : "\",\"")
+				+ (fortyDash != null ? fortyDash + "\", \"" : "\",\"")
+				+ (weight != 0 ? +weight + "\", \"" : "\",\"")
+				+ (stars != 0 ? +stars + "\", \"" : "\",\"")
+				+ (rating != null ? rating + "\"" : "\"\"") + "]";
 	}
 
 	public static void main(String[] argc) {
-		PlayerDoc d= new PlayerDoc("Ivan", "Pesho");
+		PlayerDoc d = new PlayerDoc("Ivan", "Pesho");
 		System.out.println(d);
 	}
 }
