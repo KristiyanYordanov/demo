@@ -5,6 +5,9 @@
 <head>
 <link rel="stylesheet" type="text/css"
 	href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
+	
+	<link rel="stylesheet" type="text/css"
+	href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">	
 </head>
 <style type="text/css">
 #container {
@@ -55,7 +58,7 @@ div.examples ul {
 	<br> ${player}
 	<br>
 	<!-- <br> ${players} -->
-
+	<button onclick="fnShowHide(0)">Hoo </button>
 	<table cellpadding="0" cellspacing="0" border="0" class="display"
 		id="example" width="100%">
 		<thead>
@@ -94,19 +97,44 @@ div.examples ul {
 		src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
 	<script type="text/javascript" charset="utf8"
 		src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.js"></script>
-
+		
+	<script type="text/javascript" charset="utf8"
+		src="https://datatables.net/release-datatables/extras/ColReorder/media/js/ColReorder.js"></script>
 
 	<script type="text/javascript" charset="utf8"
 		src="https://editor.datatables.net/release/DataTables/extras/TableTools/media/js/TableTools.js"></script>
+		
+		
+		<script type="text/javascript" charset="utf8"
+		src="https://datatables.net/release-datatables/extras/TableTools/media/js/ZeroClipboard.js"></script>
+		
+		
 	<script>
 		$(document).ready(function() {
 			var editor; // use a global for the submit and return data rendering in the examples
 			$('#example').dataTable({
 				"bProcessing" : true,
 				"bServerSide" : true,
-				"sAjaxSource" : "/spring-jpa/getjsonexample",
-				"sDom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
-				 "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+				"sAjaxSource" : "/spring-jpa/getjsonexample", 
+				"sDom": 'T<"clear">lfrtip',
+				"oTableTools": {
+					"sSwfPath": "media/swf/copy_csv_xls_pdf.swf"
+				},
+				 "oTableTools": {
+			            "aButtons": [
+			                "copy",
+			                "print",
+			                {
+			                    "sExtends":    "collection",
+			                    "sButtonText": "Save",
+			                    "aButtons":    [ "csv", "xls", "pdf" ]
+			                }
+			            ]
+			        },
+				//"sDom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>', //paging in header and footer
+				 "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]], //row number drop down
+				 "bStateSave": true, // save table state
+				 "sDom": 'Rlfrtip', //reorder cols
 				"aoColumnDefs" : [ {
 					// `data` refers to the data for the cell (defined by `mData`, which
 					// defaults to the column being worked with, in this case is the first
@@ -121,7 +149,18 @@ div.examples ul {
 						"aTargets" : [ 4 ]
 				} ]
 			});
+			
 		});
+		function fnShowHide( iCol )
+		{
+			iCol = 0;
+		    /* Get the DataTables object again - this is not a recreation, just a get of the object */
+		    var oTable = $('#example').dataTable();
+		     
+		    var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
+		    oTable.fnSetColumnVis( iCol, bVis ? false : true );
+		}
+			
 	</script>
 </body>
 </html>
