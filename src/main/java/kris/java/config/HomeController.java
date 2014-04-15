@@ -12,6 +12,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +34,9 @@ public class HomeController {
 	@Autowired
 	PlayerRepository playerRepository;
 
+	@Autowired
+	MongoTemplate mongoTemplate;
+	
 	// @Autowired
 	// PlayerService playerService;
 	/**
@@ -66,7 +72,7 @@ public class HomeController {
 		List<PlayerDoc> list = playerRepository.findAll();
 		model.addAttribute("players", list);
 
-		PlayerDoc list1 = playerRepository.findByName("Wesley Scott");
+		List<PlayerDoc> list1 = playerRepository.findByName("Wesley Scott");
 		model.addAttribute("player", list1);
 		return "home1";
 	}
@@ -168,7 +174,10 @@ public class HomeController {
 		
 		System.out.println("sSortDir_0 = " + sSortDir_0);
 		System.out.println("iSortCol_0 = " + iSortCol_0);
+		
+		
 		Sort sort = null;
+		List<PlayerDoc> list = null;
 		if (iSortCol_0.equals("0") && sSortDir_0.equals("asc")) {
 //			Sort sortByNameAsc = new Sort(Sort.Direction.ASC, "name"); 
 			sort = new Sort(Sort.Direction.ASC, "name");
@@ -179,10 +188,14 @@ public class HomeController {
 			sort = new Sort(Sort.Direction.DESC, "name");
 			System.out.println("desc");
 		}
+		if (sSearch != null && !sSearch.equals("")) {
+			list = playerRepository.findByNameRegex(sSearch);
+		}
+		else {
+			list = playerRepository.findAll(sort);
+		}
 		
-		
-		List<PlayerDoc> list = playerRepository.findAll(sort);
-		
+		 
 //		model.addAttribute("players", list.subList(new Integer(iDisplayStart), new Integer(iDisplayLength)));
 		String[] cols = { "id", "firstName", "lastName", "gender", "address",
 				"grade" };
@@ -202,9 +215,6 @@ public class HomeController {
 		}
 
 		
-		
-		
-		
 		DataTableJsonObject e = new DataTableJsonObject();
 		e.setITotalRecords(list.size());
 		e.setITotalDisplayRecords(list.size());
@@ -213,7 +223,13 @@ public class HomeController {
 		int length = new Integer(new Integer(iDisplayLength)+new Integer(iDisplayStart));
 		System.out.println("iDisplayStart = " + start);
 		System.out.println("iDisplayLength +iDisplayStart = " +  length);
-		e.setAaData(list.subList(start, length));
+		if (list.size() > length) {
+			e.setAaData(list.subList(start, length));
+		}
+		else {
+			e.setAaData(list);
+		}
+		
 
 //		Util.writeInFileBuffered(jsonObject.toString(), new File(
 //				"C:\\Users\\kris\\Desktop\\jsonObject.txt"));
