@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class Util {
 
@@ -50,5 +53,17 @@ public class Util {
 			}
 		}
 		return res;
+	}
+	
+	public static void PrintAllRequestParams(HttpServletRequest request)
+	{
+		Map<String, String[]> parameters = request.getParameterMap();
+		for (String key : parameters.keySet()) {
+			 System.out.println(key);
+			String[] vals = parameters.get(key);
+			for (String val : vals) {
+				 System.out.println(" -> " + val);
+			}
+		}
 	}
 }
