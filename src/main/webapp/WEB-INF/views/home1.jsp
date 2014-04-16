@@ -5,9 +5,9 @@
 <head>
 <link rel="stylesheet" type="text/css"
 	href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
-	
-	<link rel="stylesheet" type="text/css"
-	href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">	
+
+<link rel="stylesheet" type="text/css"
+	href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
 </head>
 <style type="text/css">
 #container {
@@ -53,12 +53,9 @@ div.examples ul {
 }
 </style>
 <body>
-	<h3>Message : ${message}</h3>
-	<h3>Username : ${username}</h3>
-	<br> ${player}
-	<br>
 	<!-- <br> ${players} -->
-	<button onclick="fnShowHide(0)">Hoo </button>
+	<!-- <button onclick="fnShowHide(0)">Hoo</button> -->
+	<h3>Username : ${username}</h3>
 	<table cellpadding="0" cellspacing="0" border="0" class="display"
 		id="example" width="100%">
 		<thead>
@@ -94,8 +91,6 @@ div.examples ul {
 	</table>
 
 	<script type="text/javascript" charset="utf8"
-		src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
-	<script type="text/javascript" charset="utf8"
 		src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.js"></script>
 		
 	<script type="text/javascript" charset="utf8"
@@ -103,15 +98,12 @@ div.examples ul {
 
 	<script type="text/javascript" charset="utf8"
 		src="https://editor.datatables.net/release/DataTables/extras/TableTools/media/js/TableTools.js"></script>
-		
-		
-		<script type="text/javascript" charset="utf8"
+
+	<script type="text/javascript" charset="utf8"
 		src="https://datatables.net/release-datatables/extras/TableTools/media/js/ZeroClipboard.js"></script>
-		
-		
+
 	<script>
 		$(document).ready(function() {
-			var editor; // use a global for the submit and return data rendering in the examples
 			$('#example').dataTable({
 				"bProcessing" : true,
 				"bServerSide" : true,
@@ -133,21 +125,8 @@ div.examples ul {
 			        },
 				//"sDom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>', //paging in header and footer
 				 "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]], //row number drop down
-				 "bStateSave": true, // save table state
-				 "sDom": 'Rlfrtip', //reorder cols
-				"aoColumnDefs" : [ {
-					// `data` refers to the data for the cell (defined by `mData`, which
-					// defaults to the column being worked with, in this case is the first
-					// Using `row[0]` is equivalent.
-					"mRender" : function(data, type, row) {
-						return data + ' ' + row[3];},
-						"aTargets" : [ 0 ] }, 
-						{	"bVisible" : false,
-							"aTargets" : [ 3 ] }, 
-						{
-						"sClass" : "center",
-						"aTargets" : [ 4 ]
-				} ]
+				 //"bStateSave": true, // save table state
+				 //"sDom": 'Rlfrtip', //reorder cols
 			});
 			
 		});

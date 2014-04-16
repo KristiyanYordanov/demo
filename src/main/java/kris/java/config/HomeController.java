@@ -29,7 +29,7 @@ public class HomeController {
 
 	@Autowired
 	PlayerRepository playerRepository;
-
+	
 	@Autowired
 	MongoTemplate mongoTemplate;
 	
@@ -154,6 +154,15 @@ public class HomeController {
 		Sort sort = null;
 		List<PlayerDoc> list = null;
 		
+		DataTableJsonObject e = new DataTableJsonObject();
+	
+		e.setSEcho(sEcho);
+		
+		int start = new Integer(iDisplayStart);
+		int pageRows = new Integer(new Integer(iDisplayLength)+new Integer(iDisplayStart));
+		int size = 0;
+		
+		
 		if (iSortCol_0.equals("0") && sSortDir_0.equals("asc")) {
 			sort = new Sort(Sort.Direction.ASC, "name");
 		}
@@ -161,32 +170,56 @@ public class HomeController {
 			sort = new Sort(Sort.Direction.DESC, "name");
 		}
 		if (sSearch != null && !sSearch.equals("")) {
-			list = playerRepository.findByNameRegex(sSearch, sort);
+			if (pageRows != -1) {
+				list = playerRepository.findByNameRegex(sSearch, sort);
+				size = list.size();
+				if (pageRows > size ) {
+					list = list.subList(start, size);	
+				}
+				else {
+					list = list.subList(start, pageRows);	
+				}
+			}
+			else {
+				list = playerRepository.findByNameRegex(sSearch, sort);
+				size = list.size();
+			}
+			//page rows = 20
+			//size = 19
+			//print 11 - 19
+				
 //			Query query2 = new Query(Criteria.where("tweet").elemMatch(Criteria.where("tweetId").is(sSearch)));
 //			query2.fields().position("tweet", 1);
 //			Query query = new Query();
 //			Query q =  query.addCriteria(Criteria.where("name").regex(sSearch,"i"));
 		}
 		else {
-			list = playerRepository.findAll(sort);
+			size = (int) playerRepository.count();
+			if (pageRows == -1) {
+				long tStart = System.currentTimeMillis();
+				list = playerRepository.findAll(sort);
+				long tEnd = System.currentTimeMillis();
+				long tDelta = tEnd - tStart;
+				double elapsedSeconds = tDelta / 1000.0;
+				System.out.println("full no filter =   " + elapsedSeconds);
+			}
+			else if ((int) size > pageRows) {
+				long tStart = System.currentTimeMillis();
+				list = playerRepository.findAll(sort).subList(start, pageRows);
+//				list = mongoTemplate.findAll(PlayerDoc.class);
+				long tEnd = System.currentTimeMillis();
+				long tDelta = tEnd - tStart;
+				double elapsedSeconds = tDelta / 1000.0;
+				System.out.println("only one page no filter =   " + elapsedSeconds);
+			}
+			else {
+				list = playerRepository.findAll(sort);
+			}
 		}
-
-		DataTableJsonObject e = new DataTableJsonObject();
-		e.setITotalRecords(list.size());
-		e.setITotalDisplayRecords(list.size());
-		e.setSEcho(sEcho);
 		
-		int start = new Integer(iDisplayStart);
-		int length = new Integer(new Integer(iDisplayLength)+new Integer(iDisplayStart));
-		if (length == -1) {
-			e.setAaData(list);
-		}
-		else if (list.size() > length) {
-			e.setAaData(list.subList(start, length));
-		}
-		else {
-			e.setAaData(list);
-		}
+		e.setAaData(list);
+		e.setITotalRecords(size);
+		e.setITotalDisplayRecords(size);
 		res = e.toString();
 		
 		return res;

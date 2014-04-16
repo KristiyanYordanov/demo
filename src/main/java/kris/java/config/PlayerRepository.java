@@ -15,6 +15,8 @@ public interface PlayerRepository extends MongoRepository<PlayerDoc, String> {
     
     @Query("{ 'name':{$regex:?0,$options:'i'}}") 
     public List<PlayerDoc> findByNameRegex(String name, Sort sort);
+    @Query("{ 'name':{$regex:?0,$options:'i'}}") 
+    public List<PlayerDoc> findByNameRegex(String name);
     List<PlayerDoc> findAll(Sort sort);
     
 
