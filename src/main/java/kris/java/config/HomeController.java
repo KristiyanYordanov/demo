@@ -152,14 +152,12 @@ public class HomeController {
 			@RequestParam(value = "sEcho") String sEcho) throws IOException,
 			JSONException {
 
-		String res = "";
 		Sort sort = null;
 		Page<PlayerDoc> page = null;
-		List<PlayerDoc> list = null;
-		DataTableJsonObjectPage p = new DataTableJsonObjectPage();
+		DataTableJsonObject jsonObject = new DataTableJsonObject();
 
 		int start = new Integer(iDisplayStart);
-		int pageRows = new Integer(iDisplayLength) + start;
+		int pageRows = new Integer(iDisplayLength);
 		int size = 0;
 		if (iSortCol_0.equals("0") && sSortDir_0.equals("asc")) {
 			sort = new Sort(Sort.Direction.ASC, "name");
@@ -167,17 +165,9 @@ public class HomeController {
 			sort = new Sort(Sort.Direction.DESC, "name");
 		}
 
-		if (pageRows == -1 && sSearch == null) {
-			System.out.println("1");
-			list = playerRepository.findAll(sort);
-			size = list.size();
-			DataTableJsonObjectList returnAll = new DataTableJsonObjectList();
-			returnAll.setSEcho(sEcho);
-			returnAll.setAaData(list);
-			returnAll.setITotalRecords(size);
-			returnAll.setITotalDisplayRecords(size);
-			// return all rows
-			return returnAll.toString();
+		if (pageRows == -1 && sSearch.equals("")) {
+			size = (int) playerRepository.count();
+			page = playerRepository.findAll(new PageRequest(start, size, sort));
 		} else if (sSearch != null && !sSearch.equals("") && pageRows == -1) {
 			System.out.println("2");
 			size = (int) playerRepository.count(sSearch);
@@ -186,43 +176,22 @@ public class HomeController {
 		} else if (sSearch != null && !sSearch.equals("") && pageRows != -1) {
 			System.out.println("3");
 			size = (int) playerRepository.count(sSearch);
-			if (size < pageRows + start) {
-				list = playerRepository.findByNameRegex(sSearch, sort).subList(
-						start, size);
-				System.out.println("31");
-				DataTableJsonObjectList returnAll = new DataTableJsonObjectList();
-				returnAll.setSEcho(sEcho);
-				returnAll.setAaData(list);
-				returnAll.setITotalRecords(size);
-				returnAll.setITotalDisplayRecords(size);
-				return returnAll.toString();
-			} else {
-				System.out.println("32");
-				list = playerRepository.findByNameRegex(sSearch, sort).subList(
-						start, pageRows);
-				DataTableJsonObjectList returnAll = new DataTableJsonObjectList();
-				returnAll.setSEcho(sEcho);
-				returnAll.setAaData(list);
-				returnAll.setITotalRecords(size);
-				returnAll.setITotalDisplayRecords(size);
-				return returnAll.toString();
-			}
-
+			int pageNumber = start / pageRows;
+			page = playerRepository.findByNameRegex(sSearch, new PageRequest(pageNumber,pageRows, sort));
 		} else {
 			System.out.println("4");
 			size = (int) playerRepository.count();
-			System.out.println("start = " + start);
-			System.out.println("size= " + size);
-			System.out.println("pageRows = " + new Integer(iDisplayLength));
-			page = playerRepository.findAll(new PageRequest(start, new Integer(
-					iDisplayLength), sort));
-
+			int pageNumber1 = start / pageRows;
+			if (pageNumber1 == 0) {
+				pageNumber1 = 1;
+			}
+			page = playerRepository.findAll(new PageRequest(pageNumber1,
+					pageRows, sort));
 		}
-		p.setSEcho(sEcho);
-		p.setAaData(page);
-		p.setITotalRecords(size);
-		p.setITotalDisplayRecords(size);
-		res = p.toString();
-		return res;
+		jsonObject.setSEcho(sEcho);
+		jsonObject.setAaData(page);
+		jsonObject.setITotalRecords(size);
+		jsonObject.setITotalDisplayRecords(size);
+		return jsonObject.toString();
 	}
 }

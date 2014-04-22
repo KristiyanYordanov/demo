@@ -92,7 +92,7 @@ border-bottom-right-radius: 5px;
 			"bServerSide" : true,
 			"sAjaxSource" : "/spring-jpa/getjsonexample",
 			"aaSorting" : [ [ 0, "asc" ] ],
-			"sDom" : '<"top"ilpfT>rt<"bottom"ilrpT><"clear">',
+			"sDom" : 'r<"top"ilpfT>t<"bottom"ilpT>r<"clear">',
 			 "sPaginationType": "full_numbers",
 			"oTableTools" : {
 				"sSwfPath" : "media/swf/copy_csv_xls_pdf.swf"

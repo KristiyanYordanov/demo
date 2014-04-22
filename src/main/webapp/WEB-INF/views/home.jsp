@@ -305,8 +305,7 @@ body {
 					<li class='last'><a href='#'><span>Criteria Report</span></a></li>
 				</ul></li>
 
-			<li><a
-				href='/spring-jpa/j_spring_security_logout'><span>Logout</span></a>
+			<li><a href='/spring-jpa/j_spring_security_logout'><span>Logout</span></a>
 			</li>
 		</ul>
 	</div>
@@ -325,7 +324,10 @@ body {
 	src="https://datatables.net/release-datatables/extras/TableTools/media/js/ZeroClipboard.js"></script>
 
 <script type="text/javascript">
-
+	$(document).ready(function() {
+		var html = 'home2';
+		$('#content').load(html);
+	});
 	$("#load_players").on("click", function() {
 		var html = 'home1';
 		$('#content').load(html);
