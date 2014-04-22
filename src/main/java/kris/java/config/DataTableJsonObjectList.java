@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.google.gson.annotations.Expose;
 
-public class DataTableJsonObject {
+public class DataTableJsonObjectList {
 
 	@Expose
 	private Integer iTotalDisplayRecords;
@@ -24,7 +24,7 @@ public class DataTableJsonObject {
 		this.iTotalDisplayRecords = iTotalDisplayRecords;
 	}
 
-	public DataTableJsonObject withITotalDisplayRecords(
+	public DataTableJsonObjectList withITotalDisplayRecords(
 			Integer iTotalDisplayRecords) {
 		this.iTotalDisplayRecords = iTotalDisplayRecords;
 		return this;
@@ -38,7 +38,7 @@ public class DataTableJsonObject {
 		this.iTotalRecords = iTotalRecords;
 	}
 
-	public DataTableJsonObject withITotalRecords(Integer iTotalRecords) {
+	public DataTableJsonObjectList withITotalRecords(Integer iTotalRecords) {
 		this.iTotalRecords = iTotalRecords;
 		return this;
 	}
@@ -51,7 +51,7 @@ public class DataTableJsonObject {
 		this.aaData = aaData;
 	}
 
-	public DataTableJsonObject withAaData(List<PlayerDoc> aaData) {
+	public DataTableJsonObjectList withAaData(List<PlayerDoc> aaData) {
 		this.aaData = aaData;
 		return this;
 	}
@@ -64,7 +64,7 @@ public class DataTableJsonObject {
 		this.sEcho = sEcho;
 	}
 
-	public DataTableJsonObject withSEcho(String sEcho) {
+	public DataTableJsonObjectList withSEcho(String sEcho) {
 		this.sEcho = sEcho;
 		return this;
 	}

@@ -9,8 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Field;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,10 +34,10 @@ public class HomeController {
 
 	@Autowired
 	PlayerRepository playerRepository;
-	
+
 	@Autowired
 	MongoTemplate mongoTemplate;
-	
+
 	// @Autowired
 	// PlayerService playerService;
 	/**
@@ -42,10 +47,7 @@ public class HomeController {
 	public String printWelcome(ModelMap model, Principal principal) {
 		String name = principal.getName();
 		model.addAttribute("username", name);
-		model.addAttribute("message", "Spring Security Custom Form example");
-
 		return "home";
-
 	}
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
@@ -68,7 +70,8 @@ public class HomeController {
 		List<PlayerDoc> list = playerRepository.findAll();
 		model.addAttribute("players", list);
 
-		List<PlayerDoc> list1 = playerRepository.findByName("Wesley Scott");
+		Page<PlayerDoc> list1 = playerRepository.findByName("Wesley Scott",
+				new PageRequest(0, 1));
 		model.addAttribute("player", list1);
 		return "home1";
 	}
@@ -129,9 +132,10 @@ public class HomeController {
 	public String getShopInJSON1(ModelMap model) {
 		return "tryjson";
 	}
-	
+
 	@RequestMapping(value = "/getjsoneditor", method = RequestMethod.GET)
-	public @ResponseBody String getShopInJSON1222(){
+	public @ResponseBody
+	String getShopInJSON1222() {
 		String res = "";
 		String filename = "exampl2.json";
 		res = Util.readFromFileBuffered(new File(filename));
@@ -150,79 +154,73 @@ public class HomeController {
 			@RequestParam(value = "sSortDir_0") String sSortDir_0,
 			@RequestParam(value = "sEcho") String sEcho) throws IOException,
 			JSONException {
+
 		String res = "";
 		Sort sort = null;
+		Page<PlayerDoc> page = null;
 		List<PlayerDoc> list = null;
-		
-		DataTableJsonObject e = new DataTableJsonObject();
-	
-		e.setSEcho(sEcho);
-		
+		DataTableJsonObjectPage p = new DataTableJsonObjectPage();
+
 		int start = new Integer(iDisplayStart);
-		int pageRows = new Integer(new Integer(iDisplayLength)+new Integer(iDisplayStart));
+		int pageRows = new Integer(iDisplayLength) + start ;
 		int size = 0;
-		
-		
 		if (iSortCol_0.equals("0") && sSortDir_0.equals("asc")) {
 			sort = new Sort(Sort.Direction.ASC, "name");
-		}
-		else if (iSortCol_0.equals("0") && sSortDir_0.equals("desc")){
+		} else if (iSortCol_0.equals("0") && sSortDir_0.equals("desc")) {
 			sort = new Sort(Sort.Direction.DESC, "name");
 		}
-		if (sSearch != null && !sSearch.equals("")) {
-			if (pageRows != -1) {
-				list = playerRepository.findByNameRegex(sSearch, sort);
-				size = list.size();
-				if (pageRows > size ) {
-					list = list.subList(start, size);	
-				}
-				else {
-					list = list.subList(start, pageRows);	
-				}
+
+		if (pageRows == -1 && sSearch == null) {
+			System.out.println("1");
+			list = playerRepository.findAll(sort);
+			size = list.size();
+			DataTableJsonObjectList returnAll = new DataTableJsonObjectList();
+			returnAll.setSEcho(sEcho);
+			returnAll.setAaData(list);
+			returnAll.setITotalRecords(size);
+			returnAll.setITotalDisplayRecords(size);
+			//return all rows
+			return returnAll.toString();
+		} else if (sSearch != null && !sSearch.equals("") && pageRows == -1) {
+			System.out.println("2");
+			size = (int) playerRepository.count(sSearch);
+			page = playerRepository.findByNameRegex(sSearch, new PageRequest(
+					start, size, sort));
+		} else if (sSearch != null && !sSearch.equals("") && pageRows != -1) {
+			System.out.println("3");
+			size = (int) playerRepository.count(sSearch);
+			if (size < pageRows + start) {
+				list = playerRepository.findByNameRegex(sSearch, sort).subList(start, size);
+				System.out.println("31");
+				DataTableJsonObjectList returnAll = new DataTableJsonObjectList();
+				returnAll.setSEcho(sEcho);
+				returnAll.setAaData(list);
+				returnAll.setITotalRecords(size);
+				returnAll.setITotalDisplayRecords(size);
+				return returnAll.toString();
 			}
 			else {
-				list = playerRepository.findByNameRegex(sSearch, sort);
-				size = list.size();
+				System.out.println("32");
+				list = playerRepository.findByNameRegex(sSearch, sort).subList(start, pageRows);
+				DataTableJsonObjectList returnAll = new DataTableJsonObjectList();
+				returnAll.setSEcho(sEcho);
+				returnAll.setAaData(list);
+				returnAll.setITotalRecords(size);
+				returnAll.setITotalDisplayRecords(size);
+				return returnAll.toString();
 			}
-			//page rows = 20
-			//size = 19
-			//print 11 - 19
-				
-//			Query query2 = new Query(Criteria.where("tweet").elemMatch(Criteria.where("tweetId").is(sSearch)));
-//			query2.fields().position("tweet", 1);
-//			Query query = new Query();
-//			Query q =  query.addCriteria(Criteria.where("name").regex(sSearch,"i"));
-		}
-		else {
+			
+		} else {
+			System.out.println("");
 			size = (int) playerRepository.count();
-			if (pageRows == -1) {
-				long tStart = System.currentTimeMillis();
-				list = playerRepository.findAll(sort);
-				long tEnd = System.currentTimeMillis();
-				long tDelta = tEnd - tStart;
-				double elapsedSeconds = tDelta / 1000.0;
-				System.out.println("full no filter =   " + elapsedSeconds);
-			}
-			else if ((int) size > pageRows) {
-				long tStart = System.currentTimeMillis();
-				list = playerRepository.findAll(sort).subList(start, pageRows);
-//				list = mongoTemplate.findAll(PlayerDoc.class);
-				long tEnd = System.currentTimeMillis();
-				long tDelta = tEnd - tStart;
-				double elapsedSeconds = tDelta / 1000.0;
-				System.out.println("only one page no filter =   " + elapsedSeconds);
-			}
-			else {
-				list = playerRepository.findAll(sort);
-			}
+			page = playerRepository.findAll(new PageRequest(start, pageRows-start,
+					sort));
 		}
-		
-		e.setAaData(list);
-		e.setITotalRecords(size);
-		e.setITotalDisplayRecords(size);
-		res = e.toString();
-		
+		p.setSEcho(sEcho);
+		p.setAaData(page);
+		p.setITotalRecords(size);
+		p.setITotalDisplayRecords(size);
+		res = p.toString();
 		return res;
 	}
-
 }

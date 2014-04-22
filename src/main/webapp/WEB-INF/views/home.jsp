@@ -35,9 +35,8 @@ a:hover,a:active {
 <body>
 	<div id="main_menu">
 		<ul>
-			<li><a href="#" id="laod_players"> admin home only</a></li>
-			<li><a href="<c:url value="/home2" />"> admin home only can
-					see "Hi admin"</a></li>
+			<li><a href="#" id="load_players"> admin home only</a></li>
+			<li><a href="#" id="load_home2"> Players </a></li>
 			<li><a href="<c:url value="/admin/adminList" />"> admin
 					list, use can't see it</a></li>
 			<li><a href="<c:url value="/user/userList" />"> user list</a></li>
@@ -57,21 +56,23 @@ a:hover,a:active {
 	src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
 <script type="text/javascript" charset="utf8"
 	src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.js"></script>
-	<script type="text/javascript" charset="utf8"
-		src="https://datatables.net/release-datatables/extras/ColReorder/media/js/ColReorder.js"></script>
+<script type="text/javascript" charset="utf8"
+	src="https://datatables.net/release-datatables/extras/ColReorder/media/js/ColReorder.js"></script>
 
-	<script type="text/javascript" charset="utf8"
-		src="https://editor.datatables.net/release/DataTables/extras/TableTools/media/js/TableTools.js"></script>
+<script type="text/javascript" charset="utf8"
+	src="https://editor.datatables.net/release/DataTables/extras/TableTools/media/js/TableTools.js"></script>
 
-	<script type="text/javascript" charset="utf8"
-		src="https://datatables.net/release-datatables/extras/TableTools/media/js/ZeroClipboard.js"></script>
+<script type="text/javascript" charset="utf8"
+	src="https://datatables.net/release-datatables/extras/TableTools/media/js/ZeroClipboard.js"></script>
 
 <script type="text/javascript">
-	$(document).ready(function() {
-		$("#laod_players").on("click", function() {
-			var html = 'home1';
-			$('#content').load(html);
-		});
+	$("#load_players").on("click", function() {
+		var html = 'home1';
+		$('#content').load(html);
+	});
+	$("#load_home2").on("click", function() {
+		var html = 'home2';
+		$('#content').load(html);
 	});
 </script>
 </html>
