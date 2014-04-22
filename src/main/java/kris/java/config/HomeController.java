@@ -13,9 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Field;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -162,7 +159,7 @@ public class HomeController {
 		DataTableJsonObjectPage p = new DataTableJsonObjectPage();
 
 		int start = new Integer(iDisplayStart);
-		int pageRows = new Integer(iDisplayLength) + start ;
+		int pageRows = new Integer(iDisplayLength) + start;
 		int size = 0;
 		if (iSortCol_0.equals("0") && sSortDir_0.equals("asc")) {
 			sort = new Sort(Sort.Direction.ASC, "name");
@@ -179,7 +176,7 @@ public class HomeController {
 			returnAll.setAaData(list);
 			returnAll.setITotalRecords(size);
 			returnAll.setITotalDisplayRecords(size);
-			//return all rows
+			// return all rows
 			return returnAll.toString();
 		} else if (sSearch != null && !sSearch.equals("") && pageRows == -1) {
 			System.out.println("2");
@@ -190,7 +187,8 @@ public class HomeController {
 			System.out.println("3");
 			size = (int) playerRepository.count(sSearch);
 			if (size < pageRows + start) {
-				list = playerRepository.findByNameRegex(sSearch, sort).subList(start, size);
+				list = playerRepository.findByNameRegex(sSearch, sort).subList(
+						start, size);
 				System.out.println("31");
 				DataTableJsonObjectList returnAll = new DataTableJsonObjectList();
 				returnAll.setSEcho(sEcho);
@@ -198,10 +196,10 @@ public class HomeController {
 				returnAll.setITotalRecords(size);
 				returnAll.setITotalDisplayRecords(size);
 				return returnAll.toString();
-			}
-			else {
+			} else {
 				System.out.println("32");
-				list = playerRepository.findByNameRegex(sSearch, sort).subList(start, pageRows);
+				list = playerRepository.findByNameRegex(sSearch, sort).subList(
+						start, pageRows);
 				DataTableJsonObjectList returnAll = new DataTableJsonObjectList();
 				returnAll.setSEcho(sEcho);
 				returnAll.setAaData(list);
@@ -209,12 +207,16 @@ public class HomeController {
 				returnAll.setITotalDisplayRecords(size);
 				return returnAll.toString();
 			}
-			
+
 		} else {
-			System.out.println("");
+			System.out.println("4");
 			size = (int) playerRepository.count();
-			page = playerRepository.findAll(new PageRequest(start, pageRows-start,
-					sort));
+			System.out.println("start = " + start);
+			System.out.println("size= " + size);
+			System.out.println("pageRows = " + new Integer(iDisplayLength));
+			page = playerRepository.findAll(new PageRequest(start, new Integer(
+					iDisplayLength), sort));
+
 		}
 		p.setSEcho(sEcho);
 		p.setAaData(page);
