@@ -3,10 +3,8 @@
 <body>
 	<h1>Players</h1>
 	${fileHeader}
-	${players}
-	
- 
- 
- 
+	<br><br>
+	 ${players}
+
 </body>
 </html>

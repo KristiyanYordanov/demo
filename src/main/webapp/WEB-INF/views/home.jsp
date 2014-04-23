@@ -290,13 +290,12 @@ body {
 </style>
 </head>
 <body>
-
 	<div id='cssmenu'>
 		<ul>
-			<li><a href='#' id="load_home2"><span>Players</span></a></li>
+			<li><a href='#' id="load_players"><span>Players</span></a></li>
 			<li class='has-sub'><a href='#'><span>Import</span></a>
 				<ul>
-					<li><a href='#'><span>CSV Import</span></a></li>
+					<li><a href='#' id="load_csv"><span>CSV Import</span></a></li>
 					<li class='last'><a href='#'><span>Automated Import</span></a></li>
 				</ul></li>
 			<li class='has-sub'><a href='#'><span>Criterias</span></a>
@@ -324,15 +323,16 @@ body {
 	src="https://datatables.net/release-datatables/extras/TableTools/media/js/ZeroClipboard.js"></script>
 
 <script type="text/javascript">
+
 	$(document).ready(function() {
 		var html = 'home2';
 		$('#content').load(html);
 	});
-	$("#load_players").on("click", function() {
-		var html = 'home1';
+	$("#load_csv").on("click", function() {
+		var html = 'players/user/player';
 		$('#content').load(html);
 	});
-	$("#load_home2").on("click", function() {
+	$("#load_players").on("click", function() {
 		var html = 'home2';
 		$('#content').load(html);
 	});

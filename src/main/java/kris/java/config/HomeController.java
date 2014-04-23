@@ -102,6 +102,7 @@ public class HomeController {
 	public String userList(ModelMap model) {
 		return "user/userList";
 	}
+	
 
 	@RequestMapping(value = "/error500", method = RequestMethod.GET)
 	public String error500(ModelMap model) {
