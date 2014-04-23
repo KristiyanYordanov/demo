@@ -8,7 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
-import com.krissoft.saa.bean.PlayerDoc;
+import com.krissoft.saa.config.PlayerDoc;
 
 public interface PlayerRepository extends MongoRepository<PlayerDoc, String> {
 	

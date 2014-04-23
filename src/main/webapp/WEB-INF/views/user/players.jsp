@@ -87,10 +87,10 @@ border-bottom-right-radius: 5px;
 	<script type="text/javascript" charset="utf8"
 		src="https://datatables.net/release-datatables/extras/TableTools/media/js/ZeroClipboard.js"></script>
 	<script>
-		var table = $('#example').dataTable({
+		var table = $('#example').dataTable({	
 			"bProcessing" : true,
 			"bServerSide" : true,
-			"sAjaxSource" : "/spring-jpa/getjsonexample",
+			"sAjaxSource" : "/spring-jpa/players/playersjson",
 			"aaSorting" : [ [ 0, "asc" ] ],
 			"sDom" : 'r<"top"ilpfT>t<"bottom"ilpT>r<"clear">',
 			 "sPaginationType": "full_numbers",

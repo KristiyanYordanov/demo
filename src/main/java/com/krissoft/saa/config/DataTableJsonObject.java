@@ -3,7 +3,6 @@ package com.krissoft.saa.config;
 import org.springframework.data.domain.Page;
 
 import com.google.gson.annotations.Expose;
-import com.krissoft.saa.bean.PlayerDoc;
 
 public class DataTableJsonObject {
 

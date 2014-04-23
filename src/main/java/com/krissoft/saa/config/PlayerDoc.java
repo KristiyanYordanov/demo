@@ -1,4 +1,4 @@
-package com.krissoft.saa.bean;
+package com.krissoft.saa.config;
 
 import java.io.Serializable;
 

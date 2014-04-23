@@ -325,15 +325,15 @@ body {
 <script type="text/javascript">
 
 	$(document).ready(function() {
-		var html = 'home2';
+		var html = 'players/user/players';
 		$('#content').load(html);
 	});
 	$("#load_csv").on("click", function() {
-		var html = 'players/user/player';
+		var html = 'players/user/csv';
 		$('#content').load(html);
 	});
 	$("#load_players").on("click", function() {
-		var html = 'home2';
+		var html = 'players/user/players';
 		$('#content').load(html);
 	});
 </script>
