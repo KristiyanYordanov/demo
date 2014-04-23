@@ -1,4 +1,4 @@
-package kris.java.config;
+package com.krissoft.saa.config;
 
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.map.annotate.JsonSerialize;

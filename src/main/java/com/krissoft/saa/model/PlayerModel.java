@@ -1,16 +1,17 @@
-package kris.java.config;
+package com.krissoft.saa.model;
 
 import java.io.FileReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import kris.java.persistence.model.Player;
-import kris.java.persistence.model.PlayerString;
-
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
+
+import com.krissoft.saa.bean.Player;
+import com.krissoft.saa.bean.PlayerDoc;
+import com.krissoft.saa.bean.PlayerString;
 
 public class PlayerModel {
 

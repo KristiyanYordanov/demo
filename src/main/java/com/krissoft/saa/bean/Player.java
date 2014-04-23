@@ -1,21 +1,21 @@
-package kris.java.config;
+package com.krissoft.saa.bean;
 
 import java.io.Serializable;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-@Document(collection = "playerdoc")
-public class PlayerDoc extends BaseMongoObject implements Serializable {
+@Entity
+public class Player implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	public PlayerDoc(String name, String location, String pos, int stars,
+	public Player(long id, String name, String location, String pos, int stars,
 			String height, Double fortyDash, int weight, int gradYear,
 			Double rating) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.location = location;
 		this.pos = pos;
@@ -27,27 +27,41 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 		this.rating = rating;
 	}
 
-	public PlayerDoc() {
+	public Player() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public PlayerDoc(String name, String location) {
-		super();
-		this.name = name;
-		this.location = location;
-		// TODO Auto-generated constructor stub
-	}
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
 
+	@Column(nullable = true)
 	private String name;
+	@Column(nullable = true)
 	private String location;
+	@Column(nullable = true)
 	private String pos;
+	@Column(nullable = true)
 	private int stars;
+	@Column(nullable = true)
 	private String height;
+	@Column(nullable = true)
 	private Double fortyDash;
+	@Column(nullable = true)
 	private int weight;
+	@Column(nullable = true)
 	private int gradYear;
+	@Column(nullable = true)
 	private Double rating;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -131,19 +145,10 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 
 	@Override
 	public String toString() {
-		return "[\"" + (name != null ? name + "\",\"" : "\",\"")
-
-		+ (location != null ? location + "\", \"" : "\",\"")
-				+ (pos != null ? pos + "\",\" " : "\"")
-				+ (height != null ? height + ", \"" : "\",\"")
-				+ (fortyDash != null ? fortyDash + "\", \"" : "\",\"")
-				+ (weight != 0 ? +weight + "\", \"" : "\",\"")
-				+ (stars != 0 ? +stars + "\", \"" : "\",\"")
-				+ (rating != null ? rating + "\"" : "\"\"") + "]";
+		return "Player [id=" + id + ", name=" + name + ", location=" + location
+				+ ", pos=" + pos + ", stars=" + stars + ", height=" + height
+				+ ", fortyDash=" + fortyDash + ", weight=" + weight
+				+ ", gradYear=" + gradYear + ", rating=" + rating + "]";
 	}
 
-	public static void main(String[] argc) {
-		PlayerDoc d = new PlayerDoc("Ivan", "Pesho");
-		System.out.println(d);
-	}
 }

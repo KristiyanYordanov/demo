@@ -1,4 +1,4 @@
-package kris.java.config;
+package com.krissoft.saa.config;
 
 import java.io.IOException;
 

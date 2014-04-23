@@ -1,4 +1,4 @@
-package kris.java.config;
+package com.krissoft.saa.controller;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -10,8 +10,6 @@ import java.io.Reader;
 import java.util.Arrays;
 import java.util.List;
 
-import kris.java.persistence.model.Player;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,6 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
+
+import com.krissoft.saa.bean.Player;
+import com.krissoft.saa.bean.PlayerDoc;
+import com.krissoft.saa.model.PlayerModel;
+import com.krissoft.saa.repository.PlayerRepository;
 
 @Controller
 @RequestMapping("players")

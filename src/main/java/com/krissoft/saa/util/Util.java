@@ -1,4 +1,4 @@
-package kris.java.config;
+package com.krissoft.saa.util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

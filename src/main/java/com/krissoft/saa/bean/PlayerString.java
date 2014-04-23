@@ -1,4 +1,4 @@
-package kris.java.persistence.model;
+package com.krissoft.saa.bean;
 
 public class PlayerString {
 	//"name","stars","pos","location","height","weight","fortyDash","rating","gradYear"

@@ -1,21 +1,23 @@
-package kris.java.persistence.model;
+package com.krissoft.saa.bean;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-public class Player implements Serializable {
+import com.krissoft.saa.config.BaseMongoObject;
 
-	public Player(long id, String name, String location, String pos, int stars,
+@Document(collection = "playerdoc")
+public class PlayerDoc extends BaseMongoObject implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public PlayerDoc(String name, String location, String pos, int stars,
 			String height, Double fortyDash, int weight, int gradYear,
 			Double rating) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.location = location;
 		this.pos = pos;
@@ -27,41 +29,27 @@ public class Player implements Serializable {
 		this.rating = rating;
 	}
 
-	public Player() {
+	public PlayerDoc() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	public PlayerDoc(String name, String location) {
+		super();
+		this.name = name;
+		this.location = location;
+		// TODO Auto-generated constructor stub
+	}
 
-	@Column(nullable = true)
 	private String name;
-	@Column(nullable = true)
 	private String location;
-	@Column(nullable = true)
 	private String pos;
-	@Column(nullable = true)
 	private int stars;
-	@Column(nullable = true)
 	private String height;
-	@Column(nullable = true)
 	private Double fortyDash;
-	@Column(nullable = true)
 	private int weight;
-	@Column(nullable = true)
 	private int gradYear;
-	@Column(nullable = true)
 	private Double rating;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
@@ -145,10 +133,19 @@ public class Player implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Player [id=" + id + ", name=" + name + ", location=" + location
-				+ ", pos=" + pos + ", stars=" + stars + ", height=" + height
-				+ ", fortyDash=" + fortyDash + ", weight=" + weight
-				+ ", gradYear=" + gradYear + ", rating=" + rating + "]";
+		return "[\"" + (name != null ? name + "\",\"" : "\",\"")
+
+		+ (location != null ? location + "\", \"" : "\",\"")
+				+ (pos != null ? pos + "\",\" " : "\"")
+				+ (height != null ? height + ", \"" : "\",\"")
+				+ (fortyDash != null ? fortyDash + "\", \"" : "\",\"")
+				+ (weight != 0 ? +weight + "\", \"" : "\",\"")
+				+ (stars != 0 ? +stars + "\", \"" : "\",\"")
+				+ (rating != null ? rating + "\"" : "\"\"") + "]";
 	}
 
+	public static void main(String[] argc) {
+		PlayerDoc d = new PlayerDoc("Ivan", "Pesho");
+		System.out.println(d);
+	}
 }

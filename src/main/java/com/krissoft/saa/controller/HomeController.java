@@ -1,4 +1,4 @@
-package kris.java.config;
+package com.krissoft.saa.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,9 +23,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-/**
- * Handles requests for the application home page.
- */
+import com.krissoft.saa.bean.PlayerDoc;
+import com.krissoft.saa.config.DataTableJsonObject;
+import com.krissoft.saa.repository.PlayerRepository;
+import com.krissoft.saa.util.Util;
+
 @Controller
 public class HomeController {
 
