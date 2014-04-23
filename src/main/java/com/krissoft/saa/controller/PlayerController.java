@@ -1,19 +1,16 @@
 package com.krissoft.saa.controller;
 
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-
+import org.slf4j.Logger;
 import org.json.JSONException;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,10 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.view.RedirectView;
 
-import com.krissoft.saa.bean.Player;
 import com.krissoft.saa.config.DataTableJsonObject;
 import com.krissoft.saa.config.PlayerDoc;
 import com.krissoft.saa.model.PlayerModel;
@@ -38,6 +32,8 @@ import com.krissoft.saa.repository.PlayerRepository;
 @RequestMapping("players")
 public class PlayerController {
 
+	 private static final Logger logger = LoggerFactory.getLogger(PlayerController.class);
+	
 	@Autowired
 	PlayerRepository playerRepository;
 
@@ -121,30 +117,40 @@ public class PlayerController {
 		return "user/csv";
 	}
 
-	@RequestMapping(value = "/user/import", method = RequestMethod.POST)
-	public View uploadPlayer(@RequestParam("myFile") final MultipartFile file) {
-		if (!file.isEmpty()) {
-			try {
-				byte[] bytes = file.getBytes();
-				BufferedOutputStream stream = new BufferedOutputStream(
-						new FileOutputStream(new File("test" + "-uploaded")));
-				stream.write(bytes);
-				stream.close();
-				Reader reader = new InputStreamReader(new ByteArrayInputStream(
-						bytes));
-				BufferedReader bf = new BufferedReader(reader);
-				String line = bf.readLine();
-				while (line != null) {
-					String[] players = line.split(",");
-					Player player = new Player();
-					line = bf.readLine();
-				}
-				return new RedirectView("/raviser/Player");
-			} catch (Exception e) {
-				return new RedirectView("/raviser/Player");
-			}
-		} else {
-			return new RedirectView("/raviser/Player");
-		}
+	@RequestMapping(value = "/import", method = RequestMethod.POST)
+	public void uploadPlayer(@RequestParam("file") final MultipartFile file) {
+		String name = "file";
+		  if (!file.isEmpty()) {
+	            try {
+	                byte[] bytes = file.getBytes();
+	 
+	                // Creating the directory to store file
+	                String rootPath = System.getProperty("catalina.home");
+	                File dir = new File(rootPath + File.separator + "tmpFiles");
+	                if (!dir.exists())
+	                    dir.mkdirs();
+	 
+	                // Create the file on server
+	                File serverFile = new File(dir.getAbsolutePath()
+	                        + File.separator + name);
+	                BufferedOutputStream stream = new BufferedOutputStream(
+	                        new FileOutputStream(serverFile));
+	                stream.write(bytes);
+	                stream.close();
+	                System.out.println("Server File Location="
+	                        + serverFile.getAbsolutePath());
+	 
+	                logger.info("Server File Location="
+	                        + serverFile.getAbsolutePath());
+	                System.out.println("You successfully uploaded file=" + name);
+	            } catch (Exception e) {
+
+	                System.out.println("You failed to upload " + name + " => " + e.getMessage());
+	            }
+	        } else {
+
+                System.out.println( "You failed to upload " + name
+	                    + " because the file was empty.");
+	        }
 	}
 }
