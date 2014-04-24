@@ -1,12 +1,1 @@
-{ 
-    "iTotalRecords": 2,
-    "iTotalDisplayRecords": 10,
-    "sEcho":1,
-    "aaData": [
-        [
-         "Sitepoint",
-          "http://sitepoint.com"
-         ],
-        ["Flippa", "http://flippa.com"]
-    ]
-}
+[["J'Terius Brown","Lithonia, GA; Miller Grove", "LB;"," 6'1", "4.7", "225", "2", "5.2"], ["Ryan Callen","Hinsdale, IL; Hinsdale Central", "OL;"," 6'4", "0.0", "263", "3", "5.5"], ["Brandyn Cook","Cincinnati, OH; St. Xavier", "OL;"," 6'2", "0.0", "290", "3", "5.6"], ["Nick Custer","Cincinnati, OH; Elder", "OL;"," 6'4", "0.0", "275", "2", "5.2"], ["Orlando David","Hollywood, FL; Chaminade Madonna", "TE;"," 6'3", "0.0", "230", "3", "5.6"], ["Terry Davis","Cincinnati, OH; Wyoming", "OL;"," 6'4", "0.0", "270", "2", "5.4"], ["Josh Dooley","Mason, OH; Mason", "LB;"," 6'0", "4.45", "205", "2", "5.2"], ["Austin Gearing","Franklin, OH; Bishop Fenwick", "QB;"," 6'5", "4.7", "205", "2", "5.2"], ["Nate Gerbus","Cincinnati, OH; St. Xavier", "LB;"," 6'1", "4.7", "220", "2", "5.4"]], 

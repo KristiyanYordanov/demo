@@ -18,66 +18,110 @@
 
 	<button value="Submit" onclick="uploadFormData()">Upload</button>
 	<i>Using FormData Object</i>
-	
-	<div id="table">
-		<table cellpadding="0" cellspacing="0" border="0" class="display"
-			id="example" width="100%" height="70%">
-			<thead>
-			</thead>
-			<tbody>
-				<tr>
-				</tr>
-			</tbody>
-			<tfoot>
-			</tfoot>
-		</table>
-	</div>
+
+	<div id="demo"></div>
 </body>
 <script type="text/javascript" charset="utf8"
 	src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
 <script type="text/javascript" charset="utf8"
 	src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.js"></script>
 <script type="text/javascript">
-	//using FormData() object
 	function uploadFormData() {
 		$('#result').html('');
-
 		var oMyForm = new FormData();
 		oMyForm.append("file", file2.files[0]);
+		var aryColTableChecked = new Array();
 
-		$.ajax({
-			url : 'http://localhost:8080/spring-jpa/cont/upload',
-			data : oMyForm,
-			dataType : 'text',
-			processData : false,
-			contentType : false,
-			type : 'POST',
-			success : function(data) {
-				//create JSON array for aoColumnDefs
-				var aryColTableChecked = [ "engine", "browser" ];
-				var aryJSONColTable = [];
-				for (var i = 0; i < aryColTableChecked.length; i++) {
-					aryJSONColTable.push({
-						"sTitle" : aryColTableChecked[i],
-						"aTargets" : [ i ]
-					});
-				}
+		$
+				.ajax({
+					url : 'http://localhost:8080/spring-jpa/players/upload',
+					data : oMyForm,
+					dataType : 'text',
+					processData : false,
+					contentType : false,
+					type : 'POST',
+					success : function(data) {
+						$('#demo')
+								.html(
+										'<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
+						$
+								.ajax({
+									url : "/spring-jpa/players/header",
+									type : 'GET',
+									success : function(data) {
+										var s = data.split(",");
+										for (var i = 0; i < s.length; i++) {
+											aryColTableChecked.push(s[i]);
+										}
+										var aryJSONColTable = [];
+										for (var i = 0; i < aryColTableChecked.length; i++) {
+											aryJSONColTable
+													.push({
+														"sTitle" : aryColTableChecked[i],
+														"aTargets" : [ i ]
+													});
+										}
+										var a = [
+										            /* Reduced data set */
+										            [ "Trident", "Internet Explorer 4.0", "Win 95+", 4, "X" ],
+										            [ "Trident", "Internet Explorer 5.0", "Win 95+", 5, "C" ],
+										            [ "Trident", "Internet Explorer 5.5", "Win 95+", 5.5, "A" ],
+										            [ "Trident", "Internet Explorer 6.0", "Win 98+", 6, "A" ],
+										            [ "Trident", "Internet Explorer 7.0", "Win XP SP2+", 7, "A" ],
+										            [ "Gecko", "Firefox 1.5", "Win 98+ / OSX.2+", 1.8, "A" ],
+										            [ "Gecko", "Firefox 2", "Win 98+ / OSX.2+", 1.8, "A" ],
+										            [ "Gecko", "Firefox 3", "Win 2k+ / OSX.3+", 1.9, "A" ],
+										            [ "Webkit", "Safari 1.2", "OSX.3", 125.5, "A" ],
+										            [ "Webkit", "Safari 1.3", "OSX.3", 312.8, "A" ],
+										            [ "Webkit", "Safari 2.0", "OSX.4+", 419.3, "A" ],
+										            [ "Webkit", "Safari 3.0", "OSX.4+", 522.1, "A" ]
+										        ];
+										var a = [
+										            /* Reduced data set */
+										            [ "Trident", "Internet Explorer 4.0", "Win 95+", 4, "X" ],
+										            [ "Trident", "Internet Explorer 5.0", "Win 95+", 5, "C" ],
+										            [ "Trident", "Internet Explorer 5.5", "Win 95+", 5.5, "A" ],
+										            [ "Trident", "Internet Explorer 6.0", "Win 98+", 6, "A" ],
+										            [ "Trident", "Internet Explorer 7.0", "Win XP SP2+", 7, "A" ],
+										            [ "Gecko", "Firefox 1.5", "Win 98+ / OSX.2+", 1.8, "A" ],
+										            [ "Gecko", "Firefox 2", "Win 98+ / OSX.2+", 1.8, "A" ],
+										            [ "Gecko", "Firefox 3", "Win 2k+ / OSX.3+", 1.9, "A" ],
+										            [ "Webkit", "Safari 1.2", "OSX.3", 125.5, "A" ],
+										            [ "Webkit", "Safari 1.3", "OSX.3", 312.8, "A" ],
+										            [ "Webkit", "Safari 2.0", "OSX.4+", 419.3, "A" ],
+										            [ "Webkit", "Safari 3.0", "OSX.4+", 522.1, "A" ]
+										        ];
+										oTable = $('#example')
+												.dataTable(
+														{
+															//"bProcessing" : true,
+															//"bServerSide" : true,
+															 "aaData": [
+															            /* Reduced data set */
+															            [ "Trident", "Internet Explorer 4.0", "Win 95+", 4, "X" ],
+															            [ "Trident", "Internet Explorer 5.0", "Win 95+", 5, "C" ],
+															            [ "Trident", "Internet Explorer 5.5", "Win 95+", 5.5, "A" ],
+															            [ "Trident", "Internet Explorer 6.0", "Win 98+", 6, "A" ],
+															            [ "Trident", "Internet Explorer 7.0", "Win XP SP2+", 7, "A" ],
+															            [ "Gecko", "Firefox 1.5", "Win 98+ / OSX.2+", 1.8, "A" ],
+															            [ "Gecko", "Firefox 2", "Win 98+ / OSX.2+", 1.8, "A" ],
+															            [ "Gecko", "Firefox 3", "Win 2k+ / OSX.3+", 1.9, "A" ],
+															            [ "Webkit", "Safari 1.2", "OSX.3", 125.5, "A" ],
+															            [ "Webkit", "Safari 1.3", "OSX.3", 312.8, "A" ],
+															            [ "Webkit", "Safari 2.0", "OSX.4+", 419.3, "A" ],
+															            [ "Webkit", "Safari 3.0", "OSX.4+", 522.1, "A" ]
+															        ],
+															"aoColumnDefs" : aryJSONColTable
+														});
+									},
+									error : function(data, status, er) {
+										alert("error: " + data + " status: "
+												+ status + " er:" + er);
+									}
+								});
 
-				oTable = $('#example').dataTable({
-					"aoColumnDefs" : aryJSONColTable,
-					"paging" : true,
-					"bProcessing" : true,
-					"bServerSide" : true,
-					"bLengthChange" : true,
-					"bFilter" : true,
-					"aaSorting" : [ [ 1, "desc" ] ],
-					"sScrollX" : "100%",
-					"bScrollCollapse" : true,
-					"bJQueryUI" : true,
-					"sAjaxSource" : "/spring-jpa/resources/deep.txt"
+					}
 				});
-			}
-		});
 	}
 </script>
 </html>

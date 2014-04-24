@@ -46,7 +46,7 @@ public class UploadController {
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public @ResponseBody
 	String upload(MultipartHttpServletRequest request,
-			HttpServletResponse response, ModelMap model) {
+			HttpServletResponse response) {
 
 		// 0. notice, we have used MultipartHttpServletRequest
 
@@ -63,7 +63,6 @@ public class UploadController {
 			ufile.type = mpf.getContentType();
 			ufile.name = mpf.getOriginalFilename();
 			
-			model.addAttribute("nom", "load");
 
 			System.out.println(new String(ufile.bytes, "UTF-8"));
 
