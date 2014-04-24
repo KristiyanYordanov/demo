@@ -8,8 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
+
 import org.json.JSONException;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,14 +33,15 @@ import com.krissoft.saa.repository.PlayerRepository;
 @RequestMapping("players")
 public class PlayerController {
 
-	 private static final Logger logger = LoggerFactory.getLogger(PlayerController.class);
-	
+	private static final Logger logger = LoggerFactory
+			.getLogger(PlayerController.class);
+
 	@Autowired
 	PlayerRepository playerRepository;
 
 	@RequestMapping(value = "/playersjson", method = RequestMethod.GET)
 	public @ResponseBody
-	String getShopInJSON122(HttpServletRequest request, ModelMap model,
+	String getPlayers(HttpServletRequest request,
 			@RequestParam(value = "iSortCol_0") String sortColumn,
 			@RequestParam(value = "sSearch") String sSearch,
 			@RequestParam(value = "sSortDir_0") String sSortDir,
@@ -67,17 +69,15 @@ public class PlayerController {
 			size = (int) playerRepository.count();
 			page = playerRepository.findAll(new PageRequest(start, size, sort));
 		} else if (sSearch != null && !sSearch.equals("") && pageRows == -1) {
-			System.out.println("2");
 			size = (int) playerRepository.count(sSearch);
 			page = playerRepository.findByNameRegex(sSearch, new PageRequest(
 					start, size, sort));
 		} else if (sSearch != null && !sSearch.equals("") && pageRows != -1) {
-			System.out.println("3");
 			size = (int) playerRepository.count(sSearch);
 			int pageNumber = start / pageRows;
-			page = playerRepository.findByNameRegex(sSearch, new PageRequest(pageNumber,pageRows, sort));
+			page = playerRepository.findByNameRegex(sSearch, new PageRequest(
+					pageNumber, pageRows, sort));
 		} else {
-			System.out.println("4");
 			size = (int) playerRepository.count();
 			int pageNumber1 = start / pageRows;
 			if (pageNumber1 == 0) {
@@ -92,65 +92,65 @@ public class PlayerController {
 		jsonObject.setITotalDisplayRecords(size);
 		return jsonObject.toString();
 	}
-	
+
 	@RequestMapping(value = "/user/players", method = RequestMethod.GET)
 	public String home2(ModelMap model) {
 		return "user/players";
 	}
-	
+
 	@RequestMapping(value = "/user/csv", method = RequestMethod.GET)
 	public String player(ModelMap model) throws Exception {
-		PlayerModel playerModel = new PlayerModel();
-		// List<Player> res = playerModel.readWithCsvBeanReader();
-		List<PlayerDoc> res = playerModel.readWithCsvBeanReaderForPlayerDoc();
-		System.out.println("res size= " + res.size());
-
-		for (PlayerDoc entity : res) {
-			// playerService.create(entity);
-			playerRepository.save(entity);
-		}
-
-		model.addAttribute("players", res);
-		model.addAttribute("fileHeader",
-				Arrays.toString(playerModel.getHeaders()));
-
 		return "user/csv";
+	}
+	
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	public String test(ModelMap model) throws Exception {
+		return "test";
 	}
 
 	@RequestMapping(value = "/import", method = RequestMethod.POST)
-	public void uploadPlayer(@RequestParam("file") final MultipartFile file) {
+	public void uploadPlayer(@RequestParam("file") final MultipartFile file,
+			ModelMap model) {
 		String name = "file";
-		  if (!file.isEmpty()) {
-	            try {
-	                byte[] bytes = file.getBytes();
-	 
-	                // Creating the directory to store file
-	                String rootPath = System.getProperty("catalina.home");
-	                File dir = new File(rootPath + File.separator + "tmpFiles");
-	                if (!dir.exists())
-	                    dir.mkdirs();
-	 
-	                // Create the file on server
-	                File serverFile = new File(dir.getAbsolutePath()
-	                        + File.separator + name);
-	                BufferedOutputStream stream = new BufferedOutputStream(
-	                        new FileOutputStream(serverFile));
-	                stream.write(bytes);
-	                stream.close();
-	                System.out.println("Server File Location="
-	                        + serverFile.getAbsolutePath());
-	 
-	                logger.info("Server File Location="
-	                        + serverFile.getAbsolutePath());
-	                System.out.println("You successfully uploaded file=" + name);
-	            } catch (Exception e) {
+		if (!file.isEmpty()) {
+			try {
+				byte[] bytes = file.getBytes();
 
-	                System.out.println("You failed to upload " + name + " => " + e.getMessage());
-	            }
-	        } else {
+				// Creating the directory to store file
+				String rootPath = System.getProperty("catalina.home");
+				File dir = new File(rootPath + File.separator + "tmpFiles");
+				if (!dir.exists()){
+					dir.mkdirs();
+				}
+					
+				// Create the file on server
+				File serverFile = new File(dir.getAbsolutePath()
+						+ File.separator + name);
+				BufferedOutputStream stream = new BufferedOutputStream(
+						new FileOutputStream(serverFile));
+				stream.write(bytes);
+				stream.close();
+				PlayerModel playerModel = new PlayerModel();
+				List<PlayerDoc> res = playerModel
+						.readWithCsvBeanReaderForPlayerDoc(serverFile
+								.getAbsolutePath());
+				for (PlayerDoc entity : res) {
+					playerRepository.save(entity);
+				}
+				model.addAttribute("players", res);
+				model.addAttribute("fileHeader",
+						Arrays.toString(playerModel.getHeaders()));
+				model.addAttribute("nom", "load");
 
-                System.out.println( "You failed to upload " + name
-	                    + " because the file was empty.");
-	        }
+				System.out.println("You successfully uploaded file=" + name);
+			} catch (Exception e) {
+				System.out.println("You failed to upload " + name + " => "
+						+ e.getMessage());
+			}
+		} else {
+
+			System.out.println("You failed to upload " + name
+					+ " because the file was empty.");
+		}
 	}
 }

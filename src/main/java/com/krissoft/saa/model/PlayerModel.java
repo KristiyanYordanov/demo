@@ -79,12 +79,12 @@ public class PlayerModel {
 		return res;
 	}
 
-	public List<PlayerDoc> readWithCsvBeanReaderForPlayerDoc() throws Exception {
+	public List<PlayerDoc> readWithCsvBeanReaderForPlayerDoc(String fileName) throws Exception {
 		List<PlayerDoc> res = new ArrayList<PlayerDoc>();
 		ICsvBeanReader beanReader = null;
 		try {
 			beanReader = new CsvBeanReader(new FileReader(
-					"H:\\rivals\\rivals_college 2012.csv"),
+					fileName),
 					CsvPreference.STANDARD_PREFERENCE);
 
 			// the header elements are used to map the values to the bean (names

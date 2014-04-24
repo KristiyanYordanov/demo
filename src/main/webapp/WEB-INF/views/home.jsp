@@ -296,7 +296,7 @@ body {
 			<li class='has-sub'><a href='#'><span>Import</span></a>
 				<ul>
 					<li><a href='#' id="load_csv"><span>CSV Import</span></a></li>
-					<li class='last'><a href='#'><span>Automated Import</span></a></li>
+					<li class='last' id="test"><a href='#'><span>Automated Import</span></a></li>
 				</ul></li>
 			<li class='has-sub'><a href='#'><span>Criterias</span></a>
 				<ul>
@@ -334,6 +334,10 @@ body {
 	});
 	$("#load_players").on("click", function() {
 		var html = 'players/user/players';
+		$('#content').load(html);
+	});
+	$("#test").on("click", function() {
+		var html = 'players/test';
 		$('#content').load(html);
 	});
 </script>

@@ -143,9 +143,4 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 				+ (stars != 0 ? +stars + "\", \"" : "\",\"")
 				+ (rating != null ? rating + "\"" : "\"\"") + "]";
 	}
-
-	public static void main(String[] argc) {
-		PlayerDoc d = new PlayerDoc("Ivan", "Pesho");
-		System.out.println(d);
-	}
 }
