@@ -113,9 +113,8 @@ public class PlayerModel {
 		return res;
 	}
 
-	public String readCsvToString(File File) throws Exception {
-		CsvListReader parser = new CsvListReader(new FileReader(
-				"H:\\rivals\\rivals_college 2013.csv"),
+	public String readCsvToString(File file) throws Exception {
+		CsvListReader parser = new CsvListReader(new FileReader(file),
 				CsvPreference.EXCEL_PREFERENCE);
 		List<String> values = parser.read();
 		StringBuffer sb = new StringBuffer();
@@ -125,7 +124,6 @@ public class PlayerModel {
 		}
 		String res = sb.toString();
 		res = res.substring(0, res.length() - 1);
-		System.out.println(res);
 		return res;
 	}
 
@@ -150,7 +148,7 @@ public class PlayerModel {
 		sb.append("[");
 		Iterator<String> it = as.iterator();
 		while (it.hasNext()) {
-			sb.append("\"" + it.next() + "\"");
+			sb.append(it.next());
 			if (it.hasNext() == true) {
 				sb.append(",");
 			}

@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.krissoft.saa.config.DataTableJsonObject;
-import com.krissoft.saa.config.DataTableJsonObjectString;
 import com.krissoft.saa.config.PlayerDoc;
 import com.krissoft.saa.model.PlayerModel;
 import com.krissoft.saa.repository.PlayerRepository;
@@ -38,8 +37,6 @@ public class PlayerController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(PlayerController.class);
 
-	String json;
-	String[] headers;
 	@Autowired
 	PlayerRepository playerRepository;
 	UploadedFile ufile;
@@ -107,21 +104,6 @@ public class PlayerController {
 		return "user/players";
 	}
 
-	@RequestMapping(value = "/header", method = RequestMethod.GET)
-	public @ResponseBody
-	String header(ModelMap model) {
-		String s = "\"name\",\"stars\",\"pos\",\"county/city/state\",\"height\",\"weight\",\"fortyDash\",\"rating\",\"gradYear\"";
-		headers = s.split(",");
-		System.out.println("header = " + toJsArray(headers));
-		return toJsArray(headers);
-	}
-
-	@RequestMapping(value = "/json", method = RequestMethod.GET)
-	public @ResponseBody
-	String json(ModelMap model) {
-		System.out.println("json = "  + json);
-		return json;
-	}
 
 	@RequestMapping(value = "/user/csv", method = RequestMethod.GET)
 	public String player(ModelMap model) throws Exception {
@@ -137,57 +119,41 @@ public class PlayerController {
 	public @ResponseBody
 	String upload(MultipartHttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-
-		// 0. notice, we have used MultipartHttpServletRequest
-
-		// 1. get the files from the request object
 		Iterator<String> itr = request.getFileNames();
-
+		String res = "";
 		MultipartFile mpf = request.getFile(itr.next());
-		System.out.println(mpf.getOriginalFilename() + " uploaded!");
-		DataTableJsonObjectString jsonObject = null;
-		try {
-			// just temporary save file info into ufile
-			ufile.length = mpf.getBytes().length;
-			ufile.bytes = mpf.getBytes();
-			ufile.type = mpf.getContentType();
-			ufile.name = mpf.getOriginalFilename();
-			// System.out.println(new String(ufile.bytes, "UTF-8"));
+		if(!mpf.isEmpty()) {
+			System.out.println(mpf.getOriginalFilename() + " uploaded!");
+			try {
+				// just temporary save file info into ufile
+				ufile.length = mpf.getBytes().length;
+				ufile.bytes = mpf.getBytes();
+				ufile.type = mpf.getContentType();
+				ufile.name = mpf.getOriginalFilename();
 
-			File file = new File(System.getProperty("java.io.tmpdir")
-					+ System.getProperty("file.separator")
-					+ mpf.getOriginalFilename());
+				File file = new File(System.getProperty("java.io.tmpdir")
+						+ System.getProperty("file.separator")
+						+ mpf.getOriginalFilename());
 
-			File upLoadedfile = new File(System.getProperty("java.io.tmpdir")
-					+ System.getProperty("file.separator")
-					+ mpf.getOriginalFilename());
-			System.out.println(upLoadedfile.getAbsolutePath());
+				File upLoadedfile = new File(System.getProperty("java.io.tmpdir")
+						+ System.getProperty("file.separator")
+						+ mpf.getOriginalFilename());
+				System.out.println(upLoadedfile.getAbsolutePath());
 
-			upLoadedfile.createNewFile();
-			FileOutputStream fos = new FileOutputStream(upLoadedfile);
-			fos.write(ufile.bytes);
-			fos.close(); // setting the value of fileUploaded variable
+				upLoadedfile.createNewFile();
+				FileOutputStream fos = new FileOutputStream(upLoadedfile);
+				fos.write(ufile.bytes);
+				fos.close(); // setting the value of fileUploaded variable
 
-			PlayerModel playerModel = new PlayerModel();
-			String res = playerModel
-					.readCsvToString(file);
-
-			headers = playerModel.getHeaders();
-			
-			jsonObject = new DataTableJsonObjectString();
-			jsonObject.setSEcho("1");
-			jsonObject.setAaData(res);
-			jsonObject.setITotalRecords(10);
-			jsonObject.setITotalDisplayRecords(10);
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				PlayerModel playerModel = new PlayerModel();
+				res = playerModel
+						.readCsvToString(file);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		String s = jsonObject.toString();
-		System.out.println(s);
-		json = s;
-		return "";
+		return res;
 	}
 
 	public static String toJsArray(String[] arr) {

@@ -23,14 +23,12 @@ public class RestController {
  
   UploadedFile ufile;
   public RestController(){
-    System.out.println("init RestController");
     ufile = new UploadedFile();
   }
  
   @RequestMapping(value = "/get/{value}", method = RequestMethod.GET)
   public void get(HttpServletResponse response,@PathVariable String value){
         try {
- 
             response.setContentType(ufile.type);
             response.setContentLength(ufile.length);
             FileCopyUtils.copy(ufile.bytes, response.getOutputStream());
