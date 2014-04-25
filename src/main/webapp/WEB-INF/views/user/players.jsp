@@ -38,7 +38,6 @@ border-bottom-right-radius: 5px;
 }
 </style>
 <body>
-	<h3>Username : ${username}</h3>
 	<div id="demo" style="height: 70%;">
 		<table cellpadding="0" cellspacing="0" border="0" class="display"
 			id="example" width="100%" height="70%">

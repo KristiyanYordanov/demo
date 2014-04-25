@@ -8,16 +8,20 @@
 </head>
 <body>
 	<!--  Form 2 -->
-	<i>Uploading File With Ajax</i>
 	<br />
 	<form id="form2" method="post" action="/spring-jpa/cont/upload"
 		enctype="multipart/form-data">
 		<!-- File input -->
 		<input name="file2" id="file2" type="file" /><br />
 	</form>
-
 	<button value="Submit" onclick="uploadFormData()">Upload</button>
-	<i>Using FormData Object</i>
+	
+	<table width="100%">
+		<tr id="table">
+		</tr>
+	</table>
+	
+	<button value="Submit" onclick="uploadAndSave()">Import</button>
 
 	<div id="demo"></div>
 </body>
@@ -27,6 +31,12 @@
 	src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.js"></script>
 <script type="text/javascript">
 	function uploadFormData() {
+		//remove drop down list before uploading new csv file		
+		var myNode = document.getElementById("table");
+		while (myNode.firstChild) {
+		    myNode.removeChild(myNode.firstChild);
+		}
+		  
 		var oMyForm = new FormData();
 		oMyForm.append("file", file2.files[0]);
 		var aryColTableChecked = new Array();
@@ -66,6 +76,22 @@
 					"bDeferRender": true,
 					"aoColumnDefs" : aryJSONColTable
 				});
+				
+				
+				
+				//add drop down list after table is loaded - choose new headers
+				var ni = document.getElementById('table');
+				for (var i = 0; i < h.length; i++) {
+					 var newdiv = document.createElement('td');
+					 var divIdName = "header"+i;
+					 newdiv.setAttribute('id',divIdName);
+					 newdiv.innerHTML = '<select id="header"><option value="None">-- Select --</option><option value="China">China</option><option value="United State">United State</option></select>';
+					 ni.appendChild(newdiv);
+				}
+				 //var newdiv = document.createElement('<select id="header"><option value="None">-- Select --</option><option value="China">China</option><option value="United State">United State</option></select>');
+				
+				 
+
 			},
 			error : function(data, status, er) {
 				alert("error: " + data + " status: "+ status + " er:" + er);
