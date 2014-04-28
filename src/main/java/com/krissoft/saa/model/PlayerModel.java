@@ -82,7 +82,7 @@ public class PlayerModel {
 		return res;
 	}
 
-	public List<PlayerDoc> readWithCsvBeanReaderForPlayerDoc(File File)
+	public List<PlayerDoc> readWithCsvBeanReaderForPlayerDoc(File File, String[] header)
 			throws Exception {
 		List<PlayerDoc> res = new ArrayList<PlayerDoc>();
 		ICsvBeanReader beanReader = null;
@@ -92,7 +92,7 @@ public class PlayerModel {
 
 			// the header elements are used to map the values to the bean (names
 			// must match)
-			final String[] header = beanReader.getHeader(true);
+			//final String[] header = beanReader.getHeader(true);
 			setHeaders(header);
 			// TODO change header with custom header form view
 

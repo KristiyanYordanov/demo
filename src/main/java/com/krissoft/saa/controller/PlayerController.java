@@ -3,7 +3,9 @@ package com.krissoft.saa.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -104,7 +107,6 @@ public class PlayerController {
 		return "user/players";
 	}
 
-
 	@RequestMapping(value = "/user/csv", method = RequestMethod.GET)
 	public String player(ModelMap model) throws Exception {
 		return "user/csv";
@@ -115,6 +117,20 @@ public class PlayerController {
 		return "test";
 	}
 
+	@RequestMapping(value = "/import", method = RequestMethod.POST)
+	public @ResponseBody
+	String importPlayers(@RequestBody String[] json) throws Exception {
+		PlayerModel playerModel = new PlayerModel();
+		File upLoadedfile = new File(System.getProperty("java.io.tmpdir")
+				+ System.getProperty("file.separator") + ufile.name);
+		List<PlayerDoc> res = playerModel.readWithCsvBeanReaderForPlayerDoc(
+				upLoadedfile, json);
+		for (PlayerDoc p : res) {
+			playerRepository.save(p);
+		}
+		return "{\"imported\":\"imported\" }";
+	}
+
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public @ResponseBody
 	String upload(MultipartHttpServletRequest request,
@@ -122,7 +138,7 @@ public class PlayerController {
 		Iterator<String> itr = request.getFileNames();
 		String res = "";
 		MultipartFile mpf = request.getFile(itr.next());
-		if(!mpf.isEmpty()) {
+		if (!mpf.isEmpty()) {
 			System.out.println(mpf.getOriginalFilename() + " uploaded!");
 			try {
 				// just temporary save file info into ufile
@@ -135,9 +151,10 @@ public class PlayerController {
 						+ System.getProperty("file.separator")
 						+ mpf.getOriginalFilename());
 
-				File upLoadedfile = new File(System.getProperty("java.io.tmpdir")
-						+ System.getProperty("file.separator")
-						+ mpf.getOriginalFilename());
+				File upLoadedfile = new File(
+						System.getProperty("java.io.tmpdir")
+								+ System.getProperty("file.separator")
+								+ ufile.name);
 				System.out.println(upLoadedfile.getAbsolutePath());
 
 				upLoadedfile.createNewFile();
@@ -146,8 +163,7 @@ public class PlayerController {
 				fos.close(); // setting the value of fileUploaded variable
 
 				PlayerModel playerModel = new PlayerModel();
-				res = playerModel
-						.readCsvToString(file);
+				res = playerModel.readCsvToString(file);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
