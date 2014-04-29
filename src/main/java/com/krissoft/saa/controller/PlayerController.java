@@ -3,7 +3,6 @@ package com.krissoft.saa.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -128,7 +127,7 @@ public class PlayerController {
 		for (PlayerDoc p : res) {
 			playerRepository.save(p);
 		}
-		return "{\"imported\":\"imported\" }";
+		return "{\"imported\":\"File Imported.\" }";
 	}
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)

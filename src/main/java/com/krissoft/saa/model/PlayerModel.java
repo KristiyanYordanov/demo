@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -82,24 +83,27 @@ public class PlayerModel {
 		return res;
 	}
 
-	public List<PlayerDoc> readWithCsvBeanReaderForPlayerDoc(File File, String[] header)
-			throws Exception {
+	public List<PlayerDoc> readWithCsvBeanReaderForPlayerDoc(File File,
+			String[] header) throws Exception {
 		List<PlayerDoc> res = new ArrayList<PlayerDoc>();
 		ICsvBeanReader beanReader = null;
 		try {
 			beanReader = new CsvBeanReader(new FileReader(File),
 					CsvPreference.STANDARD_PREFERENCE);
-
 			// the header elements are used to map the values to the bean (names
 			// must match)
-			//final String[] header = beanReader.getHeader(true);
-			setHeaders(header);
-			// TODO change header with custom header form view
-
-			// final CellProcessor[] processors = getProcessors();
-
+			// final String[] header = beanReader.getHeader(true);
+			//setHeaders(header);
+			
+			for (int i = 0; i < header.length; i++) {
+				if (header[i].equals("None")) {
+					header[i] = null;
+				}
+			}
+			
 			PlayerString playerString;
-			while ((playerString = beanReader.read(PlayerString.class, header)) != null) {
+			while ((playerString = beanReader
+					.read(PlayerString.class, header)) != null) {
 				PlayerDoc player = loadPlayerDoc(playerString);
 				// System.out.println(player);
 				res.add(player);
@@ -219,30 +223,53 @@ public class PlayerModel {
 
 	public static PlayerDoc loadPlayerDoc(PlayerString s) {
 		PlayerDoc res = new PlayerDoc();
-		try {
-			res.setFortyDash(Double.parseDouble(s.getFortyDash()));
-		} catch (NumberFormatException e) {
+		if (s.getFortyDash() != null) {
+			try {
+
+				res.setFortyDash(Double.parseDouble(s.getFortyDash()));
+			} catch (NumberFormatException e) {
+			}
 		}
-		try {
-			res.setGradYear(Integer.parseInt(s.getGradYear()));
-		} catch (NumberFormatException e) {
+		if (s.getGradYear() != null) {
+
+			try {
+				res.setGradYear(Integer.parseInt(s.getGradYear()));
+			} catch (NumberFormatException e) {
+			}
 		}
-		try {
-			res.setRating(Double.parseDouble(s.getRating()));
-		} catch (NumberFormatException e) {
+		if (s.getRating() != null) {
+			try {
+				res.setRating(Double.parseDouble(s.getRating()));
+			} catch (NumberFormatException e) {
+			}
 		}
-		try {
-			res.setStars(Integer.parseInt(s.getStars()));
-		} catch (NumberFormatException e) {
+		if (s.getStars() != null) {
+			try {
+				res.setStars(Integer.parseInt(s.getStars()));
+			} catch (NumberFormatException e) {
+			}
 		}
-		try {
-			res.setWeight(Integer.parseInt(s.getWeight()));
-		} catch (NumberFormatException e) {
+
+		if (s.getWeight() != null) {
+			try {
+				res.setWeight(Integer.parseInt(s.getWeight()));
+			} catch (NumberFormatException e) {
+			}
 		}
-		res.setHeight(s.getHeight());
-		res.setLocation(s.getLocation());
-		res.setName(s.getName());
-		res.setPos(s.getPos());
+
+		if (s.getHeight() != null) {
+			res.setHeight(s.getHeight());
+		}
+		if (s.getLocation() != null) {
+			res.setLocation(s.getLocation());
+		}
+		if (s.getPos() != null) {
+			res.setPos(s.getPos());
+		}
+		if (s.getName() != null) {
+			res.setName(s.getName());
+		}
+
 		return res;
 	}
 

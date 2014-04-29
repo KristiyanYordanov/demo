@@ -10,7 +10,7 @@ import com.krissoft.saa.config.BaseMongoObject;
 public class PlayerDoc extends BaseMongoObject implements Serializable {
 
 	/**
-	 * 
+	 * kris
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -50,6 +50,43 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 	private int weight;
 	private int gradYear;
 	private Double rating;
+	private String state;
+	private String schoolName;
+	private String schoolCity;
+	private String maxprepsUrl;
+	
+	
+	public String getMaxprepsUrl() {
+		return maxprepsUrl;
+	}
+
+	public void setMaxprepsUrl(String maxprepsUrl) {
+		this.maxprepsUrl = maxprepsUrl;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getSchoolName() {
+		return schoolName;
+	}
+
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
+	}
+
+	public String getSchoolCity() {
+		return schoolCity;
+	}
+
+	public void setSchoolCity(String schoolCity) {
+		this.schoolCity = schoolCity;
+	}
 
 	public String getName() {
 		return name;
@@ -143,4 +180,71 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 				+ (stars != 0 ? +stars + "\", \"" : "\",\"")
 				+ (rating != null ? rating + "\"" : "\"\"") + "]";
 	}
+	
+	public static String[] STATE = {
+//		"AL",
+//		"AK",
+//		"AZ",
+//		"AR",
+//		"CA",
+//		"CO",
+//		"CT",
+//		"DE",
+//		"FL",
+//		"GA",
+//		"HI",
+//		"ID",
+//		"IL",
+//		"IN",
+//		"IA",
+//		"KS",
+//		"KY",
+//		"LA",
+//		"ME",
+//		"MD",
+//		"MA",
+//		"MI",
+//		"MN",
+//		"MS",
+//		"MO",
+//		"MT",
+//		"NE",
+//		"NV",
+//		"NH",
+//		"NJ",
+//		"NM",
+//		"NY",
+//		"NC",
+//		"ND",
+//		"OH",
+//		"OK",
+//		"OR",
+//		"PA",
+//		"RI",
+//		"SC",
+//		"SD",
+//		"TN",
+//		"TX",
+//		"UT",
+//		"VT",
+//		"VA",
+//		"WA",
+//		"DC",
+//		"WV",
+//		"WI",
+		"WY"
+	};
+	
+	public static String[] POSITIONS = {
+	"LF",
+	"CF",
+	"RF",
+	"SS",
+	"2B",
+	"3B",
+	"P",
+	"1B",
+	"C"
+	};
+	
 }
