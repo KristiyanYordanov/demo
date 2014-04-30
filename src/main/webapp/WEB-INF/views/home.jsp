@@ -2,6 +2,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <html>
 <head>
+<title>Scout Automated Adviser</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <style>
 body {
@@ -303,7 +304,7 @@ body {
 					<li><a href='#'><span>Criteria</span></a></li>
 					<li class='last'><a href='#'><span>Criteria Report</span></a></li>
 				</ul></li>
-
+			<li><a href='#' id="load_schools"><span>High Schools</span></a></li>
 			<li><a href='/spring-jpa/j_spring_security_logout'><span>Logout</span></a>
 			</li>
 		</ul>
@@ -338,6 +339,10 @@ body {
 	});
 	$("#test").on("click", function() {
 		var html = 'players/test';
+		$('#content').load(html);
+	});
+	$("#load_schools").on("click", function() {
+		var html = 'players/schools';
 		$('#content').load(html);
 	});
 </script>

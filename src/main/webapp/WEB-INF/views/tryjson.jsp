@@ -1,5 +1,6 @@
 <html>
 <head>
+<title>Scout Automated Adviser</title>
 </head>
 <body>
 

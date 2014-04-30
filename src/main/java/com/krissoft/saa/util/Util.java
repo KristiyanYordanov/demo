@@ -239,4 +239,15 @@ public class Util {
 			}
 		}
 	}
+	//java array to javascript array
+	public static String toJsArray(String[] arr) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < arr.length; i++) {
+			sb.append(arr[i]);
+			if (i + 1 < arr.length) {
+				sb.append(",");
+			}
+		}
+		return sb.toString();
+	}
 }

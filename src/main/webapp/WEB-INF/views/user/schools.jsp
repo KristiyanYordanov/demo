@@ -1,9 +1,9 @@
 <html>
 <head>
+<title>Scout Automated Adviser</title>
 <link rel="stylesheet" type="text/css"
 	href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
 </head>
-<title>Scout Automated Adviser</title>
 <style type="text/css">
 .dataTables_info {
 	background:linear-gradient(to bottom, #A8DDE8 0%, #96CBD7 100%);
@@ -92,7 +92,7 @@ border-bottom-right-radius: 5px;
 			"bDeferRender": true,
 			"bProcessing" : true,
 			"bServerSide" : true,
-			"sAjaxSource" : "/spring-jpa/players/playersjson",
+			"sAjaxSource" : "/spring-jpa/players/schoolsjson",
 			"aaSorting" : [ [ 0, "asc" ] ],
 			"sDom" : 'r<"top"ilpfT>t<"bottom"ilpT>r<"clear">',
 			 "sPaginationType": "full_numbers",

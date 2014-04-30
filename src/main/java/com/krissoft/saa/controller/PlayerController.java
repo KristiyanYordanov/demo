@@ -103,6 +103,8 @@ public class PlayerController {
 		jsonObject.setITotalDisplayRecords(size);
 		return jsonObject.toString();
 	}
+	
+	
 
 	@RequestMapping(value = "/user/players", method = RequestMethod.GET)
 	public String home2(ModelMap model) {
@@ -185,14 +187,67 @@ public class PlayerController {
 		}
 	}
 
-	public static String toJsArray(String[] arr) {
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < arr.length; i++) {
-			sb.append(arr[i]);
-			if (i + 1 < arr.length) {
-				sb.append(",");
-			}
+	
+	
+	@RequestMapping(value = "/schoolsjson", method = RequestMethod.GET)
+	public @ResponseBody
+	String getSchools(HttpServletRequest request,
+			@RequestParam(value = "iSortCol_0") String sortColumn,
+			@RequestParam(value = "sSearch") String sSearch,
+			@RequestParam(value = "sSortDir_0") String sSortDir,
+			@RequestParam(value = "iDisplayLength") String iDisplayLength,
+			@RequestParam(value = "iDisplayStart") String iDisplayStart,
+			@RequestParam(value = "iSortCol_0") String iSortCol_0,
+			@RequestParam(value = "sSortDir_0") String sSortDir_0,
+			@RequestParam(value = "sEcho") String sEcho) throws IOException,
+			JSONException {
+		logger.info("start playercontroller.");
+		logger.debug("start playercontroller!");
+		
+		System.out.println(System.getProperty("catalina.base"));
+		Sort sort = null;
+		Page<PlayerDoc> page = null;
+		DataTableJsonObject jsonObject = new DataTableJsonObject();
+
+		int start = new Integer(iDisplayStart);
+		int pageRows = new Integer(iDisplayLength);
+		int size = 0;
+		if (iSortCol_0.equals("0") && sSortDir_0.equals("asc")) {
+			sort = new Sort(Sort.Direction.ASC, "name");
+		} else if (iSortCol_0.equals("0") && sSortDir_0.equals("desc")) {
+			sort = new Sort(Sort.Direction.DESC, "name");
 		}
-		return sb.toString();
+
+		if (pageRows == -1 && sSearch.equals("")) {
+			size = (int) playerRepository.count();
+			page = playerRepository.findAll(new PageRequest(start, size, sort));
+		} else if (sSearch != null && !sSearch.equals("") && pageRows == -1) {
+			size = (int) playerRepository.count(sSearch);
+			page = playerRepository.findByNameRegex(sSearch, new PageRequest(
+					start, size, sort));
+		} else if (sSearch != null && !sSearch.equals("") && pageRows != -1) {
+			size = (int) playerRepository.count(sSearch);
+			int pageNumber = start / pageRows;
+			page = playerRepository.findByNameRegex(sSearch, new PageRequest(
+					pageNumber, pageRows, sort));
+		} else {
+			size = (int) playerRepository.count();
+			int pageNumber1 = start / pageRows;
+			if (pageNumber1 == 0) {
+				pageNumber1 = 1;
+			}
+			page = playerRepository.findAll(new PageRequest(pageNumber1,
+					pageRows, sort));
+		}
+		jsonObject.setSEcho(sEcho);
+		jsonObject.setAaData(page);
+		jsonObject.setITotalRecords(size);
+		jsonObject.setITotalDisplayRecords(size);
+		return jsonObject.toString();
+	}
+	
+	@RequestMapping(value = "/schools", method = RequestMethod.GET)
+	public String schools(ModelMap model) {
+		return "user/schools";
 	}
 }
