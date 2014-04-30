@@ -59,7 +59,10 @@ public class PlayerController {
 			@RequestParam(value = "sSortDir_0") String sSortDir_0,
 			@RequestParam(value = "sEcho") String sEcho) throws IOException,
 			JSONException {
-
+		logger.info("start playercontroller.");
+		logger.debug("start playercontroller!");
+		
+		System.out.println(System.getProperty("catalina.base"));
 		Sort sort = null;
 		Page<PlayerDoc> page = null;
 		DataTableJsonObject jsonObject = new DataTableJsonObject();
@@ -118,12 +121,12 @@ public class PlayerController {
 
 	@RequestMapping(value = "/import", method = RequestMethod.POST)
 	public @ResponseBody
-	String importPlayers(@RequestBody String[] json) throws Exception {
+	String importPlayers(@RequestBody String[] header) throws Exception {
 		PlayerModel playerModel = new PlayerModel();
 		File upLoadedfile = new File(System.getProperty("java.io.tmpdir")
 				+ System.getProperty("file.separator") + ufile.name);
 		List<PlayerDoc> res = playerModel.readWithCsvBeanReaderForPlayerDoc(
-				upLoadedfile, json);
+				upLoadedfile, header);
 		for (PlayerDoc p : res) {
 			playerRepository.save(p);
 		}
@@ -169,6 +172,17 @@ public class PlayerController {
 			}
 		}
 		return res;
+	}
+	
+	public void importCsvFile(File file, String[] header) throws Exception {
+		PlayerModel playerModel = new PlayerModel();
+		File upLoadedfile = new File(System.getProperty("java.io.tmpdir")
+				+ System.getProperty("file.separator") + ufile.name);
+		List<PlayerDoc> res = playerModel.readWithCsvBeanReaderForPlayerDoc(
+				upLoadedfile, header);
+		for (PlayerDoc p : res) {
+			playerRepository.save(p);
+		}
 	}
 
 	public static String toJsArray(String[] arr) {

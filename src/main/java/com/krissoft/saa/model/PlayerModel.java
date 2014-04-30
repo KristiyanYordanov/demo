@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,29 +18,6 @@ import com.krissoft.saa.config.PlayerDoc;
 
 public class PlayerModel {
 
-	// "name","stars","pos","location","height","weight","fortyDash","rating","gradYear"
-
-	// private static CellProcessor[] getProcessors() {
-	//
-	// final String emailRegex = "[a-z0-9\\._]+@[a-z0-9\\.]+"; // just an
-	// // example, not
-	// // very robust!
-	// StrRegEx.registerMessage(emailRegex, "must be a valid email address");
-	//
-	// final CellProcessor[] processors = new CellProcessor[] {
-	// new Optional(), // name
-	// new Optional(), // stars
-	// new Optional(), // pos
-	// new Optional(), // location
-	// new Optional(), // height
-	// new Optional(), // weight
-	// new Optional(), // fortyDa sh
-	// new Optional(), // rating
-	// new Optional() // gradYear
-	// };
-	//
-	// return processors;
-	// }
 	private String[] headers;
 
 	public String[] getHeaders() {
@@ -90,20 +66,18 @@ public class PlayerModel {
 		try {
 			beanReader = new CsvBeanReader(new FileReader(File),
 					CsvPreference.STANDARD_PREFERENCE);
-			// the header elements are used to map the values to the bean (names
-			// must match)
-			// final String[] header = beanReader.getHeader(true);
-			//setHeaders(header);
-			
+			// Important! skip reading first row
+			final String[] headerNoUsed = beanReader.getHeader(true);
+			// setHeaders(header);
+
 			for (int i = 0; i < header.length; i++) {
 				if (header[i].equals("None")) {
 					header[i] = null;
 				}
 			}
-			
+
 			PlayerString playerString;
-			while ((playerString = beanReader
-					.read(PlayerString.class, header)) != null) {
+			while ((playerString = beanReader.read(PlayerString.class, header)) != null) {
 				PlayerDoc player = loadPlayerDoc(playerString);
 				// System.out.println(player);
 				res.add(player);
@@ -188,7 +162,6 @@ public class PlayerModel {
 			}
 
 		}
-		System.out.println("///////////////////////////////////////////////");
 		return player;
 	}
 

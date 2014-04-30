@@ -247,4 +247,8 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 	"C"
 	};
 	
+	public static String[] STATS = {
+		"GP", "Avg", "OBP", "H", "RBI", "R", "SB", "AB", "SLG", "PA", "FP", "AB", "K", "IP" 
+	};
+
 }
