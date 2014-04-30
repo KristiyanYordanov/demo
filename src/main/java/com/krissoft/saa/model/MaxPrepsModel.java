@@ -13,6 +13,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanWriter;
@@ -20,13 +23,18 @@ import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
 import com.krissoft.saa.config.PlayerDoc;
+import com.krissoft.saa.controller.PlayerController;
 import com.krissoft.saa.util.Util;
 
 public class MaxPrepsModel {
 
 	protected ICsvBeanWriter data = null;
 
+	private static final Logger logger = LoggerFactory
+			.getLogger(MaxPrepsModel.class);
+	@Async
 	public void run() {
+		logger.info("start maxpreps scrapping.\n");
 		// File csvFile = new File(cacheRoot + "../" + filename);
 		File csvFile = new File("maxpreps.txt");
 		if (!csvFile.exists()) {
@@ -63,7 +71,7 @@ public class MaxPrepsModel {
 				// System.out.println("---------------------");
 				URL urlStates = (URL) source.get(i)[0];
 				Document docWithStates = Jsoup.connect(urlStates.toString())
-						.get();
+						.timeout(0).get();
 				Elements schoolUrls = docWithStates.select("li a");
 				StringBuffer sb = new StringBuffer();
 				String schoolUrl = "";
@@ -103,7 +111,11 @@ public class MaxPrepsModel {
 						// System.out.println("state = " + state);
 
 						Document docSchoolUrl = null;
+						String schoolUrlBase = schoolUrl.toString();
 						try {
+							if (!schoolUrlBase.startsWith("http://")) {
+								schoolUrlBase = "http://" + schoolUrlBase;
+							}
 							docSchoolUrl = Jsoup.connect(schoolUrl.toString())
 									.timeout(0).get();
 							Elements players = docSchoolUrl.select("th a");
@@ -174,7 +186,7 @@ public class MaxPrepsModel {
 										// ee);
 									}
 
-									System.out.println("print");
+									System.out.println(p);
 									data.write(p, header, processors);
 									data.flush();
 								}
@@ -185,6 +197,7 @@ public class MaxPrepsModel {
 							sb.append(schoolUrl);
 							sb.append("\t\n");
 						} catch (Exception e) {
+							logger.info("my error :", e);
 							e.printStackTrace();
 						}
 					}
@@ -196,10 +209,13 @@ public class MaxPrepsModel {
 				long delay = 200L + ((long) (Math.random() * 4800.0));
 				Thread.sleep(delay);
 			}
-			
+
+			PlayerController pc = new PlayerController();
+			pc.importCsvFile(csvFile, header);
 			System.out.println(csvFile.getPath());
 		} catch (Exception ex) {
 			ex.printStackTrace(System.err);
+			logger.info("my error1 :", ex);
 		} finally {
 			if (data != null) {
 				try {
