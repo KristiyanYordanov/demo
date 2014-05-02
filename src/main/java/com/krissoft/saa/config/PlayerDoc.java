@@ -54,8 +54,123 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 	private String schoolName;
 	private String schoolCity;
 	private String maxprepsUrl;
+	private double GP;
+	private double Avg;
+	private double OBP;
+	private double H;
+	private double RBI;
+	private double R;
+	private double SB;
+	private double AB;
+	private double SLG;
+	private double PA;
+	private double FP;
+	private double K;
+	private double IP;
 	
-	
+	public double getGP() {
+		return GP;
+	}
+
+	public void setGP(double gP) {
+		GP = gP;
+	}
+
+	public double getAvg() {
+		return Avg;
+	}
+
+	public void setAvg(double avg) {
+		Avg = avg;
+	}
+
+	public double getOBP() {
+		return OBP;
+	}
+
+	public void setOBP(double oBP) {
+		OBP = oBP;
+	}
+
+	public double getH() {
+		return H;
+	}
+
+	public void setH(double h) {
+		H = h;
+	}
+
+	public double getRBI() {
+		return RBI;
+	}
+
+	public void setRBI(double rBI) {
+		RBI = rBI;
+	}
+
+	public double getR() {
+		return R;
+	}
+
+	public void setR(double r) {
+		R = r;
+	}
+
+	public double getSB() {
+		return SB;
+	}
+
+	public void setSB(double sB) {
+		SB = sB;
+	}
+
+	public double getAB() {
+		return AB;
+	}
+
+	public void setAB(double aB) {
+		AB = aB;
+	}
+
+	public double getSLG() {
+		return SLG;
+	}
+
+	public void setSLG(double sLG) {
+		SLG = sLG;
+	}
+
+	public double getPA() {
+		return PA;
+	}
+
+	public void setPA(double pA) {
+		PA = pA;
+	}
+
+	public double getFP() {
+		return FP;
+	}
+
+	public void setFP(double fP) {
+		FP = fP;
+	}
+
+	public double getK() {
+		return K;
+	}
+
+	public void setK(double k) {
+		K = k;
+	}
+
+	public double getIP() {
+		return IP;
+	}
+
+	public void setIP(double iP) {
+		IP = iP;
+	}
 	public String getMaxprepsUrl() {
 		return maxprepsUrl;
 	}
@@ -171,16 +286,36 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 	@Override
 	public String toString() {
 		return "[\"" + (name != null ? name + "\",\"" : "\",\"")
-
 		+ (location != null ? location + "\", \"" : "\",\"")
-				+ (pos != null ? pos + "\",\" " : "\"")
-				+ (height != null ? height + ", \"" : "\",\"")
-				+ (fortyDash != null ? fortyDash + "\", \"" : "\",\"")
-				+ (weight != 0 ? +weight + "\", \"" : "\",\"")
-				+ (stars != 0 ? +stars + "\", \"" : "\",\"")
-				+ (rating != null ? rating + "\"" : "\"\"") + "]";
+		+ (state != null ? state + "\", \"" : "\",\"")
+		+ (schoolName != null ? schoolName + "\", \"" : "\",\"")
+		+ (schoolCity != null ? schoolCity + "\", \"" : "\",\"")
+		+ (maxprepsUrl != null ?maxprepsUrl + "\", \"" : "\",\"")
+		+ (pos != null ? pos + "\",\" " : "\"")
+		+ (height != null ? height + ", \"" : "\",\"")
+		+ (fortyDash != null ? fortyDash + "\", \"" : "\",\"")
+		+ (weight != 0 ? +weight + "\", \"" : "\",\"")
+		+ (stars != 0 ? +stars + "\", \"" : "\",\"")
+		+ (rating != null ? +rating + "\", \"" : "\",\"")
+		+ (gradYear != 0 ? +gradYear + "\", \"" : "\",\"")
+		+ (GP != 0 ? +GP + "\", \"" : "\",\"")
+		+ (Avg != 0 ? +Avg + "\", \"" : "\",\"")
+		+ (OBP != 0 ? +OBP + "\", \"" : "\",\"")
+		+ (H != 0 ? +H + "\", \"" : "\",\"")
+		+ (RBI != 0 ? +RBI + "\", \"" : "\",\"")
+		+ (R != 0 ? +R + "\", \"" : "\",\"")
+		+ (SB != 0 ? +SB + "\", \"" : "\",\"")
+		+ (AB != 0 ? +AB + "\", \"" : "\",\"")
+		+ (SLG != 0 ? +SLG + "\", \"" : "\",\"")
+		+ (PA != 0 ? +PA + "\", \"" : "\",\"")
+		+ (FP != 0 ? +FP + "\", \"" : "\",\"")
+		+ (K != 0 ? +K + "\", \"" : "\",\"")
+		+ (IP != 0 ? IP + "\"" : "\"") 
+		+ "]";
+
 	}
-	
+
+		
 	public static String[] STATE = {
 //		"AL",
 //		"AK",
@@ -244,11 +379,12 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 	"3B",
 	"P",
 	"1B",
-	"C"
+	"C",
+	"OF"
 	};
 	
 	public static String[] STATS = {
-		"GP", "Avg", "OBP", "H", "RBI", "R", "SB", "AB", "SLG", "PA", "FP", "AB", "K", "IP" 
+		"GP", "Avg", "OBP", "H", "RBI", "R", "SB", "AB", "SLG", "PA", "FP", "K", "IP" 
 	};
 
 }

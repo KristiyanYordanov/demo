@@ -52,7 +52,7 @@ body {
 	background: linear-gradient(to bottom, #51bbd2 0%, #2d97af 100%);
 }
 
-#cssmenu>ul {
+#cssmenu>ul { //
 	background: url('bg.png');
 	box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.05);
 }
@@ -205,7 +205,7 @@ body {
 		screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px) ,
 		only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width:
 		1024px) , only screen and (min-device-pixel-ratio: 2) and (max-width:
-		1024px) , only screen and (min-resolution: 192dpi) and (max-width:
+		1024px) , only screen and (min-resolution: 192dppx) and (max-width:
 		1024px) , only screen and (min-resolution: 2dppx) and (max-width:
 	1024px) {
 	#cssmenu {
@@ -288,6 +288,10 @@ body {
 		display: none;
 	}
 }
+
+body {
+	background-color: #F3F3F2;
+}
 </style>
 </head>
 <body>
@@ -297,7 +301,8 @@ body {
 			<li class='has-sub'><a href='#'><span>Import</span></a>
 				<ul>
 					<li><a href='#' id="load_csv"><span>CSV Import</span></a></li>
-					<li class='last' id="test"><a href='#'><span>Automated Import</span></a></li>
+					<li class='last' id="test"><a href='#'><span>Automated
+								Import</span></a></li>
 				</ul></li>
 			<li class='has-sub'><a href='#'><span>Criterias</span></a>
 				<ul>
@@ -313,18 +318,19 @@ body {
 	<div id="content"></div>
 </body>
 <script type="text/javascript" charset="utf8"
-	src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
+	src="resources/js/jquery-2.1.0.min.js"></script>
 <script type="text/javascript" charset="utf8"
-	src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.js"></script>
+	src="resources/js/jquery.dataTables.1.9.4.js"></script>
+<!--	
 <script type="text/javascript" charset="utf8"
-	src="https://datatables.net/release-datatables/extras/ColReorder/media/js/ColReorder.js"></script>
+	src="resources/js/ZeroClipboard.js"></script>
 <script type="text/javascript" charset="utf8"
-	src="https://editor.datatables.net/release/DataTables/extras/TableTools/media/js/TableTools.js"></script>
+	src="resources/js/ColReorder.min.js"></script>
 <script type="text/javascript" charset="utf8"
-	src="https://datatables.net/release-datatables/extras/TableTools/media/js/ZeroClipboard.js"></script>
+	src="resources/js/TableTools.2.1.4.js"></script>
+  -->
 
 <script type="text/javascript">
-
 	$(document).ready(function() {
 		var html = 'players/user/players';
 		$('#content').load(html);

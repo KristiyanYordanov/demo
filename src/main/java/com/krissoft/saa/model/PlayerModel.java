@@ -2,62 +2,24 @@ package com.krissoft.saa.model;
 
 import java.io.File;
 import java.io.FileReader;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
 
-import com.krissoft.saa.bean.Player;
 import com.krissoft.saa.bean.PlayerString;
 import com.krissoft.saa.config.PlayerDoc;
+import com.krissoft.saa.util.Util;
 
 public class PlayerModel {
 
-	private String[] headers;
-
-	public String[] getHeaders() {
-		return headers;
-	}
-
-	public void setHeaders(String[] headers) {
-		this.headers = headers;
-	}
-
-	public List<Player> readWithCsvBeanReader() throws Exception {
-		List<Player> res = new ArrayList<Player>();
-		ICsvBeanReader beanReader = null;
-		try {
-			beanReader = new CsvBeanReader(new FileReader(
-					"H:\\rivals\\rivals_college 2012.csv"),
-					CsvPreference.STANDARD_PREFERENCE);
-
-			// the header elements are used to map the values to the bean (names
-			// must match)
-			final String[] header = beanReader.getHeader(true);
-			setHeaders(header);
-			// TODO change header with custom header form view
-
-			// final CellProcessor[] processors = getProcessors();
-
-			PlayerString playerString;
-			while ((playerString = beanReader.read(PlayerString.class, header)) != null) {
-				Player player = loadPlayer(playerString);
-				// System.out.println(player);
-				res.add(player);
-			}
-
-		} finally {
-			if (beanReader != null) {
-				beanReader.close();
-			}
-		}
-		return res;
-	}
+	private static final Logger logger = LoggerFactory
+			.getLogger(PlayerModel.class);
 
 	public List<PlayerDoc> readWithCsvBeanReaderForPlayerDoc(File File,
 			String[] header) throws Exception {
@@ -67,7 +29,7 @@ public class PlayerModel {
 			beanReader = new CsvBeanReader(new FileReader(File),
 					CsvPreference.STANDARD_PREFERENCE);
 			// Important! skip reading first row
-			final String[] headerNoUsed = beanReader.getHeader(true);
+			final String[] headerImportant = beanReader.getHeader(true);
 			// setHeaders(header);
 
 			for (int i = 0; i < header.length; i++) {
@@ -97,7 +59,7 @@ public class PlayerModel {
 		List<String> values = parser.read();
 		StringBuffer sb = new StringBuffer();
 		while (values != null) {
-			sb.append(printValues(values));
+			sb.append(Util.printListValues(values));
 			values = parser.read();
 		}
 		String res = sb.toString();
@@ -113,7 +75,7 @@ public class PlayerModel {
 		List<String> values = parser.read();
 		StringBuffer sb = new StringBuffer();
 		while (values != null) {
-			sb.append(printValues(values));
+			sb.append(Util.printListValues(values));
 			values = parser.read();
 		}
 		String res = sb.toString();
@@ -121,86 +83,14 @@ public class PlayerModel {
 		System.out.println(res);
 	}
 
-	private static String printValues(List<String> as) {
-		StringBuffer sb = new StringBuffer();
-		sb.append("[");
-		Iterator<String> it = as.iterator();
-		while (it.hasNext()) {
-			sb.append(it.next());
-			if (it.hasNext() == true) {
-				sb.append(",");
-			}
-		}
-		sb.append("],");
-		String res = sb.toString().trim();
-		return res;
-	}
-
-	public static Player load(Object obj, Object stringObj) {
-		System.out
-				.println("////////////////////////////////////////////////////");
-		Player player = new Player();
-
-		Class playerStringClass = stringObj.getClass();
-		Method[] stringMethods = playerStringClass.getMethods();
-
-		Class playerClass = obj.getClass();
-		Method[] methods = playerClass.getMethods();
-
-		for (Method methodString : stringMethods) {
-			for (Method method : methods) {
-				String methodNameString = methodString.getName();
-				String methodName = method.getName();
-				if (methodName.equals(methodNameString)) {
-					System.out.println("method name = " + methodName);
-
-				}
-				Class[] params = method.getParameterTypes();
-				if (params.length > 0) {
-					// System.out.println(params[0]);
-				}
-			}
-
-		}
-		return player;
-	}
-
-	public static Player loadPlayer(PlayerString s) {
-		Player res = new Player();
-		try {
-			res.setFortyDash(Double.parseDouble(s.getFortyDash()));
-		} catch (NumberFormatException e) {
-		}
-		try {
-			res.setGradYear(Integer.parseInt(s.getGradYear()));
-		} catch (NumberFormatException e) {
-		}
-		try {
-			res.setRating(Double.parseDouble(s.getRating()));
-		} catch (NumberFormatException e) {
-		}
-		try {
-			res.setStars(Integer.parseInt(s.getStars()));
-		} catch (NumberFormatException e) {
-		}
-		try {
-			res.setWeight(Integer.parseInt(s.getWeight()));
-		} catch (NumberFormatException e) {
-		}
-		res.setHeight(s.getHeight());
-		res.setLocation(s.getLocation());
-		res.setName(s.getName());
-		res.setPos(s.getPos());
-		return res;
-	}
 
 	public static PlayerDoc loadPlayerDoc(PlayerString s) {
 		PlayerDoc res = new PlayerDoc();
 		if (s.getFortyDash() != null) {
 			try {
-
 				res.setFortyDash(Double.parseDouble(s.getFortyDash()));
 			} catch (NumberFormatException e) {
+				logger.info(e.toString());
 			}
 		}
 		if (s.getGradYear() != null) {
@@ -208,18 +98,21 @@ public class PlayerModel {
 			try {
 				res.setGradYear(Integer.parseInt(s.getGradYear()));
 			} catch (NumberFormatException e) {
+				logger.info(e.toString());
 			}
 		}
 		if (s.getRating() != null) {
 			try {
 				res.setRating(Double.parseDouble(s.getRating()));
 			} catch (NumberFormatException e) {
+				logger.info(e.toString());
 			}
 		}
 		if (s.getStars() != null) {
 			try {
 				res.setStars(Integer.parseInt(s.getStars()));
 			} catch (NumberFormatException e) {
+				logger.info(e.toString());
 			}
 		}
 
@@ -227,6 +120,7 @@ public class PlayerModel {
 			try {
 				res.setWeight(Integer.parseInt(s.getWeight()));
 			} catch (NumberFormatException e) {
+				logger.info(e.toString());
 			}
 		}
 
@@ -242,7 +136,19 @@ public class PlayerModel {
 		if (s.getName() != null) {
 			res.setName(s.getName());
 		}
-
+		if (s.getState() != null) {
+			res.setName(s.getState());
+		}
+		if (s.getSchoolCity() != null) {
+			res.setName(s.getSchoolCity());
+		}
+		if (s.getSchoolName() != null) {
+			res.setName(s.getSchoolName());
+		}
+		if (s.getMaxprepsUrl() != null) {
+			res.setName(s.getMaxprepsUrl());
+		}
+		
 		return res;
 	}
 

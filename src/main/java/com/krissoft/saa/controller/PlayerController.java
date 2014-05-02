@@ -101,6 +101,7 @@ public class PlayerController {
 		jsonObject.setAaData(page);
 		jsonObject.setITotalRecords(size);
 		jsonObject.setITotalDisplayRecords(size);
+		System.out.println(jsonObject.toString());
 		return jsonObject.toString();
 	}
 	

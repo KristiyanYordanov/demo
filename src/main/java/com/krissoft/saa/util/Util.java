@@ -11,6 +11,8 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -249,5 +251,25 @@ public class Util {
 			}
 		}
 		return sb.toString();
+	}
+	
+	public static String printListValues(List<String> as) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("[");
+		Iterator<String> it = as.iterator();
+		while (it.hasNext()) {
+			sb.append(it.next());
+			if (it.hasNext() == true) {
+				sb.append(",");
+			}
+		}
+		sb.append("],");
+		String res = sb.toString().trim();
+		return res;
+	}
+	
+	public static String replaceAllNonDigit(String string) {
+		String res = string.replaceAll("\\D", "");
+		return res;
 	}
 }

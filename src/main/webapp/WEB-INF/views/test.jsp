@@ -20,13 +20,12 @@
 		    url: "/spring-jpa/schedule/startmaxpreps", 
 		    type: 'GET', 
 		    dataType: 'json', 
-		    //data: "{\"name\":\"hmkcode\",\"id\":2}", 
 		    contentType: 'application/json',
 		    mimeType: 'application/json',
 		    success: function(data) { 
 		    },
 		    error:function(data,status,er) { 
-		        alert("error: "+data+" status: "+status+" er:"+er);
+		       // alert("error: "+data+" status: "+status+" er:"+er);
 		    }
 		});
 	}
@@ -35,13 +34,12 @@
 		    url: "/spring-jpa/schedule/stopmaxpreps", 
 		    type: 'GET', 
 		    dataType: 'json', 
-		    //data: "{\"name\":\"hmkcode\",\"id\":2}", 
 		    contentType: 'application/json',
 		    mimeType: 'application/json',
 		    success: function(data) { 
 		    },
 		    error:function(data,status,er) { 
-		        alert("error: "+data+" status: "+status+" er:"+er);
+		        //alert("error: "+data+" status: "+status+" er:"+er);
 		    }
 		});
 	}

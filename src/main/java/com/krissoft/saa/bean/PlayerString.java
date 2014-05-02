@@ -12,6 +12,35 @@ public class PlayerString {
 	private String weight;
 	private String gradYear;
 	private String rating;
+	private String state;
+	private String schoolName;
+	private String schoolCity;
+	private String maxprepsUrl;
+	
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getSchoolName() {
+		return schoolName;
+	}
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
+	}
+	public String getSchoolCity() {
+		return schoolCity;
+	}
+	public void setSchoolCity(String schoolCity) {
+		this.schoolCity = schoolCity;
+	}
+	public String getMaxprepsUrl() {
+		return maxprepsUrl;
+	}
+	public void setMaxprepsUrl(String maxprepsUrl) {
+		this.maxprepsUrl = maxprepsUrl;
+	}
 	public String getName() {
 		return name;
 	}

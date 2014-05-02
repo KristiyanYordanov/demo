@@ -7,60 +7,44 @@
 <style type="text/css">
 </style>
 <body>
-	<div id="demo" style="height: 70%;">
-		<table cellpadding="0" cellspacing="0" border="0" class="display"
-			id="example" width="100%" height="70%">
-			<thead>
-				<tr>
-					<th>name</th>
-					<th>location</th>
-					<th>pos(s)</th>
-					<th>height</th>
-					<th>fortyDash</th>
-					<th>weight</th>
-					<th>stars</th>
-					<th>rating</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td colspan="5" class="dataTables_empty">Loading data from
-						server</td>
-				</tr>
-			</tbody>
-			<tfoot>
-				<tr>
-					<th>name</th>
-					<th>location</th>
-					<th>pos(s)</th>
-					<th>height</th>
-					<th>fortyDash</th>
-					<th>weight</th>
-					<th>stars</th>
-					<th>rating</th>
-				</tr>
-			</tfoot>
-		</table>
+	<div>
+		<button value="Submit" onclick="startMaxpreps()">Start Maxpreps</button>
+		<br>
+		<button value="Submit" onclick="stopMaxpreps()">Stop Maxpreps</button>
 	</div>
-
-	<script type="text/javascript" charset="utf8"
-		src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.js"></script>
-
-	<script type="text/javascript" charset="utf8"
-		src="https://datatables.net/release-datatables/extras/ColReorder/media/js/ColReorder.js"></script>
-
-	<script type="text/javascript" charset="utf8"
-		src="https://editor.datatables.net/release/DataTables/extras/TableTools/media/js/TableTools.js"></script>
-
-	<script type="text/javascript" charset="utf8"
-		src="https://datatables.net/release-datatables/extras/TableTools/media/js/ZeroClipboard.js"></script>
+	
+	
 	<script>
-		var table = $('#example').dataTable({	
-			"bDeferRender": true,
-			"bProcessing" : true,
-			"bServerSide" : true,
-			"sAjaxSource" : "/spring-jpa/players/playersjson"
+	function startMaxpreps() {
+		$.ajax({ 
+		    url: "/spring-jpa/schedule/startmaxpreps", 
+		    type: 'GET', 
+		    dataType: 'json', 
+		    //data: "{\"name\":\"hmkcode\",\"id\":2}", 
+		    contentType: 'application/json',
+		    mimeType: 'application/json',
+		    success: function(data) { 
+		    },
+		    error:function(data,status,er) { 
+		        alert("error: "+data+" status: "+status+" er:"+er);
+		    }
 		});
+	}
+	function stopMaxpreps() {
+		$.ajax({ 
+		    url: "/spring-jpa/schedule/stopmaxpreps", 
+		    type: 'GET', 
+		    dataType: 'json', 
+		    //data: "{\"name\":\"hmkcode\",\"id\":2}", 
+		    contentType: 'application/json',
+		    mimeType: 'application/json',
+		    success: function(data) { 
+		    },
+		    error:function(data,status,er) { 
+		        alert("error: "+data+" status: "+status+" er:"+er);
+		    }
+		});
+	}
 	</script>
 </body>
 </html>
