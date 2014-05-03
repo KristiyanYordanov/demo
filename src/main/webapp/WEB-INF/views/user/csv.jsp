@@ -20,7 +20,7 @@
 		<tr id="table">
 		</tr>
 	</table>
-	
+	<input id="checkbox" type="checkbox" value="true" name="Headers are just fine.">
 	<button value="Submit" onclick="uploadAndSave()">Import</button>
 
 	<div id="demo"></div>
@@ -43,7 +43,13 @@ function uploadAndSave() {
 			header.push($('#header'+i+' option:selected').val());
 		}
 	}
+	
 	var json = JSON.stringify(header);
+	var x=$("#checkbox").is(":checked");
+	if (x) {
+		header = new Array();
+		json = JSON.stringify(header);
+	}
 	$.ajax({ 
 	    url: "/spring-jpa/players/import", 
 	    type: 'POST', 
@@ -124,6 +130,23 @@ function uploadFormData() {
 					 '<option value="fortyDash">fortyDash</option>'+
 					 '<option value="rating">rating</option>'+
 					 '<option value="gradYear">gradYear</option>'+
+					 '<option value="state">state</option>'+
+					 '<option value="schoolName">schoolName</option>'+
+					 '<option value="schoolCity">schoolCity</option>'+
+					 '<option value="maxprepsUrl">maxprepsUrl</option>'+
+					 '<option value="GP">GP</option>'+
+					 '<option value="Avg">Avg</option>'+
+					 '<option value="OBP">OBP</option>'+
+					 '<option value="H">H</option>'+
+					 '<option value="RBI">RBI</option>'+
+					 '<option value="R">R</option>'+
+					 '<option value="SB">SB</option>'+
+					 '<option value="AB">AB</option>'+
+					 '<option value="SLG">SLG</option>'+
+					 '<option value="PA">PA</option>'+
+					 '<option value="FP">FP</option>'+
+					 '<option value="K">K</option>'+
+					 '<option value="IP">IP</option>'+
 					 '</select>';
 					 ni.appendChild(newdiv);
 				}

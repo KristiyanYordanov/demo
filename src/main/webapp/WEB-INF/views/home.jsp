@@ -2,8 +2,10 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <html>
 <head>
+
 <title>Scout Automated Adviser</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="resources/css/jquery.dataTables.css.css" />
 <style>
 body {
 	margin: 0;
@@ -318,9 +320,9 @@ body {
 	<div id="content"></div>
 </body>
 <script type="text/javascript" charset="utf8"
-	src="resources/js/jquery-2.1.0.min.js"></script>
+	src="resources/js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" charset="utf8"
-	src="resources/js/jquery.dataTables.1.9.4.js"></script>
+	src="resources/js/jquery.dataTables.1.10.0.js"></script>
 <!--	
 <script type="text/javascript" charset="utf8"
 	src="resources/js/ZeroClipboard.js"></script>

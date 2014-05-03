@@ -28,20 +28,22 @@ public class PlayerModel {
 		try {
 			beanReader = new CsvBeanReader(new FileReader(File),
 					CsvPreference.STANDARD_PREFERENCE);
-			// Important! skip reading first row
-			final String[] headerImportant = beanReader.getHeader(true);
-			// setHeaders(header);
-
-			for (int i = 0; i < header.length; i++) {
-				if (header[i].equals("None")) {
-					header[i] = null;
+			
+			if (header.length == 0) {
+				// Important! skip reading first row
+				header = beanReader.getHeader(true);
+			}
+			else {
+				for (int i = 0; i < header.length; i++) {
+					if (header[i].equals("None")) {
+						header[i] = null;
+					}
 				}
 			}
-
+			
 			PlayerString playerString;
 			while ((playerString = beanReader.read(PlayerString.class, header)) != null) {
 				PlayerDoc player = loadPlayerDoc(playerString);
-				// System.out.println(player);
 				res.add(player);
 			}
 
@@ -137,16 +139,102 @@ public class PlayerModel {
 			res.setName(s.getName());
 		}
 		if (s.getState() != null) {
-			res.setName(s.getState());
+			res.setState(s.getState());
 		}
 		if (s.getSchoolCity() != null) {
-			res.setName(s.getSchoolCity());
+			res.setSchoolCity(s.getSchoolCity());
 		}
 		if (s.getSchoolName() != null) {
-			res.setName(s.getSchoolName());
+			res.setSchoolName(s.getSchoolName());
 		}
 		if (s.getMaxprepsUrl() != null) {
-			res.setName(s.getMaxprepsUrl());
+			res.setMaxprepsUrl(s.getMaxprepsUrl());
+		}
+		 
+		
+		if (s.getGP() != null) {
+			try {
+				res.setGP(Double.parseDouble(s.getGP()));
+			} catch (NumberFormatException e) {
+				logger.info(e.toString());
+			}
+		}
+		if (s.getAvg() != null) {
+			try {
+				res.setAvg(Double.parseDouble(s.getAvg()));
+			} catch (NumberFormatException e) {
+				logger.info(e.toString());
+			}
+		}
+		if (s.getOBP() != null) {
+			try {
+				res.setOBP(Double.parseDouble(s.getOBP()));
+			} catch (NumberFormatException e) {
+				logger.info(e.toString());
+			}
+		}
+		if (s.getH() != null) {
+			try {
+				res.setH(Double.parseDouble(s.getH()));
+			} catch (NumberFormatException e) {
+				logger.info(e.toString());
+			}
+		}
+		if (s.getRBI() != null) {
+			try {
+				res.setRBI(Double.parseDouble(s.getRBI()));
+			} catch (NumberFormatException e) {
+				logger.info(e.toString());
+			}
+		}
+		if (s.getR() != null) {
+			try {
+				res.setR(Double.parseDouble(s.getR()));
+			} catch (NumberFormatException e) {
+				logger.info(e.toString());
+			}
+		}
+		if (s.getSB() != null) {
+			try {
+				res.setSB(Double.parseDouble(s.getSB()));
+			} catch (NumberFormatException e) {
+				logger.info(e.toString());
+			}
+		}
+		if (s.getAB() != null) {
+			try {
+				res.setAB(Double.parseDouble(s.getAB()));
+			} catch (NumberFormatException e) {
+				logger.info(e.toString());
+			}
+		}
+		if (s.getFP() != null) {
+			try {
+				res.setFP(Double.parseDouble(s.getFP()));
+			} catch (NumberFormatException e) {
+				logger.info(e.toString());
+			}
+		}
+		if (s.getPA() != null) {
+			try {
+				res.setPA(Double.parseDouble(s.getPA()));
+			} catch (NumberFormatException e) {
+				logger.info(e.toString());
+			}
+		}
+		if (s.getK() != null) {
+			try {
+				res.setK(Double.parseDouble(s.getK()));
+			} catch (NumberFormatException e) {
+				logger.info(e.toString());
+			}
+		}
+		if (s.getIP() != null) {
+			try {
+				res.setIP(Double.parseDouble(s.getIP()));
+			} catch (NumberFormatException e) {
+				logger.info(e.toString());
+			}
 		}
 		
 		return res;

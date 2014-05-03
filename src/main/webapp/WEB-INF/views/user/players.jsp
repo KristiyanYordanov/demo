@@ -1,7 +1,5 @@
 <html>
 <head>
-<link rel="stylesheet" type="text/css"
-	href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
 </head>
 <title>Scout Automated Adviser</title>
 <style type="text/css">
@@ -47,7 +45,6 @@
 			<thead>
 				<tr>
 					<th>name</th>
-					<th>location</th>
 					<th>state</th>
 					<th>schoolName</th>
 					<th>schoolCity</th>
@@ -83,7 +80,6 @@
 			<tfoot>
 				<tr>
 					<th>name</th>
-					<th>location</th>
 					<th>state</th>
 					<th>schoolName</th>
 					<th>schoolCity</th>
@@ -138,11 +134,11 @@
 							[ 10, 100, 1000, "All" ] ], //row number drop down
 				//"bStateSave": true, // save table state
 				//"sDom": 'Rlfrtip', //reorder cols
-				//"sScrollY" : "300px",
-				//"sScrollX" : "150%",
-				//"sScrollXInner" : "150%",
-				//	"bScrollCollapse" : true,
-				});
+				"sScrollY" : "400px",
+				"sScrollX" : "500%",
+				"sScrollXInner" : "150%",
+				"bScrollCollapse" : true,
+			});
 		//show hide colums by column number
 		function fnShowHide(iCol) {
 			iCol = 0;

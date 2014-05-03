@@ -31,6 +31,7 @@ import com.krissoft.saa.config.PlayerDoc;
 import com.krissoft.saa.model.PlayerModel;
 import com.krissoft.saa.repository.PlayerRepository;
 import com.krissoft.saa.util.UploadedFile;
+import com.krissoft.saa.util.Util;
 
 @Controller
 @RequestMapping("players")
@@ -50,15 +51,16 @@ public class PlayerController {
 	@RequestMapping(value = "/playersjson", method = RequestMethod.GET)
 	public @ResponseBody
 	String getPlayers(HttpServletRequest request,
-			@RequestParam(value = "iSortCol_0") String sortColumn,
 			@RequestParam(value = "sSearch") String sSearch,
-			@RequestParam(value = "sSortDir_0") String sSortDir,
 			@RequestParam(value = "iDisplayLength") String iDisplayLength,
 			@RequestParam(value = "iDisplayStart") String iDisplayStart,
 			@RequestParam(value = "iSortCol_0") String iSortCol_0,
 			@RequestParam(value = "sSortDir_0") String sSortDir_0,
 			@RequestParam(value = "sEcho") String sEcho) throws IOException,
 			JSONException {
+		//Util.PrintAllRequestParams(request);
+		
+		
 		logger.info("start playercontroller.");
 		logger.debug("start playercontroller!");
 		
@@ -70,12 +72,18 @@ public class PlayerController {
 		int start = new Integer(iDisplayStart);
 		int pageRows = new Integer(iDisplayLength);
 		int size = 0;
-		if (iSortCol_0.equals("0") && sSortDir_0.equals("asc")) {
-			sort = new Sort(Sort.Direction.ASC, "name");
-		} else if (iSortCol_0.equals("0") && sSortDir_0.equals("desc")) {
-			sort = new Sort(Sort.Direction.DESC, "name");
+		
+		//TODO save header in DB and drop down list in view
+		String[] header = new String[]{"name", "state", "schoolName", "schoolCity", "maxprepsUrl", "pos", "height", "fortyDash", "weight", "stars", "rating", "gradYear", "GP", "Avg", "OBP", "H", "RBI", "R", "SB", "AB", "SLG", "PA", "FP", "K", "IP"};
+		for (int i = 0; i < header.length; i++) {
+			if (iSortCol_0.equals(Integer.toString(i)) && sSortDir_0.equals("asc")) {
+				sort = new Sort(Sort.Direction.ASC, header[i]);
+			}
+			else if (iSortCol_0.equals(Integer.toString(i)) && sSortDir_0.equals("desc") ){
+				sort = new Sort(Sort.Direction.DESC, header[i]);
+			}
 		}
-
+		
 		if (pageRows == -1 && sSearch.equals("")) {
 			size = (int) playerRepository.count();
 			page = playerRepository.findAll(new PageRequest(start, size, sort));
@@ -186,6 +194,7 @@ public class PlayerController {
 		for (PlayerDoc p : res) {
 			playerRepository.save(p);
 		}
+		System.out.println(file.getAbsolutePath() + " is imported.");
 	}
 
 	

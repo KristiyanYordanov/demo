@@ -61,7 +61,7 @@ public class MaxPrepsModel {
 			final String[] header = new String[] { "name","location","pos","stars","height","fortyDash","weight","gradYear","rating","state","schoolName","schoolCity","maxprepsUrl","GP","Avg","OBP","H","RBI","R","SB","AB","SLG","PA","FP","K","IP" }	;
 			data.writeHeader(header);
 			data.flush();
-			
+			String NULL = null;
 			String base = "http://www.maxpreps.com/";
 			for (int i = 0; i < source.size(); i++) {
 				// System.out.println("---------------------");
@@ -267,6 +267,7 @@ public class MaxPrepsModel {
 			}
 
 			PlayerController pc = new PlayerController();
+			
 			pc.importCsvFile(csvFile, header);
 			System.out.println(csvFile.getPath());
 		} catch (Exception ex) {

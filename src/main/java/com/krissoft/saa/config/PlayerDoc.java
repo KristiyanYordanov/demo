@@ -67,7 +67,18 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 	private double FP;
 	private double K;
 	private double IP;
+	private double test;
 	
+	
+	
+	public double getTest() {
+		return test;
+	}
+
+	public void setTest(double test) {
+		this.test = test;
+	}
+
 	public double getGP() {
 		return GP;
 	}
@@ -286,12 +297,11 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 	@Override
 	public String toString() {
 		return "[\"" + (name != null ? name + "\",\"" : "\",\"")
-		+ (location != null ? location + "\", \"" : "\",\"")
 		+ (state != null ? state + "\", \"" : "\",\"")
 		+ (schoolName != null ? schoolName + "\", \"" : "\",\"")
 		+ (schoolCity != null ? schoolCity + "\", \"" : "\",\"")
 		+ (maxprepsUrl != null ?maxprepsUrl + "\", \"" : "\",\"")
-		+ (pos != null ? pos + "\",\" " : "\"")
+		+ (pos != null ? pos + "\",\" " : "\",\"")
 		+ (height != null ? height + ", \"" : "\",\"")
 		+ (fortyDash != null ? fortyDash + "\", \"" : "\",\"")
 		+ (weight != 0 ? +weight + "\", \"" : "\",\"")
