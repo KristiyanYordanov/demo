@@ -75,8 +75,8 @@ public class DataTableJsonObject {
 						+ iTotalDisplayRecords + ", " : "")
 				+ (iTotalRecords != null ? "\"iTotalRecords\":" + iTotalRecords
 						+ ", " : "")
-				+ (aaData != null ? "\"aaData\":" + aaData.getContent() + ", " : "")
-				+ (sEcho != null ? "\"sEcho\":\"" + sEcho : "") + "\"}";
+				+ (aaData != null ? "\"aaData\":" + aaData.getContent() + " " : "")
+				+ (sEcho != null ? "\",sEcho\":\"" + sEcho +"\"" : "") + "}";
 	}
 
 }

@@ -1,18 +1,16 @@
 package com.krissoft.saa.config;
 
-import java.io.Serializable;
-
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.krissoft.saa.config.BaseMongoObject;
-
 @Document(collection = "playerdoc")
-public class PlayerDoc extends BaseMongoObject implements Serializable {
+public class PlayerDoc  {
 
 	/**
 	 * kris
 	 */
-	private static final long serialVersionUID = 1L;
+	
+	public  String[] header;
 
 	public PlayerDoc(String name, String location, String pos, int stars,
 			String height, Double fortyDash, int weight, int gradYear,
@@ -33,12 +31,28 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	public PlayerDoc(String[] header) {
+		super();
+		this.header = header;
+		// TODO Auto-generated constructor stub
+	}
 
 	public PlayerDoc(String name, String location) {
 		super();
 		this.name = name;
 		this.location = location;
 		// TODO Auto-generated constructor stub
+	}
+
+	@Id
+	private String id;
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	private String name;
@@ -293,9 +307,44 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
-
+	
+	
+	public String toString55() {
+		String res = "[\"";
+		for (int i = 0; i < header.length; i++) {
+			if (header[i].equals("name")) {
+				res = res + (name != null ? name + "\",\"" : "\",\""); 
+			}
+			else if (header[i].equals("state")){
+				res = res + (state != null ? state + "\", \"" : "\",\""); 
+			}
+			else if (header[i].equals("schoolName")){
+				res = res + (schoolName != null ? schoolName + "\", \"" : "\",\""); 
+			}
+			else if (header[i].equals("schoolCity")){
+				res = res + (schoolCity != null ? schoolCity + "\", \"" : "\",\""); 
+			}
+		}
+		res = res.substring(0, res.length()-2);
+		res  = res + "\"]";
+		return res;
+	}
 	@Override
 	public String toString() {
+		String res =
+				"{" 
+				//"DT_RowId": "row_57",
+				+"\"DT_RowId\":\""+ id + "\","
+				+"\"name\":"+ (name != null ?  "\"" + name + "\"," : "\",\"")
+				+"\"state\":"+ (state != null ? "\"" +  state + "\"," : "\",\"")
+				+"\"schoolName\":"+ (schoolName != null ? "\"" +  schoolName + "\", " : "\",\"")
+				+"\"schoolCity\":"+ (schoolCity != null ?"\"" +   schoolCity + "\"" : "\"")
+				+ "}";
+		
+		return res;
+	}
+
+	public String toString1() {
 		return "[\"" + (name != null ? name + "\",\"" : "\",\"")
 		+ (state != null ? state + "\", \"" : "\",\"")
 		+ (schoolName != null ? schoolName + "\", \"" : "\",\"")
@@ -322,7 +371,6 @@ public class PlayerDoc extends BaseMongoObject implements Serializable {
 		+ (K != 0 ? +K + "\", \"" : "\",\"")
 		+ (IP != 0 ? IP + "\"" : "\"") 
 		+ "]";
-
 	}
 
 		

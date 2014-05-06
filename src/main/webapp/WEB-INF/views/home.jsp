@@ -2,10 +2,16 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <html>
 <head>
-
 <title>Scout Automated Adviser</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" type="text/css" href="resources/css/jquery.dataTables.css.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/dataTables.editor.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/dataTables.tableTools.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/font-awesome.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/jquery.dataTables.css.css" />
 <style>
 body {
 	margin: 0;
@@ -321,16 +327,22 @@ body {
 </body>
 <script type="text/javascript" charset="utf8"
 	src="resources/js/jquery-1.10.2.min.js"></script>
+	
 <script type="text/javascript" charset="utf8"
 	src="resources/js/jquery.dataTables.1.10.0.js"></script>
-<!--	
+	
 <script type="text/javascript" charset="utf8"
-	src="resources/js/ZeroClipboard.js"></script>
+	src="resources/js/dataTables.tableTools.js"></script>
+	
 <script type="text/javascript" charset="utf8"
-	src="resources/js/ColReorder.min.js"></script>
+	src="resources/js/ZeroClipboard.min.js"></script>
+	
 <script type="text/javascript" charset="utf8"
-	src="resources/js/TableTools.2.1.4.js"></script>
-  -->
+	src="resources/js/dataTables.editor.js"></script>
+
+
+
+
 
 <script type="text/javascript">
 	$(document).ready(function() {

@@ -3,12 +3,15 @@ package com.krissoft.saa.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,20 +53,55 @@ public class PlayerController {
 
 	@RequestMapping(value = "/playersjson", method = RequestMethod.GET)
 	public @ResponseBody
-	String getPlayers(HttpServletRequest request,
-			@RequestParam(value = "sSearch") String sSearch,
-			@RequestParam(value = "iDisplayLength") String iDisplayLength,
-			@RequestParam(value = "iDisplayStart") String iDisplayStart,
-			@RequestParam(value = "iSortCol_0") String iSortCol_0,
-			@RequestParam(value = "sSortDir_0") String sSortDir_0,
-			@RequestParam(value = "sEcho") String sEcho) throws IOException,
-			JSONException {
-		//Util.PrintAllRequestParams(request);
+	String getPlayers1(HttpServletRequest request) throws JSONException {
+		System.out.println("enter in getPlayers1");
+		String res = "";
+		Page<PlayerDoc> page = null;
+		DataTableJsonObject jsonObject = new DataTableJsonObject();
+
+		String iDisplayStart = "1";
+		String iDisplayLength = "10";
+
+		int start = new Integer(iDisplayStart);
+		int pageRows = new Integer(iDisplayLength);
+
+		// TODO save header in DB and drop down list in view
+		String[] header = new String[] { "name", "state", "schoolName",
+				"schoolCity", "maxprepsUrl", "pos", "height", "fortyDash",
+				"weight", "stars", "rating", "gradYear", "GP", "Avg", "OBP",
+				"H", "RBI", "R", "SB", "AB", "SLG", "PA", "FP", "K", "IP" };
+
+//		page = playerRepository.findAll(new PageRequest(start, pageRows));
+		// (1, size); 
+		int size = (int) playerRepository.count();
+		System.out.println("size size = " + size);
+		page = playerRepository.findAll(new PageRequest(1, size-1));
 		
 		
+		
+		jsonObject.setAaData(page);
+		System.out.println("page size = " + page.getNumberOfElements());
+		res = jsonObject.toString();
+		jsonObject.setSEcho("1");
+		System.out.println("res = " + res);
+		return res;
+	}
+
+	@RequestMapping(value = "/playersjson1", method = RequestMethod.GET)
+	public @ResponseBody
+	String getPlayers(HttpServletRequest request) throws JSONException {
+		Util.PrintAllRequestParams(request);
+		System.out.println("enter in getPlayers");
+		String sSearch = "";
+		String iDisplayLength = "";
+		String iDisplayStart = "";
+		String iSortCol_0 = "";
+		String sSortDir_0 = "";
+		String sEcho = "";
+
 		logger.info("start playercontroller.");
 		logger.debug("start playercontroller!");
-		
+
 		System.out.println(System.getProperty("catalina.base"));
 		Sort sort = null;
 		Page<PlayerDoc> page = null;
@@ -72,18 +110,22 @@ public class PlayerController {
 		int start = new Integer(iDisplayStart);
 		int pageRows = new Integer(iDisplayLength);
 		int size = 0;
-		
-		//TODO save header in DB and drop down list in view
-		String[] header = new String[]{"name", "state", "schoolName", "schoolCity", "maxprepsUrl", "pos", "height", "fortyDash", "weight", "stars", "rating", "gradYear", "GP", "Avg", "OBP", "H", "RBI", "R", "SB", "AB", "SLG", "PA", "FP", "K", "IP"};
+
+		// TODO save header in DB and drop down list in view
+		String[] header = new String[] { "name", "state", "schoolName",
+				"schoolCity", "maxprepsUrl", "pos", "height", "fortyDash",
+				"weight", "stars", "rating", "gradYear", "GP", "Avg", "OBP",
+				"H", "RBI", "R", "SB", "AB", "SLG", "PA", "FP", "K", "IP" };
 		for (int i = 0; i < header.length; i++) {
-			if (iSortCol_0.equals(Integer.toString(i)) && sSortDir_0.equals("asc")) {
+			if (iSortCol_0.equals(Integer.toString(i))
+					&& sSortDir_0.equals("asc")) {
 				sort = new Sort(Sort.Direction.ASC, header[i]);
-			}
-			else if (iSortCol_0.equals(Integer.toString(i)) && sSortDir_0.equals("desc") ){
+			} else if (iSortCol_0.equals(Integer.toString(i))
+					&& sSortDir_0.equals("desc")) {
 				sort = new Sort(Sort.Direction.DESC, header[i]);
 			}
 		}
-		
+
 		if (pageRows == -1 && sSearch.equals("")) {
 			size = (int) playerRepository.count();
 			page = playerRepository.findAll(new PageRequest(start, size, sort));
@@ -105,16 +147,68 @@ public class PlayerController {
 			page = playerRepository.findAll(new PageRequest(pageNumber1,
 					pageRows, sort));
 		}
+
+		page.getContent().get(0).header = header;
+		for (PlayerDoc pd : page.getContent()) {
+			pd.header = header;
+		}
 		jsonObject.setSEcho(sEcho);
 		jsonObject.setAaData(page);
 		jsonObject.setITotalRecords(size);
 		jsonObject.setITotalDisplayRecords(size);
 		System.out.println(jsonObject.toString());
-		return jsonObject.toString();
+		String res = jsonObject.toString();
+		return res;
+	}
+
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public @ResponseBody  String create(ModelMap model) {
+		System.out.println("create method");
+		return "";
 	}
 	
+	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
+	public @ResponseBody String edit(@RequestBody  String action) throws IllegalAccessException, InvocationTargetException {
+		action = action.replaceAll("data", "").replaceAll("%5D", "").replaceAll("%5B", "").replaceAll("\\+", " ");
+		System.out.println("edit method = "  + action);
+		
+		PlayerDoc p =  new PlayerDoc();
+		 for (Field field : PlayerDoc.class.getDeclaredFields()) {
+			    String name = field.getName();
+			    System.out.println("name = " + name);
+			    if (action.contains(field.getName())) {
+			    	int index = action.indexOf(name)+name.length()+1;
+			    	int valueIndex;
+			    	String last = action.substring(index, action.length());
+			    	if (last.contains("&")) {
+			    		valueIndex =last.indexOf("&");
+			    	}
+			    	else {
+			    		valueIndex = last.length();
+			    	}
+			    	
+			    	
+			    	System.out.println("test =" + action.substring(index, action.length()));
+			    	
+			    	System.out.println("index =" + index);
+			    	System.out.println("valueIndex =" + valueIndex);
+			    	String value = last.substring(0, valueIndex);
+			    	System.out.println("value =" + value);
+			    	
+					BeanUtils.setProperty(p, name, value);
+			    }
+		 }
+		 System.out.println("p =" + p);
+		 playerRepository.save(p);
+		return "";
+	}
 	
-
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	public @ResponseBody String delete(ModelMap model) {
+		System.out.println("delete method");
+		return "";
+	}
+	
 	@RequestMapping(value = "/user/players", method = RequestMethod.GET)
 	public String home2(ModelMap model) {
 		return "user/players";
@@ -184,7 +278,7 @@ public class PlayerController {
 		}
 		return res;
 	}
-	
+
 	public void importCsvFile(File file, String[] header) throws Exception {
 		PlayerModel playerModel = new PlayerModel();
 		File upLoadedfile = new File(System.getProperty("java.io.tmpdir")
@@ -197,8 +291,6 @@ public class PlayerController {
 		System.out.println(file.getAbsolutePath() + " is imported.");
 	}
 
-	
-	
 	@RequestMapping(value = "/schoolsjson", method = RequestMethod.GET)
 	public @ResponseBody
 	String getSchools(HttpServletRequest request,
@@ -213,7 +305,7 @@ public class PlayerController {
 			JSONException {
 		logger.info("start playercontroller.");
 		logger.debug("start playercontroller!");
-		
+
 		System.out.println(System.getProperty("catalina.base"));
 		Sort sort = null;
 		Page<PlayerDoc> page = null;
@@ -255,7 +347,7 @@ public class PlayerController {
 		jsonObject.setITotalDisplayRecords(size);
 		return jsonObject.toString();
 	}
-	
+
 	@RequestMapping(value = "/schools", method = RequestMethod.GET)
 	public String schools(ModelMap model) {
 		return "user/schools";

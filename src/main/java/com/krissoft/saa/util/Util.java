@@ -233,6 +233,7 @@ public class Util {
 
 	public static void PrintAllRequestParams(HttpServletRequest request) {
 		Map<String, String[]> parameters = request.getParameterMap();
+		System.out.println("params: " + parameters.size());
 		for (String key : parameters.keySet()) {
 			System.out.println(key);
 			String[] vals = parameters.get(key);
