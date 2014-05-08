@@ -175,7 +175,6 @@ public class PlayerController {
 		PlayerDoc p =  new PlayerDoc();
 		 for (Field field : PlayerDoc.class.getDeclaredFields()) {
 			    String name = field.getName();
-			    System.out.println("name = " + name);
 			    if (action.contains(field.getName())) {
 			    	int index = action.indexOf(name)+name.length()+1;
 			    	int valueIndex;
@@ -186,21 +185,21 @@ public class PlayerController {
 			    	else {
 			    		valueIndex = last.length();
 			    	}
+//			    	System.out.println("test =" + action.substring(index, action.length()));
+//			    	System.out.println("index =" + index);
+//			    	System.out.println("valueIndex =" + valueIndex);
+//			    	System.out.println("value =" + value);
 			    	
-			    	
-			    	System.out.println("test =" + action.substring(index, action.length()));
-			    	
-			    	System.out.println("index =" + index);
-			    	System.out.println("valueIndex =" + valueIndex);
-			    	String value = last.substring(0, valueIndex);
-			    	System.out.println("value =" + value);
-			    	
+			    	String value = last.substring(0, valueIndex);			    	
 					BeanUtils.setProperty(p, name, value);
 			    }
 		 }
 		 System.out.println("p =" + p);
 		 playerRepository.save(p);
-		return "";
+		 
+		String res =  "{\"row\":{ \"DT_RowId\":\""+ p.getId()+ "\",\"name\":\""+p.getName()+"\",\"state\":\"" + p.getState() + "\",\"schoolName\":\""+p.getSchoolName()+"\",\"schoolCity\":\""+p.getSchoolCity()+"\"}";
+		 System.out.println("res =" + res);
+		return res;
 	}
 	
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)

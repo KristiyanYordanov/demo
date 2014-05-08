@@ -5,13 +5,16 @@
 <title>Scout Automated Adviser</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
-	href="resources/css/dataTables.editor.min.css" />
+	href="resources/css/jquery.dataTables.css.css" />
+	
 <link rel="stylesheet" type="text/css"
 	href="resources/css/dataTables.tableTools.css" />
+	
+<link rel="stylesheet" type="text/css"
+	href="resources/css/dataTables.editor.min.css" />
+	
 <link rel="stylesheet" type="text/css"
 	href="resources/css/font-awesome.css" />
-<link rel="stylesheet" type="text/css"
-	href="resources/css/jquery.dataTables.css.css" />
 <style>
 body {
 	margin: 0;

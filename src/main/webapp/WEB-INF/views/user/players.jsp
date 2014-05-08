@@ -1,6 +1,18 @@
 <html>
 <head>
 <title>Scout Automated Adviser</title>
+<link rel="stylesheet" type="text/css"
+	href="resources/css/jquery.dataTables.css.css" />
+	
+<link rel="stylesheet" type="text/css"
+	href="resources/css/dataTables.tableTools.css" />
+	
+<link rel="stylesheet" type="text/css"
+	href="resources/css/dataTables.editor.min.css" />
+	
+<link rel="stylesheet" type="text/css"
+	href="resources/css/font-awesome.css" />
+	
 <style type="text/css">
 .dataTables_info {
 	background: linear-gradient(to bottom, #A8DDE8 0%, #96CBD7 100%);
@@ -58,7 +70,6 @@ table.dataTable tr.selected td:first-child:before {
 	src="resources/js/dataTables.tableTools.js"></script>
 <script type="text/javascript" charset="utf8"
 	src="resources/js/ZeroClipboard.min.js"></script>
-	
 <script type="text/javascript" charset="utf8"
 	src="resources/js/dataTables.editor.js"></script>
 	
