@@ -7,38 +7,38 @@ import com.google.gson.annotations.Expose;
 public class DataTableJsonObject {
 
 	@Expose
-	private Integer iTotalDisplayRecords;
+	private Integer recordsFiltered;
 	@Expose
-	private Integer iTotalRecords;
+	private Integer recordsTotal;
 	@Expose
 	private Page<PlayerDoc> aaData;
 	@Expose
-	private String sEcho;
+	private String draw;
 
-	public Integer getITotalDisplayRecords() {
-		return iTotalDisplayRecords;
+	public Integer getRecordsFiltered() {
+		return recordsFiltered;
 	}
 
-	public void setITotalDisplayRecords(Integer iTotalDisplayRecords) {
-		this.iTotalDisplayRecords = iTotalDisplayRecords;
+	public void setRecordsFiltered(Integer recordsFiltered) {
+		this.recordsFiltered = recordsFiltered;
 	}
 
-	public DataTableJsonObject withITotalDisplayRecords(
-			Integer iTotalDisplayRecords) {
-		this.iTotalDisplayRecords = iTotalDisplayRecords;
+	public DataTableJsonObject withRecordsFiltered(
+			Integer recordsFiltered) {
+		this.recordsFiltered = recordsFiltered;
 		return this;
 	}
 
-	public Integer getITotalRecords() {
-		return iTotalRecords;
+	public Integer getRecordsTotal() {
+		return recordsTotal;
 	}
 
-	public void setITotalRecords(Integer iTotalRecords) {
-		this.iTotalRecords = iTotalRecords;
+	public void setRecordsTotal(Integer recordsTotal) {
+		this.recordsTotal = recordsTotal;
 	}
 
-	public DataTableJsonObject withITotalRecords(Integer iTotalRecords) {
-		this.iTotalRecords = iTotalRecords;
+	public DataTableJsonObject withRecordsTotal(Integer recordsTotal) {
+		this.recordsTotal = recordsTotal;
 		return this;
 	}
 
@@ -55,28 +55,28 @@ public class DataTableJsonObject {
 		return this;
 	}
 
-	public String getSEcho() {
-		return sEcho;
+	public String getDraw() {
+		return draw;
 	}
 
-	public void setSEcho(String sEcho) {
-		this.sEcho = sEcho;
+	public void setDraw(String draw) {
+		this.draw = draw;
 	}
 
-	public DataTableJsonObject withSEcho(String sEcho) {
-		this.sEcho = sEcho;
+	public DataTableJsonObject withDraw(String draw) {
+		this.draw = draw;
 		return this;
 	}
 
 	@Override
 	public String toString() {
 		return "{"
-				+ (iTotalDisplayRecords != null ? "\"iTotalDisplayRecords\":"
-						+ iTotalDisplayRecords + ", " : "")
-				+ (iTotalRecords != null ? "\"iTotalRecords\":" + iTotalRecords
-						+ ", " : "")
+				+ (recordsFiltered != null ? "\"recordsFiltered\":\""
+						+ recordsFiltered + "\", " : "")
+				+ (recordsTotal != null ? "\"recordsTotal\":\"" + recordsTotal
+						+ "\", " : "")
 				+ (aaData != null ? "\"aaData\":" + aaData.getContent() + " " : "")
-				+ (sEcho != null ? "\",sEcho\":\"" + sEcho +"\"" : "") + "}";
+				+ (draw != null ? ",\"draw\":\"" + draw +"\"" : "") + "}";
 	}
 
 }

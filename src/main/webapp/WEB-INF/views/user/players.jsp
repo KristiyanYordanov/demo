@@ -31,7 +31,7 @@
 .dataTables_length {
 	background: linear-gradient(to bottom, #A8DDE8 0%, #96CBD7 100%);
 	border: thin;
-	height: 25px;
+	height: 37px;
 	padding-left: 10px;
 	padding-right: 10px;
 	-webkit-border-top-right-radius: 5px;
@@ -121,7 +121,11 @@ table.dataTable tr.selected td:first-child:before {
 	    $('#example').DataTable( {
 	        //dom: "Tfrtip",
 	     	dom: '<"top"iflpT<"clear">>rt<"bottom"iflp<"clear">>', 
-	        ajax: "players/playersjson",
+	        ajax: {
+	            url: "players/playersjson",
+	            type: "GET"
+	        },
+	        serverSide: true,
 	        columns: [
 	            { data: null, render: function ( data, type, row ) {
 	            	//id data.DT_RowId
@@ -148,6 +152,7 @@ table.dataTable tr.selected td:first-child:before {
 	</script>
 </head>
 <body>
+<br>	
 	<table id="example" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>

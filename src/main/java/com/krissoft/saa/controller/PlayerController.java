@@ -50,46 +50,88 @@ public class PlayerController {
 	public PlayerController() {
 		ufile = new UploadedFile();
 	}
-
+	
 	@RequestMapping(value = "/playersjson", method = RequestMethod.GET)
 	public @ResponseBody
-	String getPlayers1(HttpServletRequest request) throws JSONException {
+	String getPlayers1(HttpServletRequest request,
+			@RequestParam(value = "length") String length,
+			@RequestParam(value = "start") String startStr,
+			@RequestParam(value = "draw") String draw) throws JSONException {
+		Util.PrintAllRequestParams(request);
+		String sSortDir_0 = "";
+		String iSortCol_0 = "";
+		String sSearch = "";
+		System.out.println("length = " + length);
+		System.out.println("startStr = " + startStr);
+		System.out.println("search = " + sSearch);
 		System.out.println("enter in getPlayers1");
 		String res = "";
 		Page<PlayerDoc> page = null;
 		DataTableJsonObject jsonObject = new DataTableJsonObject();
+		Sort sort = null;
 
-		String iDisplayStart = "1";
-		String iDisplayLength = "10";
-
-		int start = new Integer(iDisplayStart);
-		int pageRows = new Integer(iDisplayLength);
-
+		int start = new Integer(startStr);
+		int pageRows = new Integer(length);
+		int size = 0;
+//		page = playerRepository.findAll(new PageRequest(start, pageRows));
+		// (1, size); 
+//		int size = (int) playerRepository.count();
+//		System.out.println("size size = " + size);
+//		if (size != 0) {//if size = 0 -> exception
+//			page = playerRepository.findAll(new PageRequest(start-1, size));
+//		}
+		
 		// TODO save header in DB and drop down list in view
 		String[] header = new String[] { "name", "state", "schoolName",
 				"schoolCity", "maxprepsUrl", "pos", "height", "fortyDash",
 				"weight", "stars", "rating", "gradYear", "GP", "Avg", "OBP",
 				"H", "RBI", "R", "SB", "AB", "SLG", "PA", "FP", "K", "IP" };
+		for (int i = 0; i < header.length; i++) {
+			if (iSortCol_0.equals(Integer.toString(i))
+					&& sSortDir_0.equals("asc")) {
+				sort = new Sort(Sort.Direction.ASC, header[i]);
+			} else if (iSortCol_0.equals(Integer.toString(i))
+					&& sSortDir_0.equals("desc")) {
+				sort = new Sort(Sort.Direction.DESC, header[i]);
+			}
+		}
 
-//		page = playerRepository.findAll(new PageRequest(start, pageRows));
-		// (1, size); 
-		int size = (int) playerRepository.count();
-		System.out.println("size size = " + size);
-		page = playerRepository.findAll(new PageRequest(1, size-1));
-		
-		
-		
+		if (pageRows == -1 && sSearch.equals("")) {
+			size = (int) playerRepository.count();
+			page = playerRepository.findAll(new PageRequest(start, size, sort));
+		} else if (sSearch != null && !sSearch.equals("") && pageRows == -1) {
+			size = (int) playerRepository.count(sSearch);
+			page = playerRepository.findByNameRegex(sSearch, new PageRequest(
+					start, size, sort));
+		} else if (sSearch != null && !sSearch.equals("") && pageRows != -1) {
+			size = (int) playerRepository.count(sSearch);
+			int pageNumber = start / pageRows;
+			page = playerRepository.findByNameRegex(sSearch, new PageRequest(
+					pageNumber, pageRows, sort));
+		} else {
+			size = (int) playerRepository.count();
+			int pageNumber1 = start / pageRows;
+			if (pageNumber1 == 0) {
+				pageNumber1 = 1;
+			}
+			page = playerRepository.findAll(new PageRequest(pageNumber1,
+					pageRows, sort));
+		}
 		jsonObject.setAaData(page);
 		System.out.println("page size = " + page.getNumberOfElements());
+		jsonObject.setDraw(draw);
+		jsonObject.setRecordsFiltered(size);
+		jsonObject.setRecordsTotal(size);
 		res = jsonObject.toString();
-		jsonObject.setSEcho("1");
 		System.out.println("res = " + res);
 		return res;
 	}
 
 	@RequestMapping(value = "/playersjson1", method = RequestMethod.GET)
 	public @ResponseBody
-	String getPlayers(HttpServletRequest request) throws JSONException {
+	String getPlayers(HttpServletRequest request
+			
+) throws JSONException {
 		Util.PrintAllRequestParams(request);
 		System.out.println("enter in getPlayers");
 		String sSearch = "";
@@ -152,10 +194,10 @@ public class PlayerController {
 		for (PlayerDoc pd : page.getContent()) {
 			pd.header = header;
 		}
-		jsonObject.setSEcho(sEcho);
+//		jsonObject.setSEcho(sEcho);
 		jsonObject.setAaData(page);
-		jsonObject.setITotalRecords(size);
-		jsonObject.setITotalDisplayRecords(size);
+//		jsonObject.setITotalRecords(size);
+//		jsonObject.setITotalDisplayRecords(size);
 		System.out.println(jsonObject.toString());
 		String res = jsonObject.toString();
 		return res;
@@ -340,10 +382,10 @@ public class PlayerController {
 			page = playerRepository.findAll(new PageRequest(pageNumber1,
 					pageRows, sort));
 		}
-		jsonObject.setSEcho(sEcho);
-		jsonObject.setAaData(page);
-		jsonObject.setITotalRecords(size);
-		jsonObject.setITotalDisplayRecords(size);
+//		jsonObject.setSEcho(sEcho);
+//		jsonObject.setAaData(page);
+//		jsonObject.setITotalRecords(size);
+//		jsonObject.setITotalDisplayRecords(size);
 		return jsonObject.toString();
 	}
 
