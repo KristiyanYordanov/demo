@@ -5,10 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,8 +14,6 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
-import org.supercsv.cellprocessor.Optional;
-import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
@@ -286,26 +281,8 @@ public class MaxPrepsModel {
 
 	}
 
-	private static CellProcessor[] getProcessors() {
-
-		final CellProcessor[] processors = new CellProcessor[] {
-				new Optional(), // firstName
-				new Optional(), // lastName
-				new Optional(), // birthDate
-				new Optional(), // mailingAddress
-				new Optional(), // married
-				new Optional(), // numberOfKids
-				new Optional(), // favouriteQuote
-				new Optional(), // email
-				new Optional() // loyaltyPoints
-		};
-
-		return processors;
-	}
 
 	public static void main(String[] args) throws Exception {
-		File file = new File(System.getProperty("java.io.tmpdir"),
-				"www.maxpreps.com.csv");
 		MaxPrepsModel model = new MaxPrepsModel();
 		model.run();
 	}

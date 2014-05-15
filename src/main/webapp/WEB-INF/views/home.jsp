@@ -5,15 +5,6 @@
 <title>Scout Automated Adviser</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
-	href="resources/css/jquery.dataTables.css.css" />
-	
-<link rel="stylesheet" type="text/css"
-	href="resources/css/dataTables.tableTools.css" />
-	
-<link rel="stylesheet" type="text/css"
-	href="resources/css/dataTables.editor.min.css" />
-	
-<link rel="stylesheet" type="text/css"
 	href="resources/css/font-awesome.css" />
 <style>
 body {
@@ -330,41 +321,86 @@ body {
 </body>
 <script type="text/javascript" charset="utf8"
 	src="resources/js/jquery-1.10.2.min.js"></script>
-	
-<script type="text/javascript" charset="utf8"
-	src="resources/js/jquery.dataTables.1.10.0.js"></script>
-	
-<script type="text/javascript" charset="utf8"
-	src="resources/js/dataTables.tableTools.js"></script>
-	
-<script type="text/javascript" charset="utf8"
-	src="resources/js/ZeroClipboard.min.js"></script>
-	
-<script type="text/javascript" charset="utf8"
-	src="resources/js/dataTables.editor.js"></script>
-
-
-
-
 
 <script type="text/javascript">
+	var cookie_name = "page";
+	var page = get_cookie(cookie_name);
+
+	function disableF5(e) {
+		if ((e.which || e.keyCode) == 116) {
+			event.preventDefault();
+			if (page === 'csv') {
+				var html = 'players/user/csv';
+				$('#content').load(html);
+				document.cookie = "page=" + "csv";
+				page = get_cookie(cookie_name);
+				window.location.hash = "#" + page.toString();
+			}
+			else if (page === 'players') {
+				var html = 'players/user/players';
+				$('#content').load(html);
+			}
+			else if (page === 'players') {
+				var html = 'players/user/players';
+				$('#content').load(html);
+			}
+			else if (page === 'test') {
+				var html = 'players/test';
+				$('#content').load(html);
+			}
+			else if (page === 'load_schools') {
+				var html = 'players/schools';
+				$('#content').load(html);
+			}
+			else {
+				var html = 'players/user/players';
+				$('#content').load(html);
+			}
+		}
+	};
+	$(document).on("keydown", disableF5);
+	
+	function get_cookie(cookie_name) {
+		var cookie_string = document.cookie;
+		if (cookie_string.length != 0) {
+			var cookie_value = cookie_string.match('(^|;)[\s]*' + cookie_name
+					+ '=([^;]*)');
+			return decodeURIComponent(cookie_value[2]);
+		}
+		return '';
+	}
+	
 	$(document).ready(function() {
-		var html = 'players/user/players';
-		$('#content').load(html);
+		if (page === undefined || page === "") {
+			document.cookie = "page=" + "players";
+			page = get_cookie(cookie_name);
+			var html = 'players/user/players';
+			$('#content').load(html);
+			window.location.hash = "#" +page;
+		}
 	});
 	$("#load_csv").on("click", function() {
 		var html = 'players/user/csv';
 		$('#content').load(html);
+		document.cookie = "page=" + "csv";
+		page = get_cookie(cookie_name);
 	});
 	$("#load_players").on("click", function() {
+		document.cookie = "page=" + "players";
+		page = get_cookie(cookie_name);
 		var html = 'players/user/players';
 		$('#content').load(html);
+
 	});
 	$("#test").on("click", function() {
+		document.cookie = "page=" + "test";
+		page = get_cookie(cookie_name);
 		var html = 'players/test';
 		$('#content').load(html);
 	});
 	$("#load_schools").on("click", function() {
+		document.cookie = "page=" + "load_schools";
+		page = get_cookie(cookie_name);
 		var html = 'players/schools';
 		$('#content').load(html);
 	});

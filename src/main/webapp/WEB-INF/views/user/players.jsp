@@ -81,17 +81,20 @@ table.dataTable tr.selected td:first-child:before {
 	        ajax: {
 	            create: {
 	                type: 'POST',
+	            	dataType: 'json', 
+	            	contentType: 'application/json',
 	                url:  'players/create'
 	            },
 	            edit: {
+	            	type: 'PUT',
 	            	dataType: 'json', 
 	            	contentType: 'application/json',
-	            	//mimeType: 'application/json',
-	                type: 'PUT',
 	                url:  'players/edit'
 	            },
 	            remove: {
 	                type: 'DELETE',
+	                dataType: 'json', 
+	            	contentType: 'application/json',
 	                url:  'players/delete'
 	            }
 	        },

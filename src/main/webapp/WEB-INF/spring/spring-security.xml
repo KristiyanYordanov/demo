@@ -17,7 +17,7 @@
 		<intercept-url pattern="/user/**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/**" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')" />
 		<form-login login-page="/login" default-target-url="/home" always-use-default-target="true" authentication-failure-url="/login?authFailed=true" />
-		<logout invalidate-session="true" delete-cookies="JSESSIONID" logout-success-url="/login" />
+		<logout invalidate-session="true" delete-cookies="page"   logout-success-url="/login" />
 		
 		<!-- create new clean session when user logs in -->
 		<session-management invalid-session-url="/login"

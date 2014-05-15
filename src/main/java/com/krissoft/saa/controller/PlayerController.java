@@ -29,12 +29,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.krissoft.saa.config.DataTableEditorJsonObject;
 import com.krissoft.saa.config.DataTableJsonObject;
 import com.krissoft.saa.config.PlayerDoc;
 import com.krissoft.saa.model.PlayerModel;
 import com.krissoft.saa.repository.PlayerRepository;
 import com.krissoft.saa.util.UploadedFile;
 import com.krissoft.saa.util.Util;
+import com.mongodb.MongoServerSelectionException;
 
 @Controller
 @RequestMapping("players")
@@ -50,72 +52,67 @@ public class PlayerController {
 	public PlayerController() {
 		ufile = new UploadedFile();
 	}
-	
+
 	@RequestMapping(value = "/playersjson", method = RequestMethod.GET)
 	public @ResponseBody
 	String getPlayers1(HttpServletRequest request,
 			@RequestParam(value = "length") String length,
 			@RequestParam(value = "start") String startStr,
-			@RequestParam(value = "draw") String draw) throws JSONException {
-		Util.PrintAllRequestParams(request);
-		String sSortDir_0 = "";
-		String iSortCol_0 = "";
-		String sSearch = "";
+			@RequestParam(value = "draw") String draw,
+			@RequestParam(value = "search[value]") String sSearch,
+			@RequestParam(value = "order[0][dir]") String sSortDir_0,
+			@RequestParam(value = "order[0][column]") String iSortCol_0)
+			throws JSONException {
 		System.out.println("length = " + length);
 		System.out.println("startStr = " + startStr);
 		System.out.println("search = " + sSearch);
 		System.out.println("enter in getPlayers1");
 		String res = "";
 		Page<PlayerDoc> page = null;
-		DataTableJsonObject jsonObject = new DataTableJsonObject();
+		DataTableEditorJsonObject jsonObject = new DataTableEditorJsonObject();
 		Sort sort = null;
 
 		int start = new Integer(startStr);
 		int pageRows = new Integer(length);
 		int size = 0;
-//		page = playerRepository.findAll(new PageRequest(start, pageRows));
-		// (1, size); 
-//		int size = (int) playerRepository.count();
-//		System.out.println("size size = " + size);
-//		if (size != 0) {//if size = 0 -> exception
-//			page = playerRepository.findAll(new PageRequest(start-1, size));
-//		}
-		
 		// TODO save header in DB and drop down list in view
 		String[] header = new String[] { "name", "state", "schoolName",
 				"schoolCity", "maxprepsUrl", "pos", "height", "fortyDash",
 				"weight", "stars", "rating", "gradYear", "GP", "Avg", "OBP",
 				"H", "RBI", "R", "SB", "AB", "SLG", "PA", "FP", "K", "IP" };
+		int sortCol = Integer.parseInt(iSortCol_0) - 1;
 		for (int i = 0; i < header.length; i++) {
-			if (iSortCol_0.equals(Integer.toString(i))
-					&& sSortDir_0.equals("asc")) {
+			if (sortCol == i && sSortDir_0.equals("asc")) {
 				sort = new Sort(Sort.Direction.ASC, header[i]);
-			} else if (iSortCol_0.equals(Integer.toString(i))
-					&& sSortDir_0.equals("desc")) {
+			} else if (sortCol == i && sSortDir_0.equals("desc")) {
 				sort = new Sort(Sort.Direction.DESC, header[i]);
 			}
 		}
-
-		if (pageRows == -1 && sSearch.equals("")) {
-			size = (int) playerRepository.count();
-			page = playerRepository.findAll(new PageRequest(start, size, sort));
-		} else if (sSearch != null && !sSearch.equals("") && pageRows == -1) {
-			size = (int) playerRepository.count(sSearch);
-			page = playerRepository.findByNameRegex(sSearch, new PageRequest(
-					start, size, sort));
-		} else if (sSearch != null && !sSearch.equals("") && pageRows != -1) {
-			size = (int) playerRepository.count(sSearch);
-			int pageNumber = start / pageRows;
-			page = playerRepository.findByNameRegex(sSearch, new PageRequest(
-					pageNumber, pageRows, sort));
-		} else {
-			size = (int) playerRepository.count();
-			int pageNumber1 = start / pageRows;
-			if (pageNumber1 == 0) {
-				pageNumber1 = 1;
+		try {
+			if (pageRows == -1 && sSearch.equals("")) {
+				size = (int) playerRepository.count();
+				page = playerRepository.findAll(new PageRequest(start, size,
+						sort));
+			} else if (sSearch != null && !sSearch.equals("") && pageRows == -1) {
+				size = (int) playerRepository.count(sSearch);
+				page = playerRepository.findByNameRegex(sSearch,
+						new PageRequest(start, size, sort));
+			} else if (sSearch != null && !sSearch.equals("") && pageRows != -1) {
+				size = (int) playerRepository.count(sSearch);
+				int pageNumber = start / pageRows;
+				page = playerRepository.findByNameRegex(sSearch,
+						new PageRequest(pageNumber, pageRows, sort));
+			} else {
+				size = (int) playerRepository.count();
+				int pageNumber1 = start / pageRows;
+				if (pageNumber1 == 0) {
+					pageNumber1 = 1;
+				}
+				page = playerRepository.findAll(new PageRequest(pageNumber1,
+						pageRows, sort));
 			}
-			page = playerRepository.findAll(new PageRequest(pageNumber1,
-					pageRows, sort));
+		} catch (MongoServerSelectionException ex) {
+			System.out.println("No connection with DB  " + ex);
 		}
 		jsonObject.setAaData(page);
 		System.out.println("page size = " + page.getNumberOfElements());
@@ -130,8 +127,8 @@ public class PlayerController {
 	@RequestMapping(value = "/playersjson1", method = RequestMethod.GET)
 	public @ResponseBody
 	String getPlayers(HttpServletRequest request
-			
-) throws JSONException {
+
+	) throws JSONException {
 		Util.PrintAllRequestParams(request);
 		System.out.println("enter in getPlayers");
 		String sSearch = "";
@@ -194,62 +191,113 @@ public class PlayerController {
 		for (PlayerDoc pd : page.getContent()) {
 			pd.header = header;
 		}
-//		jsonObject.setSEcho(sEcho);
+		// jsonObject.setSEcho(sEcho);
 		jsonObject.setAaData(page);
-//		jsonObject.setITotalRecords(size);
-//		jsonObject.setITotalDisplayRecords(size);
+		// jsonObject.setITotalRecords(size);
+		// jsonObject.setITotalDisplayRecords(size);
 		System.out.println(jsonObject.toString());
 		String res = jsonObject.toString();
 		return res;
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public @ResponseBody  String create(ModelMap model) {
+	public @ResponseBody
+	String create(@RequestBody String create) throws IllegalAccessException,
+			InvocationTargetException {
 		System.out.println("create method");
-		return "";
-	}
-	
-	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
-	public @ResponseBody String edit(@RequestBody  String action) throws IllegalAccessException, InvocationTargetException {
-		action = action.replaceAll("data", "").replaceAll("%5D", "").replaceAll("%5B", "").replaceAll("\\+", " ");
-		System.out.println("edit method = "  + action);
-		
-		PlayerDoc p =  new PlayerDoc();
-		 for (Field field : PlayerDoc.class.getDeclaredFields()) {
-			    String name = field.getName();
-			    if (action.contains(field.getName())) {
-			    	int index = action.indexOf(name)+name.length()+1;
-			    	int valueIndex;
-			    	String last = action.substring(index, action.length());
-			    	if (last.contains("&")) {
-			    		valueIndex =last.indexOf("&");
-			    	}
-			    	else {
-			    		valueIndex = last.length();
-			    	}
-//			    	System.out.println("test =" + action.substring(index, action.length()));
-//			    	System.out.println("index =" + index);
-//			    	System.out.println("valueIndex =" + valueIndex);
-//			    	System.out.println("value =" + value);
-			    	
-			    	String value = last.substring(0, valueIndex);			    	
-					BeanUtils.setProperty(p, name, value);
-			    }
-		 }
-		 System.out.println("p =" + p);
-		 playerRepository.save(p);
-		 
-		String res =  "{\"row\":{ \"DT_RowId\":\""+ p.getId()+ "\",\"name\":\""+p.getName()+"\",\"state\":\"" + p.getState() + "\",\"schoolName\":\""+p.getSchoolName()+"\",\"schoolCity\":\""+p.getSchoolCity()+"\"}";
-		 System.out.println("res =" + res);
+		create = create.replaceAll("data", "").replaceAll("%5D", "")
+				.replaceAll("%5B", "").replaceAll("\\+", " ");
+		System.out.println("create method = " + create);
+
+		PlayerDoc p = new PlayerDoc();
+		for (Field field : PlayerDoc.class.getDeclaredFields()) {
+			String name = field.getName();
+			if (create.contains(field.getName())) {
+				int index = create.indexOf(name) + name.length() + 1;
+				int valueIndex;
+				String last = create.substring(index, create.length());
+				if (last.contains("&")) {
+					valueIndex = last.indexOf("&");
+				} else {
+					valueIndex = last.length();
+				}
+				// System.out.println("test =" + action.substring(index,
+				// action.length()));
+				// System.out.println("index =" + index);
+				// System.out.println("valueIndex =" + valueIndex);
+				// System.out.println("value =" + value);
+
+				String value = last.substring(0, valueIndex);
+				BeanUtils.setProperty(p, name, value);
+			}
+		}
+		System.out.println("p =" + p);
+		playerRepository.save(p);
+
+		String res = "{\"row\":{ \"DT_RowId\":\"" + p.getId()
+				+ "\",\"name\":\"" + p.getName() + "\",\"state\":\""
+				+ p.getState() + "\",\"schoolName\":\"" + p.getSchoolName()
+				+ "\",\"schoolCity\":\"" + p.getSchoolCity() + "\"}}";
+		System.out.println("res =" + res);
 		return res;
 	}
-	
+
+	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
+	public @ResponseBody
+	String edit(@RequestBody String action) throws IllegalAccessException,
+			InvocationTargetException {
+		action = action.replaceAll("data", "").replaceAll("%5D", "")
+				.replaceAll("%5B", "").replaceAll("\\+", " ");
+		System.out.println("edit method = " + action);
+
+		PlayerDoc p = new PlayerDoc();
+		for (Field field : PlayerDoc.class.getDeclaredFields()) {
+			String name = field.getName();
+			if (action.contains(field.getName())) {
+				int index = action.indexOf(name) + name.length() + 1;
+				int valueIndex;
+				String last = action.substring(index, action.length());
+				if (last.contains("&")) {
+					valueIndex = last.indexOf("&");
+				} else {
+					valueIndex = last.length();
+				}
+				// System.out.println("test =" + action.substring(index,
+				// action.length()));
+				// System.out.println("index =" + index);
+				// System.out.println("valueIndex =" + valueIndex);
+				// System.out.println("value =" + value);
+
+				String value = last.substring(0, valueIndex);
+				BeanUtils.setProperty(p, name, value);
+			}
+		}
+		System.out.println("p =" + p);
+		playerRepository.save(p);
+
+		String res = "{\"row\":{ \"DT_RowId\":\"" + p.getId()
+				+ "\",\"name\":\"" + p.getName() + "\",\"state\":\""
+				+ p.getState() + "\",\"schoolName\":\"" + p.getSchoolName()
+				+ "\",\"schoolCity\":\"" + p.getSchoolCity() + "\"}}";
+		System.out.println("res =" + res);
+		return res;
+	}
+
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-	public @ResponseBody String delete(ModelMap model) {
+	public @ResponseBody
+	// id[]:536cf040523be7a00e1e6f08
+	String delete(@RequestBody String action) {
 		System.out.println("delete method");
+		action = action.replaceAll("action", "").replaceAll("%5D", "")
+				.replaceAll("remove", "").replaceAll("=", "")
+				.replaceAll("%5B", "").replaceAll("&id", "");
+		System.out.println("id:" + action);
+		PlayerDoc p = new PlayerDoc();
+		p.setId(action);
+		playerRepository.delete(p);
 		return "";
 	}
-	
+
 	@RequestMapping(value = "/user/players", method = RequestMethod.GET)
 	public String home2(ModelMap model) {
 		return "user/players";
@@ -349,7 +397,7 @@ public class PlayerController {
 
 		System.out.println(System.getProperty("catalina.base"));
 		Sort sort = null;
-		Page<PlayerDoc> page = null;
+		Page<PlayerDoc> page;
 		DataTableJsonObject jsonObject = new DataTableJsonObject();
 
 		int start = new Integer(iDisplayStart);
@@ -382,10 +430,10 @@ public class PlayerController {
 			page = playerRepository.findAll(new PageRequest(pageNumber1,
 					pageRows, sort));
 		}
-//		jsonObject.setSEcho(sEcho);
-//		jsonObject.setAaData(page);
-//		jsonObject.setITotalRecords(size);
-//		jsonObject.setITotalDisplayRecords(size);
+		// jsonObject.setSEcho(sEcho);
+		jsonObject.setAaData(page);
+		// jsonObject.setITotalRecords(size);
+		// jsonObject.setITotalDisplayRecords(size);
 		return jsonObject.toString();
 	}
 
