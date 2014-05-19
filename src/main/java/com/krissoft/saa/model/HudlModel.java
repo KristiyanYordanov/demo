@@ -284,9 +284,9 @@ public class HudlModel {
 			Iterator seasonsIter = header.iterator();
 			while (seasonsIter.hasNext()) {
 				Map season = (Map) seasonsIter.next();
-				boolean currentSeason =  (boolean) season.get("IsCurrent");
+				String currentSeason = (String) season.get("IsCurrent");
 				String currentSeasonId = (String) season.get("ID");
-				if (currentSeason) {
+				if (currentSeason.equals("true")) {
 					Map content = (Map) jSONMap.get("content");
 					List list = (List) content.get(currentSeasonId);
 					if (list != null) {

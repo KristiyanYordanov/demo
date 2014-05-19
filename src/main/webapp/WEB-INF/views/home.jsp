@@ -7,10 +7,11 @@
 <link rel="stylesheet" type="text/css"
 	href="resources/css/font-awesome.css" />
 <style>
-body {
-	margin: 0;
-	padding: 0;
-	background-color: #FAFAF7;
+body, html{
+    margin:0;
+    padding:0;
+    width:100%;
+    background-color: #FAFAF7;
 }
 
 #cssmenu,#cssmenu ul,#cssmenu ul li,#cssmenu ul li a,#cssmenu #menu-button
@@ -326,57 +327,31 @@ body {
 	var cookie_name = "page";
 	var page = get_cookie(cookie_name);
 
-	function disableF5(e) {
-		if ((e.which || e.keyCode) == 116) {
-			event.preventDefault();
-			if (page === 'csv') {
-				var html = 'players/user/csv';
-				$('#content').load(html);
-				document.cookie = "page=" + "csv";
-				page = get_cookie(cookie_name);
-				window.location.hash = "#" + page.toString();
-			}
-			else if (page === 'players') {
-				var html = 'players/user/players';
-				$('#content').load(html);
-			}
-			else if (page === 'players') {
-				var html = 'players/user/players';
-				$('#content').load(html);
-			}
-			else if (page === 'test') {
-				var html = 'players/test';
-				$('#content').load(html);
-			}
-			else if (page === 'load_schools') {
-				var html = 'players/schools';
-				$('#content').load(html);
-			}
-			else {
-				var html = 'players/user/players';
-				$('#content').load(html);
-			}
-		}
-	};
-	$(document).on("keydown", disableF5);
-	
 	function get_cookie(cookie_name) {
-		var cookie_string = document.cookie;
-		if (cookie_string.length != 0) {
-			var cookie_value = cookie_string.match('(^|;)[\s]*' + cookie_name
-					+ '=([^;]*)');
-			return decodeURIComponent(cookie_value[2]);
+		var res = "";
+		try {
+			var cookie_string = document.cookie;
+			if (cookie_string.length != 0) {
+				var cookie_value = cookie_string.match('(^|;)[\s]*'
+						+ cookie_name + '=([^;]*)');
+				res = decodeURIComponent(cookie_value[2]);
+			} else {
+				res = "";
+			}
+		} catch (e) {
+			// TODO: handle exception
 		}
-		return '';
+		return res;
 	}
-	
+
 	$(document).ready(function() {
-		if (page === undefined || page === "") {
+		console.log(page);
+		if (page === undefined || page === "" || page === "players") {
 			document.cookie = "page=" + "players";
 			page = get_cookie(cookie_name);
 			var html = 'players/user/players';
 			$('#content').load(html);
-			window.location.hash = "#" +page;
+			window.location.hash = "#" + page;
 		}
 	});
 	$("#load_csv").on("click", function() {

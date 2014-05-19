@@ -105,11 +105,21 @@ public class PlayerController {
 			} else {
 				size = (int) playerRepository.count();
 				int pageNumber1 = start / pageRows;
-				if (pageNumber1 == 0) {
-					pageNumber1 = 1;
+				if (size < pageRows) {
+					pageNumber1 = size;
+					pageRows = size;
+					System.out.println("pageNumber1 = " + pageNumber1  + ", pageRows = "  + pageRows);
+					size = (int) playerRepository.count();
+					page = playerRepository.findAll(new PageRequest(start, size,
+							sort));
 				}
-				page = playerRepository.findAll(new PageRequest(pageNumber1,
-						pageRows, sort));
+				else {
+					System.out.println("pageNumber1 = " + pageNumber1  + ", pageRows = "  + pageRows);
+					System.out.println("size in else = " + size  );
+					page = playerRepository.findAll(new PageRequest(pageNumber1,
+							pageRows, sort));
+				}
+				
 			}
 		} catch (MongoServerSelectionException ex) {
 			System.out.println("No connection with DB  " + ex);
@@ -205,7 +215,7 @@ public class PlayerController {
 	String create(@RequestBody String create) throws IllegalAccessException,
 			InvocationTargetException {
 		System.out.println("create method");
-		create = create.replaceAll("data", "").replaceAll("%5D", "")
+		create = create.replaceAll("data", "").replaceAll("%5D", "").replaceAll("%3A", "")
 				.replaceAll("%5B", "").replaceAll("\\+", " ");
 		System.out.println("create method = " + create);
 
@@ -246,7 +256,7 @@ public class PlayerController {
 	public @ResponseBody
 	String edit(@RequestBody String action) throws IllegalAccessException,
 			InvocationTargetException {
-		action = action.replaceAll("data", "").replaceAll("%5D", "")
+		action = action.replaceAll("data", "").replaceAll("%5D", "").replaceAll("3A=", "")
 				.replaceAll("%5B", "").replaceAll("\\+", " ");
 		System.out.println("edit method = " + action);
 

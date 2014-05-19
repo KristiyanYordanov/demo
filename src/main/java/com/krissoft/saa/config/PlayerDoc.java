@@ -329,11 +329,9 @@ public class PlayerDoc  {
 		res  = res + "\"]";
 		return res;
 	}
-	@Override
-	public String toString() {
+	public String toString111() {
 		String res =
 				"{" 
-				//"DT_RowId": "row_57",
 				+"\"DT_RowId\":\""+ id + "\","
 				+"\"name\":"+ (name != null ?  "\"" + name + "\"," : "\",\"")
 				+"\"state\":"+ (state != null ? "\"" +  state + "\"," : "\",\"")
@@ -343,34 +341,36 @@ public class PlayerDoc  {
 		
 		return res;
 	}
-
-	public String toString1() {
-		return "[\"" + (name != null ? name + "\",\"" : "\",\"")
-		+ (state != null ? state + "\", \"" : "\",\"")
-		+ (schoolName != null ? schoolName + "\", \"" : "\",\"")
-		+ (schoolCity != null ? schoolCity + "\", \"" : "\",\"")
-		+ (maxprepsUrl != null ?maxprepsUrl + "\", \"" : "\",\"")
-		+ (pos != null ? pos + "\",\" " : "\",\"")
-		+ (height != null ? height + ", \"" : "\",\"")
-		+ (fortyDash != null ? fortyDash + "\", \"" : "\",\"")
-		+ (weight != 0 ? +weight + "\", \"" : "\",\"")
-		+ (stars != 0 ? +stars + "\", \"" : "\",\"")
-		+ (rating != null ? +rating + "\", \"" : "\",\"")
-		+ (gradYear != 0 ? +gradYear + "\", \"" : "\",\"")
-		+ (GP != 0 ? +GP + "\", \"" : "\",\"")
-		+ (Avg != 0 ? +Avg + "\", \"" : "\",\"")
-		+ (OBP != 0 ? +OBP + "\", \"" : "\",\"")
-		+ (H != 0 ? +H + "\", \"" : "\",\"")
-		+ (RBI != 0 ? +RBI + "\", \"" : "\",\"")
-		+ (R != 0 ? +R + "\", \"" : "\",\"")
-		+ (SB != 0 ? +SB + "\", \"" : "\",\"")
-		+ (AB != 0 ? +AB + "\", \"" : "\",\"")
-		+ (SLG != 0 ? +SLG + "\", \"" : "\",\"")
-		+ (PA != 0 ? +PA + "\", \"" : "\",\"")
-		+ (FP != 0 ? +FP + "\", \"" : "\",\"")
-		+ (K != 0 ? +K + "\", \"" : "\",\"")
-		+ (IP != 0 ? IP + "\"" : "\"") 
-		+ "]";
+	@Override
+	public String toString() {
+		return "{"
+		+"\"DT_RowId\":\""+ id + "\",\""
+		+"name\":"+ (name != null ?  "\"" + name + "\",\"" : "\"\",\"")
+		+"state\":"+ (state != null ? "\"" +  state + "\",\"" : "\"\",\"")
+		+"schoolName\":"+ (schoolName != null ? "\"" +  schoolName + "\",\"" : "\"\",\"")
+		+"schoolCity\":"+ (schoolCity != null ? "\"" + schoolCity + "\",\"" : "\"\",\"")
+		+"maxprepsUrl\":"+ (maxprepsUrl != null ? "\"" + maxprepsUrl + "\",\"" : "\"\",\"")
+		+"pos\":"+ (pos != null ? "\"" +  pos + "\",\"" : "\"\",\"")
+		+"height\":"+ (height != null ? "\"" + height.replaceAll("\"", "") + "\",\"" : "\"\",\"")
+		+"fortyDash\":"+  (fortyDash != null ? "\"" + fortyDash + "\", \"" : "\"\",\"")
+		+"weight\":"+  (weight != 0 ? "\"" + weight + "\", \"" : "\"\",\"")
+		+"stars\":"+  (stars != 0 ? "\"" + stars + "\", \"" : "\"\",\"")
+		+"rating\":"+  (rating != null ? "\"" + rating + "\", \"" : "\"\",\"")
+		+"gradYear\":"+  (gradYear != 0 ? "\"" + gradYear + "\", \"" : "\"\",\"")
+		+"GP\":"+  (GP != 0 ? "\"" + +GP + "\", \"" : "\"\",\"")
+		+"Avg\":"+  (Avg != 0 ? "\"" + +Avg + "\", \"" : "\"\",\"")
+		+"OBP\":"+  (OBP != 0 ? "\"" + +OBP + "\", \"" : "\"\",\"")
+		+"H\":"+  (H != 0 ? "\"" + +H + "\", \"" : "\"\",\"")
+		+"RBI\":"+  (RBI != 0 ? "\"" + +RBI + "\", \"" : "\"\",\"")
+		+"R\":"+  (R != 0 ? "\"" + +R + "\", \"" : "\"\",\"")
+		+"SB\":"+  (SB != 0 ? "\"" + +SB + "\", \"" : "\"\",\"")
+		+"AB\":"+  (AB != 0 ? "\"" + +AB + "\", \"" : "\"\",\"")
+		+"SLG\":"+  (SLG != 0 ? "\"" + +SLG + "\", \"" : "\"\",\"")
+		+"PA\":"+  (PA != 0 ? "\"" + +PA + "\", \"" : "\"\",\"")
+		+"FP\":"+  (FP != 0 ? "\"" + +FP + "\", \"" : "\"\",\"")
+		+"K\":"+  (K != 0 ? "\"" + +K + "\", \"" : "\"\",\"")
+		+"IP\":"+  (IP != 0 ? "\"" + IP + "\"" : "\"\"") 
+		+ "}";
 	}
 
 		

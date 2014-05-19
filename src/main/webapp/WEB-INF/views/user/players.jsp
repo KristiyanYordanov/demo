@@ -14,6 +14,10 @@
 	href="resources/css/font-awesome.css" />
 	
 <style type="text/css">
+#example{
+min-width: 1000px;
+max-width: 1200px;
+}
 .dataTables_info {
 	background: linear-gradient(to bottom, #A8DDE8 0%, #96CBD7 100%);
 	border: thin;
@@ -101,18 +105,56 @@ table.dataTable tr.selected td:first-child:before {
 	        table: "#example",
 	        //label are for create method
 	        fields: [ {
-	                label: "name:",
-	                name: "name"
-	            }, {
-	                label: "state:",
-	                name: "state"
-	            }, {
-	                label: "schoolName:",
-	                name: "schoolName"
-	            }, {
-	                label: "schoolCity:",
-	                name: "schoolCity"
-	            }
+	    		label: "name:",
+				name: "name:"},{
+				label: "state:",
+				name: "state:"},{
+				label: "schoolName:",
+				name: "schoolName:"},{
+				label: "schoolCity:",
+				name: "schoolCity:"},{
+				label: "maxprepsUrl:",
+				name: "maxprepsUrl:"},{
+				label: "pos:",
+				name: "pos:"},{
+				label: "height:",
+				name: "height:"},{
+				label: "fortyDash:",
+				name: "fortyDash:"},{
+				label: "weight:",
+				name: "weight:"},{
+				label: "stars:",
+				name: "stars:"},{
+				label: "rating:",
+				name: "rating:"},{
+				label: "gradYear:",
+				name: "gradYear:"},{
+				label: "GP:",
+				name: "GP:"},{
+				label: "Avg:",
+				name: "Avg:"},{
+				label: "OBP:",
+				name: "OBP:"},{
+				label: "H:",
+				name: "H:"},{
+				label: "RBI:",
+				name: "RBI:"},{
+				label: "R:",
+				name: "R:"},{
+				label: "SB:",
+				name: "SB:"},{
+				label: "AB:",
+				name: "AB:"},{
+				label: "SLG:",
+				name: "SLG:"},{
+				label: "PA:",
+				name: "PA:"},{
+				label: "FP:",
+				name: "FP:"},{
+				label: "K:",
+				name: "K:"},{
+				label: "IP:",
+				name: "IP:"}
 	        ]
 	    } );
 	    
@@ -124,6 +166,7 @@ table.dataTable tr.selected td:first-child:before {
 	    $('#example').DataTable( {
 	        //dom: "Tfrtip",
 	     	dom: '<"top"iflpT<"clear">>rt<"bottom"iflp<"clear">>', 
+	     	"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]], 
 	        ajax: {
 	            url: "players/playersjson",
 	            type: "GET"
@@ -135,10 +178,31 @@ table.dataTable tr.selected td:first-child:before {
 	                // Combine the first and last names into a single table field
 	                return '';
 	            } },
-	            { data: "name" },
-	            { data: "state" },
-	            { data: "schoolName" },
-	            { data: "schoolCity" } 
+	    		{ data: "name" },
+				{ data: "state" },
+				{ data: "schoolName" },
+				{ data: "schoolCity" },
+				{ data: "maxprepsUrl" },
+				{ data: "pos" },
+				{ data: "height" },
+				{ data: "fortyDash" },
+				{ data: "weight" },
+				{ data: "stars" },
+				{ data: "rating" },
+				{ data: "gradYear" },
+				{ data: "GP" },
+				{ data: "Avg" },
+				{ data: "OBP" },
+				{ data: "H" },
+				{ data: "RBI" },
+				{ data: "R" },
+				{ data: "SB" },
+				{ data: "AB" },
+				{ data: "SLG" },
+				{ data: "PA" },
+				{ data: "FP" },
+				{ data: "K" },
+				{ data: "IP" }
 	        ],
 	        order: [ 1, 'asc' ],
 	        tableTools: {
@@ -151,19 +215,42 @@ table.dataTable tr.selected td:first-child:before {
 	            ]
 	        }
 	    } );
+	    $( "#cssmenu" ).width($( "#example" +200).width());
+	    $( "body" ).width($( "#example"+200 ).width());
 	} );
 	</script>
 </head>
 <body>
 <br>	
-	<table id="example" class="display" cellspacing="0" width="100%">
+	<table id="example" class="display" cellspacing="0">
         <thead>
             <tr>
             	<th></th>
-                <th>name</th>
-                <th>state</th>
-                <th>schoolName</th>
-                <th>schoolCity</th>
+            	<th>name</th>
+					<th>state</th>
+					<th>schoolName</th>
+					<th>schoolCity</th>
+					<th>maxprepsUrl</th>
+					<th>pos</th>
+					<th>height</th>
+					<th>fortyDash</th>
+					<th>weight</th>
+					<th>stars</th>
+					<th>rating</th>
+					<th>gradYear</th>
+					<th>GP</th>
+					<th>Avg</th>
+					<th>OBP</th>
+					<th>H</th>
+					<th>RBI</th>
+					<th>R</th>
+					<th>SB</th>
+					<th>AB</th>
+					<th>SLG</th>
+					<th>PA</th>
+					<th>FP</th>
+					<th>K</th>
+					<th>IP</th>
             </tr>
         </thead>
     </table>
