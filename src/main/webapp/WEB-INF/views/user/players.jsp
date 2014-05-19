@@ -50,6 +50,15 @@ max-width: 1200px;
 	background-color: yellow;
 	border: solid;
 }
+.DTE_Body
+{
+height: 350px;
+}
+.DTE_Body_Content
+{
+height: 325px;
+}
+
 
 //
 editor

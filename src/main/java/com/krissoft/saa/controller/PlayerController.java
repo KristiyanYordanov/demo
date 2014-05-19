@@ -305,7 +305,7 @@ public class PlayerController {
 		PlayerDoc p = new PlayerDoc();
 		p.setId(action);
 		playerRepository.delete(p);
-		return "";
+		return "[]";
 	}
 
 	@RequestMapping(value = "/user/players", method = RequestMethod.GET)
