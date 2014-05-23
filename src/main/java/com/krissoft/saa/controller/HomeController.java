@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.krissoft.saa.config.PlayerDoc;
 import com.krissoft.saa.repository.PlayerRepository;
-import com.krissoft.saa.util.Util;
+import com.krissoft.saa.util.MyUtil;
 
 @Controller
 public class HomeController {
@@ -126,7 +126,7 @@ public class HomeController {
 	String getShopInJSON1222() {
 		String res = "";
 		String filename = "exampl2.json";
-		res = Util.readFromFileBuffered(new File(filename));
+		res = MyUtil.readFromFileBuffered(new File(filename));
 		return res;
 	}
 }

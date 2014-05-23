@@ -17,7 +17,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class Util {
+public class MyUtil {
 	private final static int MAX_RETRY = 3;
 	public final static String ENCODING = "UTF-8";
 

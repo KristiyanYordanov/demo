@@ -14,7 +14,7 @@ import org.supercsv.prefs.CsvPreference;
 
 import com.krissoft.saa.bean.PlayerString;
 import com.krissoft.saa.config.PlayerDoc;
-import com.krissoft.saa.util.Util;
+import com.krissoft.saa.util.MyUtil;
 
 public class PlayerModel {
 
@@ -61,7 +61,7 @@ public class PlayerModel {
 		List<String> values = parser.read();
 		StringBuffer sb = new StringBuffer();
 		while (values != null) {
-			sb.append(Util.printListValues(values));
+			sb.append(MyUtil.printListValues(values));
 			values = parser.read();
 		}
 		String res = sb.toString();
@@ -77,7 +77,7 @@ public class PlayerModel {
 		List<String> values = parser.read();
 		StringBuffer sb = new StringBuffer();
 		while (values != null) {
-			sb.append(Util.printListValues(values));
+			sb.append(MyUtil.printListValues(values));
 			values = parser.read();
 		}
 		String res = sb.toString();

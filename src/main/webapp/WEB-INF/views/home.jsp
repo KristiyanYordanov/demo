@@ -303,7 +303,7 @@ body {
 			<li><a href='#' id="load_players"><span>Players</span></a></li>
 			<li class='has-sub'><a href='#'><span>Import</span></a>
 				<ul>
-					<li><a href='#' id="load_csv"><span>CSV Import</span></a></li>
+						<li><a href='#' id="load_csv"><span>CSV Import</span></a></li>
 					<li class='last' id="test"><a href='#'><span>Automated
 								Import</span></a></li>
 				</ul></li>
@@ -324,6 +324,15 @@ body {
 	src="resources/js/jquery-1.10.2.min.js"></script>
 
 <script type="text/javascript">
+var applyMapContainerHeight = function() {
+	  var height = $(window).height();
+	//  $("content").height(height);
+	};
+
+	$(window).resize(function() {
+	  applyMapContainerHeight();
+	});
+	
 	var cookie_name = "page";
 	var page = get_cookie(cookie_name);
 
@@ -345,6 +354,7 @@ body {
 	}
 
 	$(document).ready(function() {
+		applyMapContainerHeight();
 		console.log(page);
 		if (page === undefined || page === "" || page === "players") {
 			document.cookie = "page=" + "players";

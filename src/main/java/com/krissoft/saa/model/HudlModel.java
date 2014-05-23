@@ -20,7 +20,7 @@ import org.supercsv.prefs.CsvPreference;
 
 import com.google.gson.Gson;
 import com.krissoft.saa.config.PlayerDoc;
-import com.krissoft.saa.util.Util;
+import com.krissoft.saa.util.MyUtil;
 
 /**
  * 
@@ -38,7 +38,7 @@ public class HudlModel {
 			//String teamId = Integer.toString(i);
 			String teamId = "1645";
 			String link = "http://www.hudl.com/team/";
-			String result = Util.postWithParams(new URL(link + teamId), "");
+			String result = MyUtil.postWithParams(new URL(link + teamId), "");
 			if (isBaseballProfile(result)) {
 				System.out.println("team = " + i + "is baseball team");
 				
@@ -46,12 +46,12 @@ public class HudlModel {
 				String postParams = "{\"teamId\":" + teamId
 						+ ",\"tabId\":\"roster\"}";
 				System.out.println(postParams);
-				String jsonText = Util.postWithParams(url, postParams);
+				String jsonText = MyUtil.postWithParams(url, postParams);
 				File file = new File("test" + teamId + ".txt");
 				if (!file.exists()) {
 					file.createNewFile();
 				}
-				Util.writeInFileBuffered(jsonText, file);
+				MyUtil.writeInFileBuffered(jsonText, file);
 				
 				List<PlayerDoc> players = getElements(jsonText, link + teamId);
 				System.out.println("Found " + players.size() + "in " + url);
@@ -87,7 +87,7 @@ public class HudlModel {
 	}
 
 	public String getSchoolName(String link) throws Exception {
-		String page = Util.get(new URL(link));
+		String page = MyUtil.get(new URL(link));
 		Pattern titlePatter = Pattern.compile("<h1 title=\"(.*?)\">(.*?)</h1>");
 		Matcher titleMatcher = titlePatter.matcher(page);
 		String schoolName = "";

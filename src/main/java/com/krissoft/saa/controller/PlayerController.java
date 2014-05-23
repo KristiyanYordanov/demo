@@ -13,12 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.json.JSONException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,20 +31,17 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.krissoft.saa.config.DataTableEditorJsonObject;
-import com.krissoft.saa.config.DataTableJsonObject;
 import com.krissoft.saa.config.PlayerDoc;
 import com.krissoft.saa.model.PlayerModel;
 import com.krissoft.saa.repository.PlayerRepository;
 import com.krissoft.saa.util.UploadedFile;
-import com.krissoft.saa.util.Util;
 import com.mongodb.MongoServerSelectionException;
 
 @Controller
 @RequestMapping("players")
 public class PlayerController {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(PlayerController.class);
+	//private static final Logger logger = LoggerFactory.getLogger(PlayerController.class);
 
 	@Autowired
 	PlayerRepository playerRepository;
@@ -59,22 +57,32 @@ public class PlayerController {
 			@RequestParam(value = "length") String length,
 			@RequestParam(value = "start") String startStr,
 			@RequestParam(value = "draw") String draw,
-			@RequestParam(value = "search[value]") String sSearch,
 			@RequestParam(value = "order[0][dir]") String sSortDir_0,
-			@RequestParam(value = "order[0][column]") String iSortCol_0)
+			@RequestParam(value = "order[0][column]") String iSortCol_0,
+			@RequestParam(value = "columns[0][search][value]") String searchColZero,
+			@RequestParam(value = "columns[1][search][value]") String searchColOne,
+			@RequestParam(value = "columns[2][search][value]") String searchColTwo,
+			@RequestParam(value = "columns[3][search][value]") String searchColTree,
+			@RequestParam(value = "columns[4][search][value]") String searchColFour)
 			throws JSONException {
-		System.out.println("length = " + length);
-		System.out.println("startStr = " + startStr);
-		System.out.println("search = " + sSearch);
-		System.out.println("enter in getPlayers1");
+		//System.out.println("length = " + length);
+		System.out.println("searchColZero = " + searchColZero);
+		System.out.println("searchColOne = " + searchColOne);
+		System.out.println("searchColTwo = " + searchColTwo);
+		System.out.println("searchColTree = " + searchColTree);
+		System.out.println("searchColFour = " + searchColFour);
+		//MyUtil.PrintAllRequestParams(request);
 		String res = "";
 		Page<PlayerDoc> page = null;
 		DataTableEditorJsonObject jsonObject = new DataTableEditorJsonObject();
 		Sort sort = null;
 
+		boolean noFilter = isFilterOn(searchColZero,searchColOne,searchColTwo,searchColTree,searchColFour );
+		System.out.println("noFilter = " + noFilter);
 		int start = new Integer(startStr);
 		int pageRows = new Integer(length);
 		int size = 0;
+		
 		// TODO save header in DB and drop down list in view
 		String[] header = new String[] { "name", "state", "schoolName",
 				"schoolCity", "maxprepsUrl", "pos", "height", "fortyDash",
@@ -89,33 +97,26 @@ public class PlayerController {
 			}
 		}
 		try {
-			if (pageRows == -1 && sSearch.equals("")) {
+			if (pageRows == -1 && !noFilter) {
 				size = (int) playerRepository.count();
 				page = playerRepository.findAll(new PageRequest(start, size,
 						sort));
-			} else if (sSearch != null && !sSearch.equals("") && pageRows == -1) {
-				size = (int) playerRepository.count(sSearch);
-				page = playerRepository.findByNameRegex(sSearch,
-						new PageRequest(start, size, sort));
-			} else if (sSearch != null && !sSearch.equals("") && pageRows != -1) {
-				size = (int) playerRepository.count(sSearch);
-				int pageNumber = start / pageRows;
-				page = playerRepository.findByNameRegex(sSearch,
-						new PageRequest(pageNumber, pageRows, sort));
+			} else if (noFilter) {
+				size = (int) playerRepository.count();
+				page = playerRepository.findByNameLikeAndStateLikeAndSchoolNameLikeAndSchoolCityLikeAndPosLike(searchColZero, searchColOne, searchColTwo,searchColTree,searchColFour, new PageRequest(start, size,
+						sort) );
+				size = page.getNumberOfElements();
 			} else {
 				size = (int) playerRepository.count();
 				int pageNumber1 = start / pageRows;
 				if (size < pageRows) {
 					pageNumber1 = size;
 					pageRows = size;
-					System.out.println("pageNumber1 = " + pageNumber1  + ", pageRows = "  + pageRows);
 					size = (int) playerRepository.count();
 					page = playerRepository.findAll(new PageRequest(start, size,
 							sort));
 				}
 				else {
-					System.out.println("pageNumber1 = " + pageNumber1  + ", pageRows = "  + pageRows);
-					System.out.println("size in else = " + size  );
 					page = playerRepository.findAll(new PageRequest(pageNumber1,
 							pageRows, sort));
 				}
@@ -125,7 +126,7 @@ public class PlayerController {
 			System.out.println("No connection with DB  " + ex);
 		}
 		jsonObject.setAaData(page);
-		System.out.println("page size = " + page.getNumberOfElements());
+		//System.out.println("page size = " + page.getNumberOfElements());
 		jsonObject.setDraw(draw);
 		jsonObject.setRecordsFiltered(size);
 		jsonObject.setRecordsTotal(size);
@@ -134,80 +135,23 @@ public class PlayerController {
 		return res;
 	}
 
-	@RequestMapping(value = "/playersjson1", method = RequestMethod.GET)
-	public @ResponseBody
-	String getPlayers(HttpServletRequest request
-
-	) throws JSONException {
-		Util.PrintAllRequestParams(request);
-		System.out.println("enter in getPlayers");
-		String sSearch = "";
-		String iDisplayLength = "";
-		String iDisplayStart = "";
-		String iSortCol_0 = "";
-		String sSortDir_0 = "";
-		String sEcho = "";
-
-		logger.info("start playercontroller.");
-		logger.debug("start playercontroller!");
-
-		System.out.println(System.getProperty("catalina.base"));
-		Sort sort = null;
-		Page<PlayerDoc> page = null;
-		DataTableJsonObject jsonObject = new DataTableJsonObject();
-
-		int start = new Integer(iDisplayStart);
-		int pageRows = new Integer(iDisplayLength);
-		int size = 0;
-
-		// TODO save header in DB and drop down list in view
-		String[] header = new String[] { "name", "state", "schoolName",
-				"schoolCity", "maxprepsUrl", "pos", "height", "fortyDash",
-				"weight", "stars", "rating", "gradYear", "GP", "Avg", "OBP",
-				"H", "RBI", "R", "SB", "AB", "SLG", "PA", "FP", "K", "IP" };
-		for (int i = 0; i < header.length; i++) {
-			if (iSortCol_0.equals(Integer.toString(i))
-					&& sSortDir_0.equals("asc")) {
-				sort = new Sort(Sort.Direction.ASC, header[i]);
-			} else if (iSortCol_0.equals(Integer.toString(i))
-					&& sSortDir_0.equals("desc")) {
-				sort = new Sort(Sort.Direction.DESC, header[i]);
-			}
+	
+	
+	
+	private boolean isFilterOn(String zero, String one, String two, String three, String four) {
+		boolean noFilter = false;
+		if (!zero.equals("")) {
+			noFilter = true;
+		} else if (!one.equals("")) {
+			noFilter = true;
+		} else if (!two.equals("")) {
+			noFilter = true;
+		} else if (!three.equals("")) {
+			noFilter = true;
+		}else if (!four.equals("")) {
+			noFilter = true;
 		}
-
-		if (pageRows == -1 && sSearch.equals("")) {
-			size = (int) playerRepository.count();
-			page = playerRepository.findAll(new PageRequest(start, size, sort));
-		} else if (sSearch != null && !sSearch.equals("") && pageRows == -1) {
-			size = (int) playerRepository.count(sSearch);
-			page = playerRepository.findByNameRegex(sSearch, new PageRequest(
-					start, size, sort));
-		} else if (sSearch != null && !sSearch.equals("") && pageRows != -1) {
-			size = (int) playerRepository.count(sSearch);
-			int pageNumber = start / pageRows;
-			page = playerRepository.findByNameRegex(sSearch, new PageRequest(
-					pageNumber, pageRows, sort));
-		} else {
-			size = (int) playerRepository.count();
-			int pageNumber1 = start / pageRows;
-			if (pageNumber1 == 0) {
-				pageNumber1 = 1;
-			}
-			page = playerRepository.findAll(new PageRequest(pageNumber1,
-					pageRows, sort));
-		}
-
-		page.getContent().get(0).header = header;
-		for (PlayerDoc pd : page.getContent()) {
-			pd.header = header;
-		}
-		// jsonObject.setSEcho(sEcho);
-		jsonObject.setAaData(page);
-		// jsonObject.setITotalRecords(size);
-		// jsonObject.setITotalDisplayRecords(size);
-		System.out.println(jsonObject.toString());
-		String res = jsonObject.toString();
-		return res;
+		return noFilter;
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -231,12 +175,6 @@ public class PlayerController {
 				} else {
 					valueIndex = last.length();
 				}
-				// System.out.println("test =" + action.substring(index,
-				// action.length()));
-				// System.out.println("index =" + index);
-				// System.out.println("valueIndex =" + valueIndex);
-				// System.out.println("value =" + value);
-
 				String value = last.substring(0, valueIndex);
 				BeanUtils.setProperty(p, name, value);
 			}
@@ -388,63 +326,6 @@ public class PlayerController {
 			playerRepository.save(p);
 		}
 		System.out.println(file.getAbsolutePath() + " is imported.");
-	}
-
-	@RequestMapping(value = "/schoolsjson", method = RequestMethod.GET)
-	public @ResponseBody
-	String getSchools(HttpServletRequest request,
-			@RequestParam(value = "iSortCol_0") String sortColumn,
-			@RequestParam(value = "sSearch") String sSearch,
-			@RequestParam(value = "sSortDir_0") String sSortDir,
-			@RequestParam(value = "iDisplayLength") String iDisplayLength,
-			@RequestParam(value = "iDisplayStart") String iDisplayStart,
-			@RequestParam(value = "iSortCol_0") String iSortCol_0,
-			@RequestParam(value = "sSortDir_0") String sSortDir_0,
-			@RequestParam(value = "sEcho") String sEcho) throws IOException,
-			JSONException {
-		logger.info("start playercontroller.");
-		logger.debug("start playercontroller!");
-
-		System.out.println(System.getProperty("catalina.base"));
-		Sort sort = null;
-		Page<PlayerDoc> page;
-		DataTableJsonObject jsonObject = new DataTableJsonObject();
-
-		int start = new Integer(iDisplayStart);
-		int pageRows = new Integer(iDisplayLength);
-		int size = 0;
-		if (iSortCol_0.equals("0") && sSortDir_0.equals("asc")) {
-			sort = new Sort(Sort.Direction.ASC, "name");
-		} else if (iSortCol_0.equals("0") && sSortDir_0.equals("desc")) {
-			sort = new Sort(Sort.Direction.DESC, "name");
-		}
-
-		if (pageRows == -1 && sSearch.equals("")) {
-			size = (int) playerRepository.count();
-			page = playerRepository.findAll(new PageRequest(start, size, sort));
-		} else if (sSearch != null && !sSearch.equals("") && pageRows == -1) {
-			size = (int) playerRepository.count(sSearch);
-			page = playerRepository.findByNameRegex(sSearch, new PageRequest(
-					start, size, sort));
-		} else if (sSearch != null && !sSearch.equals("") && pageRows != -1) {
-			size = (int) playerRepository.count(sSearch);
-			int pageNumber = start / pageRows;
-			page = playerRepository.findByNameRegex(sSearch, new PageRequest(
-					pageNumber, pageRows, sort));
-		} else {
-			size = (int) playerRepository.count();
-			int pageNumber1 = start / pageRows;
-			if (pageNumber1 == 0) {
-				pageNumber1 = 1;
-			}
-			page = playerRepository.findAll(new PageRequest(pageNumber1,
-					pageRows, sort));
-		}
-		// jsonObject.setSEcho(sEcho);
-		jsonObject.setAaData(page);
-		// jsonObject.setITotalRecords(size);
-		// jsonObject.setITotalDisplayRecords(size);
-		return jsonObject.toString();
 	}
 
 	@RequestMapping(value = "/schools", method = RequestMethod.GET)

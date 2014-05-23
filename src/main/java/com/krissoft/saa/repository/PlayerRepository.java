@@ -22,9 +22,32 @@ public interface PlayerRepository extends MongoRepository<PlayerDoc, String> {
     @Query("{ 'name':{$regex:?0,$options:'i'}}") 
     public Page<PlayerDoc> findByNameRegex(String name, Pageable pageable);
     
+    @Query("{ 'state':{$regex:?0,$options:'i'}}") 
+    public Page<PlayerDoc> findByStateRegex(String state, Pageable pageable);
+    
+    
+    @Query("{ 'schoolName':{$regex:?0,$options:'i'}}") 
+    public Page<PlayerDoc> findBySchoolNameRegex(String schoolName, Pageable pageable);
+    
+    @Query("{ 'schoolCity':{$regex:?0,$options:'i'}}") 
+    public Page<PlayerDoc> findBySchoolCityRegex(String schoolCity, Pageable pageable);
+    
+    @Query("{ 'pos':{$regex:?0,$options:'i'}}") 
+    public Page<PlayerDoc> findByPosRegex(String pos, Pageable pageable);
+    
+    
     @Query("{ 'name':{$regex:?0,$options:'i'}}") 
     public List<PlayerDoc> findByNameRegex(String name, Sort sort);
+    //and
     
+    
+    //Page<PlayerDoc> findByNameAndSchoolNameRegex(String name, String schoolName,  Pageable pageable);
+    @Query("'$and':[{'name':{'$regex':?0,'$options':'i'}},{'schoolName':{'$regex':?0,'$options':'i'}}]")
+    Page<PlayerDoc> findByNameAndSchoolNameRegex(String name, String schoolName,  Pageable pageable);
+    
+    
+    Page<PlayerDoc> findByNameLikeAndStateLikeAndSchoolNameLikeAndSchoolCityLikeAndPosLike(String name, String state,String schoolName,String schoolCity,String pos,  Pageable pageable);
+    //
     
     
     @Query(value="{ 'name':{$regex:?0,$options:'i'}}", count = true) 
