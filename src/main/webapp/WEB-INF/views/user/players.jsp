@@ -14,6 +14,15 @@
 	href="resources/css/font-awesome.css" />
 
 <style type="text/css">
+.round-border {
+	border: 1px solid #eee;
+	border: 1px solid rgba(0, 0, 0, 0.05);
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	padding: 10px;
+	margin-bottom: 5px;
+}
 #example {
 	min-width: 1000px;
 	max-width: 1200px;
@@ -79,15 +88,6 @@ table.dataTable tr.selected td:first-child:before {
 	content: "\f046"; /* fa-check-square-o */
 }
 
-.round-border {
-	border: 1px solid #eee;
-	border: 1px solid rgba(0, 0, 0, 0.05);
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	padding: 10px;
-	margin-bottom: 5px;
-}
 </style>
 <script type="text/javascript" charset="utf8"
 	src="resources/js/jquery-1.10.2.min.js"></script>
@@ -280,14 +280,14 @@ table.dataTable tr.selected td:first-child:before {
 	        filterColumn( $(this).parents('tr').attr('data-column') );
 	    } );
 	} );
-	
 	</script>
 </head>
 <body>
 	<section class="round-border">
 		<div>
-			<button href="#collapse1" class="nav-toggle">Filter the
+			<button  style="display:inline-block; float: left;" href="#collapse1" class="nav-toggle">Filter the
 				table</button>
+				<button><a href="/spring-jpa/players/csvexport">Export</a></button>
 		</div>
 		<div id="collapse1" style="display: none">
 			<table>
@@ -297,15 +297,15 @@ table.dataTable tr.selected td:first-child:before {
 						<td align="center"><input type="text" class="column_filter"
 							id="col0_filter"></td>
 					</tr>
-					<tr  id="filter_col2" data-column="1">
+					<tr id="filter_col2" data-column="1">
 						<td>State:</td>
 						<td><input type="text" class="column_filter" id="col1_filter"></td>
 					</tr>
-					<tr  id="filter_col3" data-column="2">
+					<tr id="filter_col3" data-column="2">
 						<td>School Name:</td>
 						<td><input type="text" class="column_filter" id="col2_filter"></td>
 					</tr>
-					<tr  id="filter_col4" data-column="3">
+					<tr id="filter_col4" data-column="3">
 						<td>School City:</td>
 						<td><input type="text" class="column_filter" id="col3_filter"></td>
 					</tr>

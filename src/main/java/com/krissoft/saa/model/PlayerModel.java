@@ -28,19 +28,18 @@ public class PlayerModel {
 		try {
 			beanReader = new CsvBeanReader(new FileReader(File),
 					CsvPreference.STANDARD_PREFERENCE);
-			
+
 			if (header.length == 0) {
 				// Important! skip reading first row
 				header = beanReader.getHeader(true);
-			}
-			else {
+			} else {
 				for (int i = 0; i < header.length; i++) {
 					if (header[i].equals("None")) {
 						header[i] = null;
 					}
 				}
 			}
-			
+
 			PlayerString playerString;
 			while ((playerString = beanReader.read(PlayerString.class, header)) != null) {
 				PlayerDoc player = loadPlayerDoc(playerString);
@@ -56,35 +55,55 @@ public class PlayerModel {
 	}
 
 	public String readCsvToString(File file) throws Exception {
-		CsvListReader parser = new CsvListReader(new FileReader(file),
-				CsvPreference.EXCEL_PREFERENCE);
-		List<String> values = parser.read();
-		StringBuffer sb = new StringBuffer();
-		while (values != null) {
-			sb.append(MyUtil.printListValues(values));
-			values = parser.read();
+		CsvListReader parser = null;
+		String res = "";
+		try {
+			parser = new CsvListReader(new FileReader(file),
+					CsvPreference.EXCEL_PREFERENCE);
+			List<String> values = parser.read();
+			StringBuffer sb = new StringBuffer();
+			while (values != null) {
+				sb.append(MyUtil.printListValues(values));
+				values = parser.read();
+			}
+			res = sb.toString();
+			res = res.substring(0, res.length() - 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (parser != null) {
+				parser.close();
+			}
 		}
-		String res = sb.toString();
-		res = res.substring(0, res.length() - 1);
+
 		return res;
 	}
 
 	public static void main(String[] argc) throws Exception {
-
-		CsvListReader parser = new CsvListReader(new FileReader(
-				"H:\\rivals\\rivals_college 2013.csv"),
-				CsvPreference.EXCEL_PREFERENCE);
-		List<String> values = parser.read();
-		StringBuffer sb = new StringBuffer();
-		while (values != null) {
-			sb.append(MyUtil.printListValues(values));
-			values = parser.read();
+		CsvListReader parser = null;
+		String res = "";
+		try {
+			parser = new CsvListReader(new FileReader(
+					"H:\\rivals\\rivals_college 2013.csv"),
+					CsvPreference.EXCEL_PREFERENCE);
+			List<String> values = parser.read();
+			StringBuffer sb = new StringBuffer();
+			while (values != null) {
+				sb.append(MyUtil.printListValues(values));
+				values = parser.read();
+			}
+			res = sb.toString();
+			res = res.substring(0, res.length() - 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (parser != null) {
+				parser.close();
+			}
 		}
-		String res = sb.toString();
-		res = res.substring(0, res.length() - 1);
+
 		System.out.println(res);
 	}
-
 
 	public static PlayerDoc loadPlayerDoc(PlayerString s) {
 		PlayerDoc res = new PlayerDoc();
@@ -150,8 +169,7 @@ public class PlayerModel {
 		if (s.getMaxprepsUrl() != null) {
 			res.setMaxprepsUrl(s.getMaxprepsUrl());
 		}
-		 
-		
+
 		if (s.getGP() != null) {
 			try {
 				res.setGP(Double.parseDouble(s.getGP()));
@@ -236,7 +254,7 @@ public class PlayerModel {
 				logger.info(e.toString());
 			}
 		}
-		
+
 		return res;
 	}
 

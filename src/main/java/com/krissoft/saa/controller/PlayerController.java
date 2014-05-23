@@ -1,10 +1,13 @@
 package com.krissoft.saa.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,11 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +30,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 
 import com.krissoft.saa.config.DataTableEditorJsonObject;
 import com.krissoft.saa.config.PlayerDoc;
@@ -41,8 +45,11 @@ import com.mongodb.MongoServerSelectionException;
 @RequestMapping("players")
 public class PlayerController {
 
-	//private static final Logger logger = LoggerFactory.getLogger(PlayerController.class);
+	// private static final Logger logger =
+	// LoggerFactory.getLogger(PlayerController.class);
 
+	Page<PlayerDoc> page;
+	String[] header;
 	@Autowired
 	PlayerRepository playerRepository;
 	UploadedFile ufile;
@@ -53,7 +60,8 @@ public class PlayerController {
 
 	@RequestMapping(value = "/playersjson", method = RequestMethod.GET)
 	public @ResponseBody
-	String getPlayers1(HttpServletRequest request,
+	String getPlayers1(
+			HttpServletRequest request,
 			@RequestParam(value = "length") String length,
 			@RequestParam(value = "start") String startStr,
 			@RequestParam(value = "draw") String draw,
@@ -65,29 +73,30 @@ public class PlayerController {
 			@RequestParam(value = "columns[3][search][value]") String searchColTree,
 			@RequestParam(value = "columns[4][search][value]") String searchColFour)
 			throws JSONException {
-		//System.out.println("length = " + length);
+		// System.out.println("length = " + length);
 		System.out.println("searchColZero = " + searchColZero);
 		System.out.println("searchColOne = " + searchColOne);
 		System.out.println("searchColTwo = " + searchColTwo);
 		System.out.println("searchColTree = " + searchColTree);
 		System.out.println("searchColFour = " + searchColFour);
-		//MyUtil.PrintAllRequestParams(request);
+		// MyUtil.PrintAllRequestParams(request);
 		String res = "";
-		Page<PlayerDoc> page = null;
+		// Page<PlayerDoc> page = null;
 		DataTableEditorJsonObject jsonObject = new DataTableEditorJsonObject();
 		Sort sort = null;
 
-		boolean noFilter = isFilterOn(searchColZero,searchColOne,searchColTwo,searchColTree,searchColFour );
+		boolean noFilter = isFilterOn(searchColZero, searchColOne,
+				searchColTwo, searchColTree, searchColFour);
 		System.out.println("noFilter = " + noFilter);
 		int start = new Integer(startStr);
 		int pageRows = new Integer(length);
 		int size = 0;
-		
+
 		// TODO save header in DB and drop down list in view
-		String[] header = new String[] { "name", "state", "schoolName",
-				"schoolCity", "maxprepsUrl", "pos", "height", "fortyDash",
-				"weight", "stars", "rating", "gradYear", "GP", "Avg", "OBP",
-				"H", "RBI", "R", "SB", "AB", "SLG", "PA", "FP", "K", "IP" };
+		header = new String[] { "name", "state", "schoolName", "schoolCity",
+				"maxprepsUrl", "pos", "height", "fortyDash", "weight", "stars",
+				"rating", "gradYear", "GP", "Avg", "OBP", "H", "RBI", "R",
+				"SB", "AB", "SLG", "PA", "FP", "K", "IP" };
 		int sortCol = Integer.parseInt(iSortCol_0) - 1;
 		for (int i = 0; i < header.length; i++) {
 			if (sortCol == i && sSortDir_0.equals("asc")) {
@@ -103,8 +112,11 @@ public class PlayerController {
 						sort));
 			} else if (noFilter) {
 				size = (int) playerRepository.count();
-				page = playerRepository.findByNameLikeAndStateLikeAndSchoolNameLikeAndSchoolCityLikeAndPosLike(searchColZero, searchColOne, searchColTwo,searchColTree,searchColFour, new PageRequest(start, size,
-						sort) );
+				page = playerRepository
+						.findByNameLikeAndStateLikeAndSchoolNameLikeAndSchoolCityLikeAndPosLike(
+								searchColZero, searchColOne, searchColTwo,
+								searchColTree, searchColFour, new PageRequest(
+										start, size, sort));
 				size = page.getNumberOfElements();
 			} else {
 				size = (int) playerRepository.count();
@@ -113,20 +125,19 @@ public class PlayerController {
 					pageNumber1 = size;
 					pageRows = size;
 					size = (int) playerRepository.count();
-					page = playerRepository.findAll(new PageRequest(start, size,
-							sort));
+					page = playerRepository.findAll(new PageRequest(start,
+							size, sort));
+				} else {
+					page = playerRepository.findAll(new PageRequest(
+							pageNumber1, pageRows, sort));
 				}
-				else {
-					page = playerRepository.findAll(new PageRequest(pageNumber1,
-							pageRows, sort));
-				}
-				
+
 			}
 		} catch (MongoServerSelectionException ex) {
 			System.out.println("No connection with DB  " + ex);
 		}
 		jsonObject.setAaData(page);
-		//System.out.println("page size = " + page.getNumberOfElements());
+		// System.out.println("page size = " + page.getNumberOfElements());
 		jsonObject.setDraw(draw);
 		jsonObject.setRecordsFiltered(size);
 		jsonObject.setRecordsTotal(size);
@@ -135,10 +146,34 @@ public class PlayerController {
 		return res;
 	}
 
-	
-	
-	
-	private boolean isFilterOn(String zero, String one, String two, String three, String four) {
+	@RequestMapping(value = "/csvexport", method = RequestMethod.GET)
+	public void csvexport(HttpServletResponse response) throws IOException {
+		System.out.println("csvexport method");
+		List<PlayerDoc> list = page.getContent();
+		ICsvBeanWriter beanWriter = null;
+		try {
+			File file = new File(System.getProperty("java.io.tmpdir")
+					+ System.getProperty("file.separator") + "players.csv");
+			System.out.println("upLoadedfile = " + file.getAbsolutePath());
+			response.setContentType("text/csv");
+			response.setContentLength(new Long(file.length()).intValue());
+			response.setHeader("Content-Disposition",
+					"attachment; filename=players.csv");
+			beanWriter = new CsvBeanWriter(response.getWriter(),
+					CsvPreference.STANDARD_PREFERENCE);
+			beanWriter.writeHeader(header);
+			for (final PlayerDoc customer : list) {
+				beanWriter.write(customer, header);
+			}
+		} finally {
+			if (beanWriter != null) {
+				beanWriter.close();
+			}
+		}
+	}
+
+	private boolean isFilterOn(String zero, String one, String two,
+			String three, String four) {
 		boolean noFilter = false;
 		if (!zero.equals("")) {
 			noFilter = true;
@@ -148,7 +183,7 @@ public class PlayerController {
 			noFilter = true;
 		} else if (!three.equals("")) {
 			noFilter = true;
-		}else if (!four.equals("")) {
+		} else if (!four.equals("")) {
 			noFilter = true;
 		}
 		return noFilter;
@@ -159,8 +194,9 @@ public class PlayerController {
 	String create(@RequestBody String create) throws IllegalAccessException,
 			InvocationTargetException {
 		System.out.println("create method");
-		create = create.replaceAll("data", "").replaceAll("%5D", "").replaceAll("%3A", "")
-				.replaceAll("%5B", "").replaceAll("\\+", " ");
+		create = create.replaceAll("data", "").replaceAll("%5D", "")
+				.replaceAll("%3A", "").replaceAll("%5B", "")
+				.replaceAll("\\+", " ");
 		System.out.println("create method = " + create);
 
 		PlayerDoc p = new PlayerDoc();
@@ -194,8 +230,9 @@ public class PlayerController {
 	public @ResponseBody
 	String edit(@RequestBody String action) throws IllegalAccessException,
 			InvocationTargetException {
-		action = action.replaceAll("data", "").replaceAll("%5D", "").replaceAll("3A=", "")
-				.replaceAll("%5B", "").replaceAll("\\+", " ");
+		action = action.replaceAll("data", "").replaceAll("%5D", "")
+				.replaceAll("3A=", "").replaceAll("%5B", "")
+				.replaceAll("\\+", " ");
 		System.out.println("edit method = " + action);
 
 		PlayerDoc p = new PlayerDoc();
