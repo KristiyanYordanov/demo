@@ -355,14 +355,8 @@ var applyMapContainerHeight = function() {
 
 	$(document).ready(function() {
 		applyMapContainerHeight();
-		console.log(page);
-		if (page === undefined || page === "" || page === "players") {
-			document.cookie = "page=" + "players";
-			page = get_cookie(cookie_name);
 			var html = 'players/user/players';
 			$('#content').load(html);
-			window.location.hash = "#" + page;
-		}
 	});
 	$("#load_csv").on("click", function() {
 		var html = 'players/user/csv';
@@ -386,7 +380,7 @@ var applyMapContainerHeight = function() {
 	$("#load_schools").on("click", function() {
 		document.cookie = "page=" + "load_schools";
 		page = get_cookie(cookie_name);
-		var html = 'players/schools';
+		var html = 'schools/schools';
 		$('#content').load(html);
 	});
 </script>

@@ -11,7 +11,7 @@ public class DataTableEditorJsonObject {
 	@Expose
 	private Integer recordsTotal;
 	@Expose
-	private Page<PlayerDoc> aaData;
+	private Page<? extends ObjectIdSerializer> aaData;
 	@Expose
 	private String draw;
 
@@ -42,15 +42,15 @@ public class DataTableEditorJsonObject {
 		return this;
 	}
 
-	public Page<PlayerDoc> getAaData() {
+	public Page<? extends ObjectIdSerializer> getAaData() {
 		return aaData;
 	}
 
-	public void setAaData(Page<PlayerDoc> aaData) {
+	public void setAaData(Page<? extends ObjectIdSerializer> aaData) {
 		this.aaData = aaData;
 	}
 
-	public DataTableEditorJsonObject withAaData(Page<PlayerDoc> aaData) {
+	public DataTableEditorJsonObject withAaData(Page<? extends ObjectIdSerializer> aaData) {
 		this.aaData = aaData;
 		return this;
 	}

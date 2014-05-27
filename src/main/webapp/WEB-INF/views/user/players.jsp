@@ -5,9 +5,6 @@
 	href="resources/css/jquery.dataTables.css.css" />
 
 <link rel="stylesheet" type="text/css"
-	href="resources/css/dataTables.tableTools.css" />
-
-<link rel="stylesheet" type="text/css"
 	href="resources/css/dataTables.editor.min.css" />
 
 <link rel="stylesheet" type="text/css"
@@ -23,6 +20,7 @@
 	padding: 10px;
 	margin-bottom: 5px;
 }
+
 #example {
 	min-width: 1000px;
 	max-width: 1200px;
@@ -87,207 +85,257 @@ table.dataTable tr td:first-child:before {
 table.dataTable tr.selected td:first-child:before {
 	content: "\f046"; /* fa-check-square-o */
 }
-
 </style>
 <script type="text/javascript" charset="utf8"
 	src="resources/js/jquery-1.10.2.min.js"></script>
+
 <script type="text/javascript" charset="utf8"
 	src="resources/js/jquery.dataTables.1.10.0.js"></script>
-<script type="text/javascript" charset="utf8"
-	src="resources/js/dataTables.tableTools.js"></script>
-<script type="text/javascript" charset="utf8"
-	src="resources/js/ZeroClipboard.min.js"></script>
 <script type="text/javascript" charset="utf8"
 	src="resources/js/dataTables.editor.js"></script>
 
 <script type="text/javascript" class="init">
 	var editor; // use a global for the submit and return data rendering in the examples
-	function filterGlobal () {
-	    $('#example').DataTable().search(
-	        $('#global_filter').val(),
-	        $('#global_regex').prop('checked'),
-	        $('#global_smart').prop('checked')
-	    ).draw();
+	function filterGlobal() {
+		$('#example').DataTable().search($('#global_filter').val(),
+		$('#global_regex').prop('checked'),
+		$('#global_smart').prop('checked')).draw();
 	}
-	 
-	function filterColumn ( i ) {
-	    $('#example').DataTable().column( i ).search(
-	        $('#col'+i+'_filter').val(),
-	        $('#col'+i+'_regex').prop('checked'),
-	        $('#col'+i+'_smart').prop('checked')
-	    ).draw();
+
+	function filterColumn(i) {
+		$('#example').DataTable().column(i).search(
+		$('#col' + i + '_filter').val(),
+		$('#col' + i + '_regex').prop('checked'),
+		$('#col' + i + '_smart').prop('checked')).draw();
 	}
 	$(document).ready(function() {
 		//filter and hide
-		 $('.nav-toggle').click(function(){
-				//get collapse content selector
-				var collapse_content_selector = $(this).attr('href');					
-	 
-				//make the collapse content to be shown or hide
-				var toggle_switch = $(this);
-				$(collapse_content_selector).toggle(function(){
-				  if($(this).css('display')=='none'){
-	                                //change the button label to be 'Show'
+		$('.nav-toggle').click(function() {
+			//get collapse content selector
+			var collapse_content_selector = $(this).attr('href');
+
+			//make the collapse content to be shown or hide
+			var toggle_switch = $(this);
+			$(collapse_content_selector).toggle(function() {
+				if ($(this).css('display') == 'none') {
+					//change the button label to be 'Show'
 					toggle_switch.html('Filter the table');
-				  }else{
-	                                //change the button label to be 'Hide'
+				} else {
+					//change the button label to be 'Hide'
 					toggle_switch.html('Hide Filter');
-				  }
-				});
-			  });
-	    editor = new $.fn.dataTable.Editor( {
-	        ajax: {
-	            create: {
-	                type: 'POST',
-	            	dataType: 'json', 
-	            	contentType: 'application/json',
-	                url:  'players/create'
-	            },
-	            edit: {
-	            	type: 'PUT',
-	            	dataType: 'json', 
-	            	contentType: 'application/json',
-	                url:  'players/edit'
-	            },
-	            remove: {
-	                type: 'DELETE',
-	                dataType: 'json', 
-	            	contentType: 'application/json',
-	                url:  'players/delete'
-	            }
-	        },
-	        table: "#example",
-	        //label are for create method
-	        fields: [ {
-	    		label: "name:",
-				name: "name:"},{
-				label: "state:",
-				name: "state:"},{
-				label: "schoolName:",
-				name: "schoolName:"},{
-				label: "schoolCity:",
-				name: "schoolCity:"},{
-				label: "maxprepsUrl:",
-				name: "maxprepsUrl:"},{
-				label: "pos:",
-				name: "pos:"},{
-				label: "height:",
-				name: "height:"},{
-				label: "fortyDash:",
-				name: "fortyDash:"},{
-				label: "weight:",
-				name: "weight:"},{
-				label: "stars:",
-				name: "stars:"},{
-				label: "rating:",
-				name: "rating:"},{
-				label: "gradYear:",
-				name: "gradYear:"},{
-				label: "GP:",
-				name: "GP:"},{
-				label: "Avg:",
-				name: "Avg:"},{
-				label: "OBP:",
-				name: "OBP:"},{
-				label: "H:",
-				name: "H:"},{
-				label: "RBI:",
-				name: "RBI:"},{
-				label: "R:",
-				name: "R:"},{
-				label: "SB:",
-				name: "SB:"},{
-				label: "AB:",
-				name: "AB:"},{
-				label: "SLG:",
-				name: "SLG:"},{
-				label: "PA:",
-				name: "PA:"},{
-				label: "FP:",
-				name: "FP:"},{
-				label: "K:",
-				name: "K:"},{
-				label: "IP:",
-				name: "IP:"}
-	        ]
-	    } );
-	    
-	    // Activate an inline edit on click of a table cell
-	    $('#example').on( 'click', 'tbody td:not(:first-child)', function (e) {
-	        editor.inline( this );
-	    } );
-	    
-	    $('#example').DataTable( {
-	        //dom: "Tfrtip",
-	     	dom: '<"top"ilpT<"clear">>rt<"bottom"ilp<"clear">>', 
-	     	"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]], 
-	     	  "scrollY": 400,
-	          "scrollX": true,
-	        ajax: {
-	            url: "players/playersjson",
-	            type: "GET"
-	        },
-	        serverSide: true,
-	        columns: [
-	            { data: null, render: function ( data, type, row ) {
-	            	//id data.DT_RowId
-	                // Combine the first and last names into a single table field
-	                return '';
-	            } },
-	    		{ data: "name" },
-				{ data: "state" },
-				{ data: "schoolName" },
-				{ data: "schoolCity" },
-				{ data: "maxprepsUrl" },
-				{ data: "pos" },
-				{ data: "height" },
-				{ data: "fortyDash" },
-				{ data: "weight" },
-				{ data: "stars" },
-				{ data: "rating" },
-				{ data: "gradYear" },
-				{ data: "GP" },
-				{ data: "Avg" },
-				{ data: "OBP" },
-				{ data: "H" },
-				{ data: "RBI" },
-				{ data: "R" },
-				{ data: "SB" },
-				{ data: "AB" },
-				{ data: "SLG" },
-				{ data: "PA" },
-				{ data: "FP" },
-				{ data: "K" },
-				{ data: "IP" }
-	        ],
-	        order: [ 1, 'asc' ],
-	        tableTools: {
-	            sRowSelect: "os",
-	            sRowSelector: 'td:first-child',
-	            aButtons: [
-	                { sExtends: "editor_create", editor: editor },
-	                { sExtends: "editor_edit",   editor: editor },
-	                { sExtends: "editor_remove", editor: editor }
-	            ]
-	        }
-	    } );
-	    
-	    $('input.global_filter').on( 'keyup click', function () {
-	        filterGlobal();
-	    } );
-	 
-	    $('input.column_filter').on( 'keyup click', function () {
-	        filterColumn( $(this).parents('tr').attr('data-column') );
-	    } );
-	} );
-	</script>
+				}
+			});
+		});
+		editor = new $.fn.dataTable.Editor({
+			ajax : {
+				create : {
+					type : 'POST',
+					dataType : 'json',
+					contentType : 'application/json',
+					url : 'players/create'
+				},
+				edit : {
+					type : 'PUT',
+					dataType : 'json',
+					contentType : 'application/json',
+					url : 'players/edit'
+				},
+				remove : {
+					type : 'DELETE',
+					dataType : 'json',
+					contentType : 'application/json',
+					url : 'players/delete'
+				}
+			},
+			table : "#example",
+			//label are for create method
+			fields : [ {
+				label : "name:",
+				name : "name:"
+			}, {
+				label : "state:",
+				name : "state:"
+			}, {
+				label : "schoolName:",
+				name : "schoolName:"
+			}, {
+				label : "schoolCity:",
+				name : "schoolCity:"
+			}, {
+				label : "maxprepsUrl:",
+				name : "maxprepsUrl:"
+			}, {
+				label : "pos:",
+				name : "pos:"
+			}, {
+				label : "height:",
+				name : "height:"
+			}, {
+				label : "fortyDash:",
+				name : "fortyDash:"
+			}, {
+				label : "weight:",
+				name : "weight:"
+			}, {
+				label : "stars:",
+				name : "stars:"
+			}, {
+				label : "rating:",
+				name : "rating:"
+			}, {
+				label : "gradYear:",
+				name : "gradYear:"
+			}, {
+				label : "GP:",
+				name : "GP:"
+			}, {
+				label : "Avg:",
+				name : "Avg:"
+			}, {
+				label : "OBP:",
+				name : "OBP:"
+			}, {
+				label : "H:",
+				name : "H:"
+			}, {
+				label : "RBI:",
+				name : "RBI:"
+			}, {
+				label : "R:",
+				name : "R:"
+			}, {
+				label : "SB:",
+				name : "SB:"
+			}, {
+				label : "AB:",
+				name : "AB:"
+			}, {
+				label : "SLG:",
+				name : "SLG:"
+			}, {
+				label : "PA:",
+				name : "PA:"
+			}, {
+				label : "FP:",
+				name : "FP:"
+			}, {
+				label : "K:",
+				name : "K:"
+			}, {
+				label : "IP:",
+				name : "IP:"
+			} ]
+		});
+
+		// Activate an inline edit on click of a table cell
+		$('#example').on('click', 'tbody td:not(:first-child)', function(e) {
+			editor.inline(this);
+		});
+
+		$('#example').DataTable({
+			//dom: "Tfrtip",
+			dom : '<"top"ilpT<"clear">>rt<"bottom"ilp<"clear">>',
+			"aLengthMenu" : [ [ 10, 25, 50, -1 ], [ 10, 25, 50, "All" ] ],
+			"scrollY" : 400,
+			"scrollX" : true,
+			ajax : {
+				url : "players/playersjson",
+				type : "GET"
+			},
+			serverSide : true,
+			columns : [ {
+				data : null,
+				render : function(data, type, row) {
+					//id data.DT_RowId
+					// Combine the first and last names into a single table field
+					return '';
+				}
+			}, {
+				data : "name"
+			}, {
+				data : "state"
+			}, {
+				data : "schoolName"
+			}, {
+				data : "schoolCity"
+			}, {
+				data : "maxprepsUrl"
+			}, {
+				data : "pos"
+			}, {
+				data : "height"
+			}, {
+				data : "fortyDash"
+			}, {
+				data : "weight"
+			}, {
+				data : "stars"
+			}, {
+				data : "rating"
+			}, {
+				data : "gradYear"
+			}, {
+				data : "GP"
+			}, {
+				data : "Avg"
+			}, {
+				data : "OBP"
+			}, {
+				data : "H"
+			}, {
+				data : "RBI"
+			}, {
+				data : "R"
+			}, {
+				data : "SB"
+			}, {
+				data : "AB"
+			}, {
+				data : "SLG"
+			}, {
+				data : "PA"
+			}, {
+				data : "FP"
+			}, {
+				data : "K"
+			}, {
+				data : "IP"
+			} ],
+			order : [ 1, 'asc' ],
+			tableTools : {
+				sRowSelect : "os",
+				sRowSelector : 'td:first-child',
+				aButtons : [ {
+					sExtends : "editor_create",
+					editor : editor
+				}, {
+					sExtends : "editor_edit",
+					editor : editor
+				}, {
+					sExtends : "editor_remove",
+					editor : editor
+				} ]
+			}
+		});
+
+		$('input.global_filter').on('keyup click', function() {
+			filterGlobal();
+		});
+
+		$('input.column_filter').on('keyup click', function() {
+			filterColumn($(this).parents('tr').attr('data-column'));
+		});
+	});
+</script>
 </head>
 <body>
 	<section class="round-border">
 		<div>
-			<button  style="display:inline-block; float: left;" href="#collapse1" class="nav-toggle">Filter the
-				table</button>
-				<button><a href="/spring-jpa/players/csvexport">Export</a></button>
+			<button style="display: inline-block; float: left;" href="#collapse1"
+				class="nav-toggle">Filter the table</button>
+			<p>
+				<a href="/spring-jpa/players/csvexport">Export</a>
+			</p>
 		</div>
 		<div id="collapse1" style="display: none">
 			<table>
@@ -349,6 +397,12 @@ table.dataTable tr.selected td:first-child:before {
 				<th>IP</th>
 			</tr>
 		</thead>
+		<tbody>
+				<tr>
+					<td colspan="5" class="dataTables_empty">Loading data from
+						server</td>
+				</tr>
+		</tbody>
 	</table>
 </body>
 </html>

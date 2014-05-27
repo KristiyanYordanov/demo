@@ -1,13 +1,11 @@
 package com.krissoft.saa.controller;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,7 +20,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,6 +46,7 @@ public class PlayerController {
 	// LoggerFactory.getLogger(PlayerController.class);
 
 	Page<PlayerDoc> page;
+	Page<PlayerDoc> pageExport;
 	String[] header;
 	@Autowired
 	PlayerRepository playerRepository;
@@ -110,6 +108,7 @@ public class PlayerController {
 				size = (int) playerRepository.count();
 				page = playerRepository.findAll(new PageRequest(start, size,
 						sort));
+				pageExport = page;
 			} else if (noFilter) {
 				size = (int) playerRepository.count();
 				page = playerRepository
@@ -118,6 +117,7 @@ public class PlayerController {
 								searchColTree, searchColFour, new PageRequest(
 										start, size, sort));
 				size = page.getNumberOfElements();
+				pageExport = page;
 			} else {
 				size = (int) playerRepository.count();
 				int pageNumber1 = start / pageRows;
@@ -127,9 +127,12 @@ public class PlayerController {
 					size = (int) playerRepository.count();
 					page = playerRepository.findAll(new PageRequest(start,
 							size, sort));
+					pageExport = page;
 				} else {
 					page = playerRepository.findAll(new PageRequest(
 							pageNumber1, pageRows, sort));
+					pageExport = playerRepository.findAll(new PageRequest(
+							start, size, sort));
 				}
 
 			}
@@ -149,14 +152,10 @@ public class PlayerController {
 	@RequestMapping(value = "/csvexport", method = RequestMethod.GET)
 	public void csvexport(HttpServletResponse response) throws IOException {
 		System.out.println("csvexport method");
-		List<PlayerDoc> list = page.getContent();
+		List<PlayerDoc> list = pageExport.getContent();
 		ICsvBeanWriter beanWriter = null;
 		try {
-			File file = new File(System.getProperty("java.io.tmpdir")
-					+ System.getProperty("file.separator") + "players.csv");
-			System.out.println("upLoadedfile = " + file.getAbsolutePath());
 			response.setContentType("text/csv");
-			response.setContentLength(new Long(file.length()).intValue());
 			response.setHeader("Content-Disposition",
 					"attachment; filename=players.csv");
 			beanWriter = new CsvBeanWriter(response.getWriter(),
@@ -165,6 +164,7 @@ public class PlayerController {
 			for (final PlayerDoc customer : list) {
 				beanWriter.write(customer, header);
 			}
+			beanWriter.flush();
 		} finally {
 			if (beanWriter != null) {
 				beanWriter.close();
@@ -301,6 +301,7 @@ public class PlayerController {
 	@RequestMapping(value = "/import", method = RequestMethod.POST)
 	public @ResponseBody
 	String importPlayers(@RequestBody String[] header) throws Exception {
+		System.out.println(Arrays.toString(header));
 		PlayerModel playerModel = new PlayerModel();
 		File upLoadedfile = new File(System.getProperty("java.io.tmpdir")
 				+ System.getProperty("file.separator") + ufile.name);
@@ -316,12 +317,17 @@ public class PlayerController {
 	public @ResponseBody
 	String upload(MultipartHttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		Iterator<String> itr = request.getFileNames();
+		System.out.println( "upload method!");
+		Iterator<String> itr;
 		String res = "";
-		MultipartFile mpf = request.getFile(itr.next());
-		if (!mpf.isEmpty()) {
-			System.out.println(mpf.getOriginalFilename() + " uploaded!");
-			try {
+		try {
+			System.out.println( "1");
+			itr = request.getFileNames();
+			System.out.println( "2");
+			MultipartFile mpf = request.getFile(itr.next());
+			System.out.println( "request.getFileNames() = " + mpf.getOriginalFilename());
+			if (!mpf.isEmpty()) {
+				System.out.println(mpf.getOriginalFilename() + " uploaded!");
 				// just temporary save file info into ufile
 				ufile.length = mpf.getBytes().length;
 				ufile.bytes = mpf.getBytes();
@@ -345,10 +351,10 @@ public class PlayerController {
 
 				PlayerModel playerModel = new PlayerModel();
 				res = playerModel.readCsvToString(file);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return res;
 	}
@@ -365,8 +371,4 @@ public class PlayerController {
 		System.out.println(file.getAbsolutePath() + " is imported.");
 	}
 
-	@RequestMapping(value = "/schools", method = RequestMethod.GET)
-	public String schools(ModelMap model) {
-		return "user/schools";
-	}
 }

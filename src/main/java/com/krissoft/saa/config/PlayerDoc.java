@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "playerdoc")
-public class PlayerDoc  {
+public class PlayerDoc  extends ObjectIdSerializer{
 
 	/**
 	 * kris
@@ -81,17 +81,6 @@ public class PlayerDoc  {
 	private double FP;
 	private double K;
 	private double IP;
-	private double test;
-	
-	
-	
-	public double getTest() {
-		return test;
-	}
-
-	public void setTest(double test) {
-		this.test = test;
-	}
 
 	public double getGP() {
 		return GP;

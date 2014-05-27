@@ -2,36 +2,37 @@
 <html>
 <head>
 <title>Scout Automated Adviser</title>
-<link rel="stylesheet" type="text/css"
-	href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" type="text/css"
+	href="resources/css/jquery.dataTables.css.css" />
+
 </head>
 <body>
-	<!--  Form 2 -->
 	<br />
 	<form id="form2" method="post" action="/spring-jpa/cont/upload"
 		enctype="multipart/form-data">
 		<!-- File input -->
 		<input name="file2" id="file2" type="file" /><br />
 	</form>
-	<button value="Submit" onclick="uploadFormData()">Upload</button>
+	<button value="Submit" onclick="uploadFile()">Upload</button>
 	
 	<table width="100%">
 		<tr id="table">
 		</tr>
 	</table>
+	<label>Headers are just fine</label>
 	<input id="checkbox" type="checkbox" value="true" name="Headers are just fine.">
-	<button value="Submit" onclick="uploadAndSave()">Import</button>
+	<button value="Submit" onclick="importFile()">Import</button>
 
 	<div id="demo"></div>
 </body>
 <script type="text/javascript" charset="utf8"
-	src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
+	src="resources/js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" charset="utf8"
-	src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.js"></script>
+	src="resources/js/jquery.dataTables.1.10.0.js"></script>
 <script type="text/javascript">
 var headerLength = 0;
-function uploadAndSave() {
+function importFile() {
 	var header = new Array();
 	if (headerLength > 0) {
 		for (var i = 1; i <= headerLength; i++ ) {
@@ -66,7 +67,7 @@ function uploadAndSave() {
 	});
 	
 };
-function uploadFormData() {
+function uploadFile() {
 		//remove drop down list before uploading new csv file		
 		var myNode = document.getElementById("table");
 		while (myNode.firstChild) {
@@ -75,6 +76,7 @@ function uploadFormData() {
 		  
 		var oMyForm = new FormData();
 		oMyForm.append("file", file2.files[0]);
+		console.log("file = " + file2.files[0]);
 		var aryColTableChecked = new Array();
 		$.ajax({
 			url : '/spring-jpa/players/upload',
@@ -84,6 +86,7 @@ function uploadFormData() {
 			contentType : false,
 			type : 'POST',
 			success : function(data) {
+				//console.log("data = " + data);
 				$('#demo').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"></table>');
 				var header = data.split("],[", 1);
 				var h = header[0].split(",");
@@ -106,7 +109,7 @@ function uploadFormData() {
 					aaData.push(f);
 				}
 				aaData = aaData.slice(1);
-				oTable = $('#example').dataTable(
+				oTable = $('#example').dataTable( 
 				{
 					"aaData":aaData,
 					"bDeferRender": true,
@@ -152,7 +155,7 @@ function uploadFormData() {
 				}
 			},
 			error : function(data, status, er) {
-				alert("error: " + data + " status: "+ status + " er:" + er);
+				alert("error: " + data + " |status: "+ status + "| er:" + er);
 			}
 		});
 	}

@@ -3,6 +3,7 @@ package com.krissoft.saa.model;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -40,6 +41,7 @@ public class PlayerModel {
 				}
 			}
 
+			System.out.println("last header = " + Arrays.toString(header) + ", with size = " + header.length);
 			PlayerString playerString;
 			while ((playerString = beanReader.read(PlayerString.class, header)) != null) {
 				PlayerDoc player = loadPlayerDoc(playerString);
