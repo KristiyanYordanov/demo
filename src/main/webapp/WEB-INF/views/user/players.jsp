@@ -299,6 +299,14 @@ table.dataTable tr.selected td:first-child:before {
 			filterColumn($(this).parents('tr').attr('data-column'));
 		});
 	});
+	function clearFilter() {
+		$("#col0_filter").val('');
+		$("#col1_filter").val('');
+		$("#col2_filter").val('');
+		$("#col3_filter").val('');
+		$("#col4_filter").val('');
+		return false;
+	}
 </script>
 </head>
 <body>
@@ -311,6 +319,8 @@ table.dataTable tr.selected td:first-child:before {
 			</p>
 		</div>
 		<div id="collapse1" style="display: none">
+		<button onclick="clearFilter()" 
+				id="clear_filter">Clear Filter</button>
 			<table>
 				<tbody>
 					<tr id="filter_col1" data-column="0">
