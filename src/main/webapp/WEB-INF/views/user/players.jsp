@@ -20,11 +20,6 @@
 	margin-bottom: 5px;
 }
 
-#example {
-	min-width: 1000px;
-	max-width: 1200px;
-}
-
 .dataTables_info {
 	background: linear-gradient(to bottom, #A8DDE8 0%, #96CBD7 100%);
 	border: thin;
@@ -53,11 +48,6 @@
 	border-bottom-right-radius: 5px;
 }
 
-.DTTT_button DTTT_button_copy {
-	background-color: yellow;
-	border: solid;
-}
-
 div.container {
 	width: 80%;
 }
@@ -75,18 +65,6 @@ table.dataTable tr td:first-child:before {
 table.dataTable tr.selected td:first-child:before {
 	content: "\f046"; /* fa-check-square-o */
 }
-
-.DTE_Body_Content {
-	max-height: 325px;
-}
-.DTE_Body {
-	max-height: 350px;
-}
-
-
-.DTE_Form_Content {
-	max-height: 325px;
-}
 </style>
 <script type="text/javascript" charset="utf8"
 	src="resources/js/jquery-1.10.2.min.js"></script>
@@ -100,15 +78,15 @@ table.dataTable tr.selected td:first-child:before {
 	var editor; // use a global for the submit and return data rendering in the examples
 	function filterGlobal() {
 		$('#example').DataTable().search($('#global_filter').val(),
-		$('#global_regex').prop('checked'),
-		$('#global_smart').prop('checked')).draw();
+				$('#global_regex').prop('checked'),
+				$('#global_smart').prop('checked')).draw();
 	}
 
 	function filterColumn(i) {
 		$('#example').DataTable().column(i).search(
-		$('#col' + i + '_filter').val(),
-		$('#col' + i + '_regex').prop('checked'),
-		$('#col' + i + '_smart').prop('checked')).draw();
+				$('#col' + i + '_filter').val(),
+				$('#col' + i + '_regex').prop('checked'),
+				$('#col' + i + '_smart').prop('checked')).draw();
 	}
 	$(document).ready(function() {
 		//filter and hide
@@ -235,7 +213,6 @@ table.dataTable tr.selected td:first-child:before {
 		});
 
 		$('#example').DataTable({
-			//dom: "Tfrtip",
 			dom : '<"top"ilpT<"clear">>rt<"bottom"ilp<"clear">>',
 			"aLengthMenu" : [ [ 10, 25, 50, -1 ], [ 10, 25, 50, "All" ] ],
 			"scrollY" : 400,
@@ -245,6 +222,7 @@ table.dataTable tr.selected td:first-child:before {
 				type : "GET"
 			},
 			serverSide : true,
+			order : [ 1, 'asc' ],	
 			columns : [ {
 				data : null,
 				render : function(data, type, row) {
@@ -303,21 +281,14 @@ table.dataTable tr.selected td:first-child:before {
 			}, {
 				data : "IP"
 			} ],
-			order : [ 1, 'asc' ],
-			tableTools : {
-				sRowSelect : "os",
-				sRowSelector : 'td:first-child',
-				aButtons : [ {
-					sExtends : "editor_create",
-					editor : editor
-				}, {
-					sExtends : "editor_edit",
-					editor : editor
-				}, {
-					sExtends : "editor_remove",
-					editor : editor
-				} ]
-			}
+			 tableTools: {
+		            sRowSelect: "os",
+		            aButtons: [
+		                { sExtends: "editor_create", editor: editor },
+		                { sExtends: "editor_edit",   editor: editor },
+		                { sExtends: "editor_remove", editor: editor }
+		            ]
+		        }
 		});
 
 		$('input.global_filter').on('keyup click', function() {
@@ -400,10 +371,10 @@ table.dataTable tr.selected td:first-child:before {
 			</tr>
 		</thead>
 		<tbody>
-				<tr>
-					<td colspan="5" class="dataTables_empty">Loading data from
-						server</td>
-				</tr>
+			<tr>
+				<td colspan="5" class="dataTables_empty">Loading data from
+					server</td>
+			</tr>
 		</tbody>
 	</table>
 </body>
