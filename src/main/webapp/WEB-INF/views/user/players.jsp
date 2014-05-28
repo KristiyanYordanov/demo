@@ -3,13 +3,12 @@
 <title>Scout Automated Adviser</title>
 <link rel="stylesheet" type="text/css"
 	href="resources/css/jquery.dataTables.css.css" />
-
+<link rel="stylesheet" type="text/css"
+	href="resources/css/dataTables.tableTools.css" />
 <link rel="stylesheet" type="text/css"
 	href="resources/css/dataTables.editor.min.css" />
-
 <link rel="stylesheet" type="text/css"
 	href="resources/css/font-awesome.css" />
-
 <style type="text/css">
 .round-border {
 	border: 1px solid #eee;
@@ -59,19 +58,10 @@
 	border: solid;
 }
 
-.DTE_Body {
-	max-height: 350px;
-}
-
-.DTE_Body_Content {
-	max-height: 325px;
-}
-
 div.container {
 	width: 80%;
 }
 
-//
 editor
 table.dataTable tr td:first-child {
 	text-align: center;
@@ -85,15 +75,27 @@ table.dataTable tr td:first-child:before {
 table.dataTable tr.selected td:first-child:before {
 	content: "\f046"; /* fa-check-square-o */
 }
+
+.DTE_Body_Content {
+	max-height: 325px;
+}
+.DTE_Body {
+	max-height: 350px;
+}
+
+
+.DTE_Form_Content {
+	max-height: 325px;
+}
 </style>
 <script type="text/javascript" charset="utf8"
 	src="resources/js/jquery-1.10.2.min.js"></script>
-
 <script type="text/javascript" charset="utf8"
 	src="resources/js/jquery.dataTables.1.10.0.js"></script>
 <script type="text/javascript" charset="utf8"
+	src="resources/js/dataTables.tableTools.js"></script>
+<script type="text/javascript" charset="utf8"
 	src="resources/js/dataTables.editor.js"></script>
-
 <script type="text/javascript" class="init">
 	var editor; // use a global for the submit and return data rendering in the examples
 	function filterGlobal() {

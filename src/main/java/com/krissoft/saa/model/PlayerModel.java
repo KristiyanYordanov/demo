@@ -34,6 +34,7 @@ public class PlayerModel {
 				// Important! skip reading first row
 				header = beanReader.getHeader(true);
 			} else {
+				String[] headerNotUsed = beanReader.getHeader(true);
 				for (int i = 0; i < header.length; i++) {
 					if (header[i].equals("None")) {
 						header[i] = null;

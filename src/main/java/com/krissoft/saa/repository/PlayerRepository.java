@@ -38,17 +38,13 @@ public interface PlayerRepository extends MongoRepository<PlayerDoc, String> {
     
     @Query("{ 'name':{$regex:?0,$options:'i'}}") 
     public List<PlayerDoc> findByNameRegex(String name, Sort sort);
-    //and
-    
-    
     //Page<PlayerDoc> findByNameAndSchoolNameRegex(String name, String schoolName,  Pageable pageable);
     @Query("'$and':[{'name':{'$regex':?0,'$options':'i'}},{'schoolName':{'$regex':?0,'$options':'i'}}]")
-    Page<PlayerDoc> findByNameAndSchoolNameRegex(String name, String schoolName,  Pageable pageable);
+    public Page<PlayerDoc> findByNameAndSchoolNameRegex(String name, String schoolName,  Pageable pageable);
     
+    public Page<PlayerDoc> findByNameLikeAndStateLikeAndSchoolNameLikeAndSchoolCityLikeAndPosLike(String name, String state, String schoolName, String schoolCity, String pos, Pageable pageable);
     
-    Page<PlayerDoc> findByNameLikeAndStateLikeAndSchoolNameLikeAndSchoolCityLikeAndPosLike(String name, String state,String schoolName,String schoolCity,String pos,  Pageable pageable);
-    //
-    
+    public Page<PlayerDoc> findByWeight(org.springframework.data.mongodb.core.query.Query query, Pageable pageable);
     
     @Query(value="{ 'name':{$regex:?0,$options:'i'}}", count = true) 
     long count(String name);

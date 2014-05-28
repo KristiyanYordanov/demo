@@ -18,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +35,7 @@ import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
 import com.krissoft.saa.config.DataTableEditorJsonObject;
+import com.krissoft.saa.config.DataTableEditorJsonObjectList;
 import com.krissoft.saa.config.PlayerDoc;
 import com.krissoft.saa.model.PlayerModel;
 import com.krissoft.saa.repository.PlayerRepository;
@@ -44,13 +48,15 @@ public class PlayerController {
 
 	// private static final Logger logger =
 	// LoggerFactory.getLogger(PlayerController.class);
-
-	Page<PlayerDoc> page;
-	Page<PlayerDoc> pageExport;
+	List<PlayerDoc> pageExport;
 	String[] header;
+
 	@Autowired
 	PlayerRepository playerRepository;
 	UploadedFile ufile;
+	
+	@Autowired
+	MongoTemplate mongoTemplate;
 
 	public PlayerController() {
 		ufile = new UploadedFile();
@@ -65,27 +71,41 @@ public class PlayerController {
 			@RequestParam(value = "draw") String draw,
 			@RequestParam(value = "order[0][dir]") String sSortDir_0,
 			@RequestParam(value = "order[0][column]") String iSortCol_0,
-			@RequestParam(value = "columns[0][search][value]") String searchColZero,
-			@RequestParam(value = "columns[1][search][value]") String searchColOne,
-			@RequestParam(value = "columns[2][search][value]") String searchColTwo,
-			@RequestParam(value = "columns[3][search][value]") String searchColTree,
-			@RequestParam(value = "columns[4][search][value]") String searchColFour)
+			@RequestParam(value = "columns[0][search][value]") String name,
+			@RequestParam(value = "columns[1][search][value]") String state,
+			@RequestParam(value = "columns[2][search][value]") String schoolName,
+			@RequestParam(value = "columns[3][search][value]") String schoolCity,
+			@RequestParam(value = "columns[4][search][value]") String pos)
 			throws JSONException {
 		// System.out.println("length = " + length);
-		System.out.println("searchColZero = " + searchColZero);
-		System.out.println("searchColOne = " + searchColOne);
-		System.out.println("searchColTwo = " + searchColTwo);
-		System.out.println("searchColTree = " + searchColTree);
-		System.out.println("searchColFour = " + searchColFour);
-		// MyUtil.PrintAllRequestParams(request);
+		System.out.println("searchColZero = " + name);
+		System.out.println("searchColOne = " + state);
+		System.out.println("searchColTwo = " + schoolName);
+		System.out.println("searchColTree = " + schoolCity);
+		System.out.println("searchColFour = " + pos);
+		Query query = new Query();
+		if (!name.equals("")) {
+			query.addCriteria(Criteria.where("name").regex(name, "i"));
+		}
+		if (!state.equals("")) {
+			query.addCriteria(Criteria.where("state").regex(state, "i"));
+		}
+		if (!schoolName.equals("")) {
+			query.addCriteria(Criteria.where("schoolName").regex(schoolName, "i"));
+		}
+		if (!schoolCity.equals("")) {
+			query.addCriteria(Criteria.where("schoolCity").regex(schoolCity, "i"));
+		}
+		if (!pos.equals("")) {
+			query.addCriteria(Criteria.where("pos").regex(pos, "i"));
+		}
+		
 		String res = "";
-		// Page<PlayerDoc> page = null;
-		DataTableEditorJsonObject jsonObject = new DataTableEditorJsonObject();
 		Sort sort = null;
-
-		boolean noFilter = isFilterOn(searchColZero, searchColOne,
-				searchColTwo, searchColTree, searchColFour);
-		System.out.println("noFilter = " + noFilter);
+		List<PlayerDoc> list = null;
+		Page<PlayerDoc> page = null;
+		boolean isFilterOn = isFilterOn(name, state, schoolName, schoolCity,
+				pos);
 		int start = new Integer(startStr);
 		int pageRows = new Integer(length);
 		int size = 0;
@@ -104,47 +124,58 @@ public class PlayerController {
 			}
 		}
 		try {
-			if (pageRows == -1 && !noFilter) {
+			if (pageRows == -1 && !isFilterOn) {
 				size = (int) playerRepository.count();
 				page = playerRepository.findAll(new PageRequest(start, size,
 						sort));
-				pageExport = page;
-			} else if (noFilter) {
-				size = (int) playerRepository.count();
-				page = playerRepository
-						.findByNameLikeAndStateLikeAndSchoolNameLikeAndSchoolCityLikeAndPosLike(
-								searchColZero, searchColOne, searchColTwo,
-								searchColTree, searchColFour, new PageRequest(
-										start, size, sort));
-				size = page.getNumberOfElements();
-				pageExport = page;
+				pageExport = page.getContent();
+			} else if (isFilterOn) {
+				list = mongoTemplate.find(query, PlayerDoc.class);
+				size = list.size();
+				System.out.println("pagerows =  "+ pageRows);
+				if (size > pageRows && pageRows != -1) {
+					int pageLength = pageRows+start;
+					if (pageRows+start > size) {
+						pageLength = size;
+					}
+					list = list.subList(start, pageLength);
+				}
+				pageExport = list;
 			} else {
 				size = (int) playerRepository.count();
-				int pageNumber1 = start / pageRows;
+				int pageNumber = start / pageRows;
 				if (size < pageRows) {
-					pageNumber1 = size;
-					pageRows = size;
 					size = (int) playerRepository.count();
 					page = playerRepository.findAll(new PageRequest(start,
 							size, sort));
-					pageExport = page;
+					pageExport = page.getContent();
 				} else {
 					page = playerRepository.findAll(new PageRequest(
-							pageNumber1, pageRows, sort));
+							pageNumber, pageRows, sort));
 					pageExport = playerRepository.findAll(new PageRequest(
-							start, size, sort));
+							start, size, sort)).getContent();
 				}
 
 			}
 		} catch (MongoServerSelectionException ex) {
 			System.out.println("No connection with DB  " + ex);
 		}
-		jsonObject.setAaData(page);
-		// System.out.println("page size = " + page.getNumberOfElements());
-		jsonObject.setDraw(draw);
-		jsonObject.setRecordsFiltered(size);
-		jsonObject.setRecordsTotal(size);
-		res = jsonObject.toString();
+		if (page != null) {
+			DataTableEditorJsonObject jsonObject = new DataTableEditorJsonObject();
+			jsonObject.setAaData(page);
+			jsonObject.setDraw(draw);
+			jsonObject.setRecordsFiltered(size);
+			jsonObject.setRecordsTotal(size);
+			res = jsonObject.toString();
+		}
+		else {
+			DataTableEditorJsonObjectList jsonObject = new DataTableEditorJsonObjectList();
+			jsonObject.setAaData(list);
+			jsonObject.setDraw(draw);
+			jsonObject.setRecordsFiltered(size);
+			jsonObject.setRecordsTotal(size);
+			res = jsonObject.toString();
+		}
 		System.out.println("res = " + res);
 		return res;
 	}
@@ -152,7 +183,6 @@ public class PlayerController {
 	@RequestMapping(value = "/csvexport", method = RequestMethod.GET)
 	public void csvexport(HttpServletResponse response) throws IOException {
 		System.out.println("csvexport method");
-		List<PlayerDoc> list = pageExport.getContent();
 		ICsvBeanWriter beanWriter = null;
 		try {
 			response.setContentType("text/csv");
@@ -161,7 +191,7 @@ public class PlayerController {
 			beanWriter = new CsvBeanWriter(response.getWriter(),
 					CsvPreference.STANDARD_PREFERENCE);
 			beanWriter.writeHeader(header);
-			for (final PlayerDoc customer : list) {
+			for (final PlayerDoc customer : pageExport) {
 				beanWriter.write(customer, header);
 			}
 			beanWriter.flush();
@@ -317,15 +347,12 @@ public class PlayerController {
 	public @ResponseBody
 	String upload(MultipartHttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		System.out.println( "upload method!");
+		System.out.println("upload method!");
 		Iterator<String> itr;
 		String res = "";
 		try {
-			System.out.println( "1");
 			itr = request.getFileNames();
-			System.out.println( "2");
 			MultipartFile mpf = request.getFile(itr.next());
-			System.out.println( "request.getFileNames() = " + mpf.getOriginalFilename());
 			if (!mpf.isEmpty()) {
 				System.out.println(mpf.getOriginalFilename() + " uploaded!");
 				// just temporary save file info into ufile
@@ -335,8 +362,7 @@ public class PlayerController {
 				ufile.name = mpf.getOriginalFilename();
 
 				File file = new File(System.getProperty("java.io.tmpdir")
-						+ System.getProperty("file.separator")
-						+ mpf.getOriginalFilename());
+						+ System.getProperty("file.separator") + ufile.name);
 
 				File upLoadedfile = new File(
 						System.getProperty("java.io.tmpdir")
@@ -357,18 +383,6 @@ public class PlayerController {
 			e.printStackTrace();
 		}
 		return res;
-	}
-
-	public void importCsvFile(File file, String[] header) throws Exception {
-		PlayerModel playerModel = new PlayerModel();
-		File upLoadedfile = new File(System.getProperty("java.io.tmpdir")
-				+ System.getProperty("file.separator") + ufile.name);
-		List<PlayerDoc> res = playerModel.readWithCsvBeanReaderForPlayerDoc(
-				upLoadedfile, header);
-		for (PlayerDoc p : res) {
-			playerRepository.save(p);
-		}
-		System.out.println(file.getAbsolutePath() + " is imported.");
 	}
 
 }
