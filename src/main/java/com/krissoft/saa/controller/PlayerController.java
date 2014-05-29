@@ -323,9 +323,9 @@ public class PlayerController {
 		return "user/csv";
 	}
 
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public String test(ModelMap model) throws Exception {
-		return "test";
+	@RequestMapping(value = "/user/schedule", method = RequestMethod.GET)
+	public String schedule(ModelMap model) throws Exception {
+		return "user/schedule";
 	}
 
 	@RequestMapping(value = "/import", method = RequestMethod.POST)

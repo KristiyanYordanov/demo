@@ -11,11 +11,14 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import com.google.common.io.FileBackedOutputStream;
 
 public class MyUtil {
 	private final static int MAX_RETRY = 3;
@@ -63,6 +66,63 @@ public class MyUtil {
 		return res;
 	}
 
+	public static String fullPost (URL url, String postParams) throws Exception {
+		StringWriter sw =null;
+		HttpURLConnection con = null;
+		try {
+			sw = new StringWriter();
+			con = (HttpURLConnection) url.openConnection();
+			con.setUseCaches(false);
+			con.setDoInput(true);
+			con.setDoOutput(true);
+			con.setRequestMethod("POST");
+			con.addRequestProperty("Accept", "application/json, text/javascript, */*; q=0.01");
+			con.addRequestProperty("Accept-Encoding", "utf-8");
+			con.addRequestProperty("Accept-Language", "bg,en-US;q=0.7,en;q=0.3");
+			con.addRequestProperty("Connection", "Keep-Alive");
+			con.addRequestProperty("Content-Type", "application/json; charset=utf-8");
+			con.addRequestProperty("Host", "www.hudl.com");
+			con.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0");
+			con.addRequestProperty("X-Requested-With", "XMLHttpRequest");
+			con.addRequestProperty("Content-Length", "" + postParams.length());
+			OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream(), "UTF-8");
+			wr.write(postParams);
+			wr.flush();
+			con.connect();
+			if (con.getResponseCode() == 200) {
+				InputStream in = con.getInputStream();
+				byte[] buf = new byte[32 * 1024];
+				int read;
+				while ((read = in.read(buf)) != -1) {
+					sw.write(new String(buf, 0, read));
+				}
+			}
+			}
+			catch (Exception ex) {
+				System.err.println("Cannot make full post");
+				ex.printStackTrace();
+			}
+			finally {
+				if (sw != null) {
+					try {
+						sw.close();
+					}
+					catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+				if (con != null) {
+					try {
+						con.disconnect();
+					}
+					catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+		return sw.toString();
+	}
+	
 	public static String postWithParams(URL url, String postParams)
 			throws Exception {
 		StringWriter sw = null;
@@ -135,7 +195,6 @@ public class MyUtil {
 				con.setRequestProperty("Accept",
 						"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 				con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-				con.setRequestProperty("Accept-Encoding", "gzip, deflate");
 				con.connect();
 				if (con.getResponseCode() == 200) {
 					InputStream in = con.getInputStream();
@@ -164,9 +223,9 @@ public class MyUtil {
 					}
 				}
 			}
-			long delay = 200L + ((long) (Math.random() * 21800.0));
-			System.out.println("GET url " + url);
-			System.out.println("Waiting for " + delay + "ms...");
+			long delay = 200L + ((long) (Math.random() * 1800.0));
+//			System.out.println("GET url " + url);
+//			System.out.println("Waiting for " + delay + "ms...");
 			Thread.sleep(delay);
 		}
 		if (retry == MAX_RETRY + 1) {
@@ -273,4 +332,36 @@ public class MyUtil {
 		String res = string.replaceAll("\\D", "");
 		return res;
 	}
+	
+	public static List<String> fileNamesFromFolderToList(File folder) {
+		List<String> res = new ArrayList<String>();
+	    for (final File fileEntry : folder.listFiles()) {
+	        if (fileEntry.isDirectory()) {
+	            fileNamesFromFolderToList(fileEntry);
+	        } else {
+	            String name = fileEntry.getName().replace("test", "").replace(".txt", "");
+	            res.add(name); 
+	        }
+	    }
+	    return res;
+	}
+	
+	public static String[] csvFileToList(File csvFile) {
+		String content = readFromFileBuffered(csvFile);
+		String[] res = content.split(",");
+	    return res;
+	}
+	
+	
+	public static String removeWhiteSpaces(String str) {
+		String res = "";
+		if (str != null) {
+			res = str.replaceAll("\\s+","");
+		}
+	    return res;
+	}
+	
+	
+	
+	
 }

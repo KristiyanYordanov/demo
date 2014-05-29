@@ -304,7 +304,7 @@ body {
 			<li class='has-sub'><a href='#'><span>Import</span></a>
 				<ul>
 						<li><a href='#' id="load_csv"><span>CSV Import</span></a></li>
-					<li class='last' id="test"><a href='#'><span>Automated
+					<li class='last' id="load_schedule"><a href='#'><span>Automated
 								Import</span></a></li>
 				</ul></li>
 			<li class='has-sub'><a href='#'><span>Criterias</span></a>
@@ -361,25 +361,17 @@ var applyMapContainerHeight = function() {
 	$("#load_csv").on("click", function() {
 		var html = 'players/user/csv';
 		$('#content').load(html);
-		document.cookie = "page=" + "csv";
-		page = get_cookie(cookie_name);
 	});
 	$("#load_players").on("click", function() {
-		document.cookie = "page=" + "players";
-		page = get_cookie(cookie_name);
 		var html = 'players/user/players';
 		$('#content').load(html);
 
 	});
-	$("#test").on("click", function() {
-		document.cookie = "page=" + "test";
-		page = get_cookie(cookie_name);
-		var html = 'players/test';
+	$("#load_schedule").on("click", function() {
+		var html = 'players/user/schedule';
 		$('#content').load(html);
 	});
 	$("#load_schools").on("click", function() {
-		document.cookie = "page=" + "load_schools";
-		page = get_cookie(cookie_name);
 		var html = 'schools/schools';
 		$('#content').load(html);
 	});
