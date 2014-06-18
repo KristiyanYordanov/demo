@@ -10,6 +10,60 @@
 <link rel="stylesheet" type="text/css"
 	href="resources/css/font-awesome.css" />
 <style type="text/css">
+.nav-toggle {
+	background-color: #ccc;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 6px;
+	color: #fff;
+	font-family: 'Oswald';
+	font-size: 20px;
+	text-decoration: none;
+	cursor: poiner;
+	border: none;
+}
+
+.nav-toggle:hover {
+    border: none;
+    background:#A8DDE8;
+    box-shadow: 0px 0px 1px #777;
+}
+
+#clear_filter {
+	background-color: #ccc;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 6px;
+	color: #fff;
+	font-family: 'Oswald';
+	font-size: 20px;
+	text-decoration: none;
+	cursor: poiner;
+	border: none;
+}
+#clear_filter:hover {
+    border: none;
+    background:#A8DDE8;
+    box-shadow: 0px 0px 1px #777;
+}
+
+.exportButton {
+	background-color: #ccc;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 6px;
+	color: #fff;
+	font-family: 'Oswald';
+	font-size: 20px;
+	text-decoration: none;
+	cursor: poiner;
+	border: none;
+}
+.exportButton:hover {
+    border: none;
+    background:#A8DDE8;
+    box-shadow: 0px 0px 1px #777;
+}
 .round-border {
 	border: 1px solid #eee;
 	border: 1px solid rgba(0, 0, 0, 0.05);
@@ -307,6 +361,10 @@ table.dataTable tr.selected td:first-child:before {
 		$("#col4_filter").val('');
 		return false;
 	}
+	function exportFunc() {
+		window.open("/spring-jpa/players/csvexport");
+		return false;
+	}
 </script>
 </head>
 <body>
@@ -314,13 +372,13 @@ table.dataTable tr.selected td:first-child:before {
 		<div>
 			<button style="display: inline-block; float: left;" href="#collapse1"
 				class="nav-toggle">Filter the table</button>
-			<p>
-				<a href="/spring-jpa/players/csvexport">Export</a>
-			</p>
+				
+			<button onclick="exportFunc()"
+				class="exportButton">Export</button>
 		</div>
 		<div id="collapse1" style="display: none">
-		<button onclick="clearFilter()" 
-				id="clear_filter">Clear Filter</button>
+			<button onclick="clearFilter()" id="clear_filter">Clear
+				Filter</button>
 			<table>
 				<tbody>
 					<tr id="filter_col1" data-column="0">
