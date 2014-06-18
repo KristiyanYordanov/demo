@@ -2,18 +2,36 @@
 <head>
 <title>Scout Automated Adviser</title>
 <style type="text/css">
+.buttonSubmit {
+	background-color: #ccc;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 6px;
+	color: #fff;
+	font-family: 'Oswald';
+	font-size: 20px;
+	text-decoration: none;
+	cursor: poiner;
+	border: none;
+}
+
+.buttonSubmit:hover {
+	border: none;
+	background: #A8DDE8;
+	box-shadow: 0px 0px 1px #777;
+}
 </style>
 </head>
 <body>
 	<div>
-		<button value="Submit" onclick="startMaxpreps()">Start Maxpreps</button>
+		<button class="buttonSubmit" value="Submit" onclick="startMaxpreps()">Start Maxpreps</button>
 		<br>
-		<button value="Submit" onclick="stopMaxpreps()">Stop Maxpreps</button>
+		<button class="buttonSubmit" value="Submit" onclick="stopMaxpreps()">Stop Maxpreps</button>
 	</div>
 	<div>
-		<button value="Submit" onclick="startHudl()">Start Hudl</button>
+		<button class="buttonSubmit" value="Submit" onclick="startHudl()">Start Hudl</button>
 		<br>
-		<button value="Submit" onclick="stopHudl()">Stop Hudl</button>
+		<button class="buttonSubmit" value="Submit" onclick="stopHudl()">Stop Hudl</button>
 	</div>
 	
 	
@@ -27,9 +45,6 @@
 		    mimeType: 'application/json',
 		    success: function(data) { 
 		    },
-		    error:function(data,status,er) { 
-		        alert("error: "+data+" status: "+status+" er:"+er);
-		    }
 		});
 	}
 	function stopMaxpreps() {
@@ -41,9 +56,6 @@
 		    mimeType: 'application/json',
 		    success: function(data) { 
 		    },
-		    error:function(data,status,er) { 
-		        alert("error: "+data+" status: "+status+" er:"+er);
-		    }
 		});
 	}
 	function startHudl() {
@@ -55,9 +67,6 @@
 		    mimeType: 'application/json',
 		    success: function(data) { 
 		    },
-		    error:function(data,status,er) { 
-		        alert("error: "+data+" status: "+status+" er:"+er);
-		    }
 		});
 	}
 	function stopHudl() {
@@ -69,9 +78,6 @@
 		    mimeType: 'application/json',
 		    success: function(data) { 
 		    },
-		    error:function(data,status,er) { 
-		        alert("error: "+data+" status: "+status+" er:"+er);
-		    }
 		});
 	}
 	</script>

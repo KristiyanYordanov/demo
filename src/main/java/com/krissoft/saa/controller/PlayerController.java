@@ -119,8 +119,8 @@ public class PlayerController {
 		// TODO save header in DB and drop down list in view
 		header = new String[] { "name", "state", "schoolName", "schoolCity",
 				"maxprepsUrl", "pos", "height", "fortyDash", "weight", "stars",
-				"rating", "gradYear", "GP", "Avg", "OBP", "H", "RBI", "R",
-				"SB", "AB", "SLG", "PA", "FP", "K", "IP" };
+				"rating", "gradYear", "statGP", "statAvg", "statOBP", "statH", "statRBI", "statR",
+				"statSB", "statAB", "statSLG", "statPA", "statFP", "statK", "statIP" };
 		int sortCol = Integer.parseInt(iSortCol_0) - 1;
 		for (int i = 0; i < header.length; i++) {
 			if (sortCol == i && sSortDir_0.equals("asc")) {

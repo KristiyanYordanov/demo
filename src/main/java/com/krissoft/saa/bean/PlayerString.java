@@ -14,19 +14,19 @@ public class PlayerString {
 	private String schoolName;
 	private String schoolCity;
 	private String maxprepsUrl;
-	private String GP;
-	private String Avg;
-	private String OBP;
-	private String H;
-	private String RBI;
-	private String R;
-	private String SB;
-	private String AB;
-	private String SLG;
-	private String PA;
-	private String FP;
-	private String K;
-	private String IP;
+	private String statGP;
+	private String statAvg;
+	private String statOBP;
+	private String statH;
+	private String statRBI;
+	private String statR;
+	private String statSB;
+	private String statAB;
+	private String statSLG;
+	private String statPA;
+	private String statFP;
+	private String statK;
+	private String statIP;
 
 	public String getName() {
 		return name;
@@ -132,108 +132,108 @@ public class PlayerString {
 		this.maxprepsUrl = maxprepsUrl;
 	}
 
-	public String getGP() {
-		return GP;
+	public String getStatGP() {
+		return statGP;
 	}
 
-	public void setGP(String gP) {
-		GP = gP;
+	public void setStatGP(String statGP) {
+		this.statGP = statGP;
 	}
 
-	public String getAvg() {
-		return Avg;
+	public String getStatAvg() {
+		return statAvg;
 	}
 
-	public void setAvg(String avg) {
-		Avg = avg;
+	public void setStatAvg(String statAvg) {
+		this.statAvg = statAvg;
 	}
 
-	public String getOBP() {
-		return OBP;
+	public String getStatOBP() {
+		return statOBP;
 	}
 
-	public void setOBP(String oBP) {
-		OBP = oBP;
+	public void setStatOBP(String statOBP) {
+		this.statOBP = statOBP;
 	}
 
-	public String getH() {
-		return H;
+	public String getStatH() {
+		return statH;
 	}
 
-	public void setH(String h) {
-		H = h;
+	public void setStatH(String statH) {
+		this.statH = statH;
 	}
 
-	public String getRBI() {
-		return RBI;
+	public String getStatRBI() {
+		return statRBI;
 	}
 
-	public void setRBI(String rBI) {
-		RBI = rBI;
+	public void setStatRBI(String statRBI) {
+		this.statRBI = statRBI;
 	}
 
-	public String getR() {
-		return R;
+	public String getStatR() {
+		return statR;
 	}
 
-	public void setR(String r) {
-		R = r;
+	public void setStatR(String statR) {
+		this.statR = statR;
 	}
 
-	public String getSB() {
-		return SB;
+	public String getStatSB() {
+		return statSB;
 	}
 
-	public void setSB(String sB) {
-		SB = sB;
+	public void setStatSB(String statSB) {
+		this.statSB = statSB;
 	}
 
-	public String getAB() {
-		return AB;
+	public String getStatAB() {
+		return statAB;
 	}
 
-	public void setAB(String aB) {
-		AB = aB;
+	public void setStatAB(String statAB) {
+		this.statAB = statAB;
 	}
 
-	public String getSLG() {
-		return SLG;
+	public String getStatSLG() {
+		return statSLG;
 	}
 
-	public void setSLG(String sLG) {
-		SLG = sLG;
+	public void setStatSLG(String statSLG) {
+		this.statSLG = statSLG;
 	}
 
-	public String getPA() {
-		return PA;
+	public String getStatPA() {
+		return statPA;
 	}
 
-	public void setPA(String pA) {
-		PA = pA;
+	public void setStatPA(String statPA) {
+		this.statPA = statPA;
 	}
 
-	public String getFP() {
-		return FP;
+	public String getStatFP() {
+		return statFP;
 	}
 
-	public void setFP(String fP) {
-		FP = fP;
+	public void setStatFP(String statFP) {
+		this.statFP = statFP;
 	}
 
-	public String getK() {
-		return K;
+	public String getStatK() {
+		return statK;
 	}
 
-	public void setK(String k) {
-		K = k;
+	public void setStatK(String statK) {
+		this.statK = statK;
 	}
 
-	public String getIP() {
-		return IP;
+	public String getStatIP() {
+		return statIP;
 	}
 
-	public void setIP(String iP) {
-		IP = iP;
+	public void setStatIP(String statIP) {
+		this.statIP = statIP;
 	}
 
 }

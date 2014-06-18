@@ -174,86 +174,86 @@ public class PlayerModel {
 			res.setMaxprepsUrl(s.getMaxprepsUrl());
 		}
 
-		if (s.getGP() != null) {
+		if (s.getStatGP() != null) {
 			try {
-				res.setStatGP(Double.parseDouble(s.getGP()));
+				res.setStatGP(Double.parseDouble(s.getStatGP()));
 			} catch (NumberFormatException e) {
 				logger.info(e.toString());
 			}
 		}
-		if (s.getAvg() != null) {
+		if (s.getStatAvg() != null) {
 			try {
-				res.setStatAvg(Double.parseDouble(s.getAvg()));
+				res.setStatAvg(Double.parseDouble(s.getStatAvg()));
 			} catch (NumberFormatException e) {
 				logger.info(e.toString());
 			}
 		}
-		if (s.getOBP() != null) {
+		if (s.getStatOBP() != null) {
 			try {
-				res.setStatOBP(Double.parseDouble(s.getOBP()));
+				res.setStatOBP(Double.parseDouble(s.getStatOBP()));
 			} catch (NumberFormatException e) {
 				logger.info(e.toString());
 			}
 		}
-		if (s.getH() != null) {
+		if (s.getStatH() != null) {
 			try {
-				res.setStatH(Double.parseDouble(s.getH()));
+				res.setStatH(Double.parseDouble(s.getStatH()));
 			} catch (NumberFormatException e) {
 				logger.info(e.toString());
 			}
 		}
-		if (s.getRBI() != null) {
+		if (s.getStatRBI() != null) {
 			try {
-				res.setStatRBI(Double.parseDouble(s.getRBI()));
+				res.setStatRBI(Double.parseDouble(s.getStatRBI()));
 			} catch (NumberFormatException e) {
 				logger.info(e.toString());
 			}
 		}
-		if (s.getR() != null) {
+		if (s.getStatR() != null) {
 			try {
-				res.setStatR(Double.parseDouble(s.getR()));
+				res.setStatR(Double.parseDouble(s.getStatR()));
 			} catch (NumberFormatException e) {
 				logger.info(e.toString());
 			}
 		}
-		if (s.getSB() != null) {
+		if (s.getStatSB() != null) {
 			try {
-				res.setStatSB(Double.parseDouble(s.getSB()));
+				res.setStatSB(Double.parseDouble(s.getStatSB()));
 			} catch (NumberFormatException e) {
 				logger.info(e.toString());
 			}
 		}
-		if (s.getAB() != null) {
+		if (s.getStatAB() != null) {
 			try {
-				res.setStatAB(Double.parseDouble(s.getAB()));
+				res.setStatAB(Double.parseDouble(s.getStatAB()));
 			} catch (NumberFormatException e) {
 				logger.info(e.toString());
 			}
 		}
-		if (s.getFP() != null) {
+		if (s.getStatFP() != null) {
 			try {
-				res.setStatFP(Double.parseDouble(s.getFP()));
+				res.setStatFP(Double.parseDouble(s.getStatFP()));
 			} catch (NumberFormatException e) {
 				logger.info(e.toString());
 			}
 		}
-		if (s.getPA() != null) {
+		if (s.getStatPA() != null) {
 			try {
-				res.setStatPA(Double.parseDouble(s.getPA()));
+				res.setStatPA(Double.parseDouble(s.getStatPA()));
 			} catch (NumberFormatException e) {
 				logger.info(e.toString());
 			}
 		}
-		if (s.getK() != null) {
+		if (s.getStatK() != null) {
 			try {
-				res.setStatK(Double.parseDouble(s.getK()));
+				res.setStatK(Double.parseDouble(s.getStatK()));
 			} catch (NumberFormatException e) {
 				logger.info(e.toString());
 			}
 		}
-		if (s.getIP() != null) {
+		if (s.getStatIP() != null) {
 			try {
-				res.setStatIP(Double.parseDouble(s.getIP()));
+				res.setStatIP(Double.parseDouble(s.getStatIP()));
 			} catch (NumberFormatException e) {
 				logger.info(e.toString());
 			}
