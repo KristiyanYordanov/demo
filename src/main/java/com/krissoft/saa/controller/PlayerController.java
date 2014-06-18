@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -50,6 +51,9 @@ public class PlayerController {
 	// LoggerFactory.getLogger(PlayerController.class);
 	List<PlayerDoc> pageExport;
 	String[] header;
+	int size;
+	int start;
+	Sort sort;
 
 	@Autowired
 	PlayerRepository playerRepository;
@@ -125,14 +129,16 @@ public class PlayerController {
 		}
 		try {
 			if (pageRows == -1 && !isFilterOn) {
+				long startTimer = new Date().getTime();
 				size = (int) playerRepository.count();
 				page = playerRepository.findAll(new PageRequest(start, size,
 						sort));
 				pageExport = page.getContent();
+				long endTimer = new Date().getTime();
+				System.out.println("if time=" + (endTimer-startTimer)/1000);
 			} else if (isFilterOn) {
 				list = mongoTemplate.find(query, PlayerDoc.class);
 				size = list.size();
-				System.out.println("pagerows =  "+ pageRows);
 				if (size > pageRows && pageRows != -1) {
 					int pageLength = pageRows+start;
 					if (pageRows+start > size) {
@@ -142,20 +148,22 @@ public class PlayerController {
 				}
 				pageExport = list;
 			} else {
+				long startTimer = new Date().getTime();
 				size = (int) playerRepository.count();
-				int pageNumber = start / pageRows;
 				if (size < pageRows) {
-					size = (int) playerRepository.count();
 					page = playerRepository.findAll(new PageRequest(start,
 							size, sort));
 					pageExport = page.getContent();
 				} else {
+					int pageNumber = start / pageRows;
 					page = playerRepository.findAll(new PageRequest(
 							pageNumber, pageRows, sort));
-					pageExport = playerRepository.findAll(new PageRequest(
-							start, size, sort)).getContent();
+					this.size = size;;
+					this.start = start;
+					this.sort = sort;
 				}
-
+				long endTimer = new Date().getTime();
+				System.out.println("else time=" + (endTimer-startTimer)/1000);
 			}
 		} catch (MongoServerSelectionException ex) {
 			System.out.println("No connection with DB  " + ex);
@@ -176,7 +184,7 @@ public class PlayerController {
 			jsonObject.setRecordsTotal(size);
 			res = jsonObject.toString();
 		}
-		System.out.println("res = " + res);
+		//System.out.println("res = " + res);
 		return res;
 	}
 
@@ -191,6 +199,8 @@ public class PlayerController {
 			beanWriter = new CsvBeanWriter(response.getWriter(),
 					CsvPreference.STANDARD_PREFERENCE);
 			beanWriter.writeHeader(header);
+			pageExport = playerRepository.findAll(new PageRequest(
+					start, size, sort)).getContent();
 			for (final PlayerDoc customer : pageExport) {
 				beanWriter.write(customer, header);
 			}
