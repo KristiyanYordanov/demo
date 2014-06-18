@@ -241,10 +241,11 @@ public class PlayerController {
 
 		PlayerDoc p = new PlayerDoc();
 		for (Field field : PlayerDoc.class.getDeclaredFields()) {
-			String name = field.getName();
+			String name = field.getName();	
 			if (create.contains(field.getName())) {
-				int index = create.indexOf(name) + name.length() + 1;
+				int index = create.indexOf(name+"=") + name.length() +1 ;
 				int valueIndex;
+//				System.out.println("name="+name);
 				String last = create.substring(index, create.length());
 				if (last.contains("&")) {
 					valueIndex = last.indexOf("&");
@@ -252,7 +253,14 @@ public class PlayerController {
 					valueIndex = last.length();
 				}
 				String value = last.substring(0, valueIndex);
-				BeanUtils.setProperty(p, name, value);
+//				System.out.println("value="+value);
+				try {
+					BeanUtils.setProperty(p, name, value);
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+				
 			}
 		}
 		System.out.println("p =" + p);
@@ -262,7 +270,8 @@ public class PlayerController {
 				+ "\",\"name\":\"" + p.getName() + "\",\"state\":\""
 				+ p.getState() + "\",\"schoolName\":\"" + p.getSchoolName()
 				+ "\",\"schoolCity\":\"" + p.getSchoolCity() + "\"}}";
-		System.out.println("res =" + res);
+		//System.out.println("res =" + res);
+		
 		return res;
 	}
 

@@ -221,43 +221,43 @@ table.dataTable tr.selected td:first-child:before {
 				name : "gradYear:"
 			}, {
 				label : "GP:",
-				name : "GP:"
+				name : "statGP:"
 			}, {
 				label : "Avg:",
-				name : "Avg:"
+				name : "statAvg:"
 			}, {
 				label : "OBP:",
-				name : "OBP:"
+				name : "statOBP:"
 			}, {
 				label : "H:",
-				name : "H:"
+				name : "statH:"
 			}, {
 				label : "RBI:",
-				name : "RBI:"
+				name : "statRBI:"
 			}, {
 				label : "R:",
-				name : "R:"
+				name : "statR:"
 			}, {
 				label : "SB:",
-				name : "SB:"
+				name : "statSB:"
 			}, {
 				label : "AB:",
-				name : "AB:"
+				name : "statAB:"
 			}, {
 				label : "SLG:",
-				name : "SLG:"
+				name : "statSLG:"
 			}, {
 				label : "PA:",
-				name : "PA:"
+				name : "statPA:"
 			}, {
 				label : "FP:",
-				name : "FP:"
+				name : "statFP:"
 			}, {
 				label : "K:",
-				name : "K:"
+				name : "statK:"
 			}, {
 				label : "IP:",
-				name : "IP:"
+				name : "statIP:"
 			} ]
 		});
 
@@ -309,31 +309,31 @@ table.dataTable tr.selected td:first-child:before {
 			}, {
 				data : "gradYear"
 			}, {
-				data : "GP"
+				data : "statGP"
 			}, {
-				data : "Avg"
+				data : "statAvg"
 			}, {
-				data : "OBP"
+				data : "statOBP"
 			}, {
-				data : "H"
+				data : "statH"
 			}, {
-				data : "RBI"
+				data : "statRBI"
 			}, {
-				data : "R"
+				data : "statR"
 			}, {
-				data : "SB"
+				data : "statSB"
 			}, {
-				data : "AB"
+				data : "statAB"
 			}, {
-				data : "SLG"
+				data : "statSLG"
 			}, {
-				data : "PA"
+				data : "statPA"
 			}, {
-				data : "FP"
+				data : "statFP"
 			}, {
-				data : "K"
+				data : "statK"
 			}, {
-				data : "IP"
+				data : "statIP"
 			} ],
 			 tableTools: {
 		            sRowSelect: "os",
@@ -362,7 +362,7 @@ table.dataTable tr.selected td:first-child:before {
 		return false;
 	}
 	function exportFunc() {
-		window.open("/spring-jpa/players/csvexport");
+			window.open("/spring-jpa/players/csvexport");
 		return false;
 	}
 </script>

@@ -214,7 +214,7 @@ public class MaxPrepsModel {
 											for (int j = 0; j < stat.size(); j++) {
 												if (stat.get(j).text()
 														.equals("GP")) {
-													p.setGP(Double
+													p.setStatGP(Double
 															.parseDouble(statValue
 																	.get(j)
 																	.text()));
@@ -223,7 +223,7 @@ public class MaxPrepsModel {
 													// p.getGP());
 												} else if (stat.get(j).text()
 														.equals("Avg")) {
-													p.setAvg(Double
+													p.setStatAvg(Double
 															.parseDouble(statValue
 																	.get(j)
 																	.text()));
@@ -232,7 +232,7 @@ public class MaxPrepsModel {
 													// p.getAvg());
 												} else if (stat.get(j).text()
 														.equals("OBP")) {
-													p.setOBP(Double
+													p.setStatOBP(Double
 															.parseDouble(statValue
 																	.get(j)
 																	.text()));
@@ -241,7 +241,7 @@ public class MaxPrepsModel {
 													// p.getOBP());
 												} else if (stat.get(j).text()
 														.equals("H")) {
-													p.setH(Double
+													p.setStatH(Double
 															.parseDouble(statValue
 																	.get(j)
 																	.text()));
@@ -250,7 +250,7 @@ public class MaxPrepsModel {
 													// p.getH());
 												} else if (stat.get(j).text()
 														.equals("RBI")) {
-													p.setRBI(Double
+													p.setStatRBI(Double
 															.parseDouble(statValue
 																	.get(j)
 																	.text()));
@@ -259,7 +259,7 @@ public class MaxPrepsModel {
 													// p.getRBI());
 												} else if (stat.get(j).text()
 														.equals("R")) {
-													p.setR(Double
+													p.setStatR(Double
 															.parseDouble(statValue
 																	.get(j)
 																	.text()));
@@ -268,7 +268,7 @@ public class MaxPrepsModel {
 													// p.getR());
 												} else if (stat.get(j).text()
 														.equals("SB")) {
-													p.setSB(Double
+													p.setStatSB(Double
 															.parseDouble(statValue
 																	.get(j)
 																	.text()));
@@ -277,7 +277,7 @@ public class MaxPrepsModel {
 													// p.getSB());
 												} else if (stat.get(j).text()
 														.equals("AB")) {
-													p.setAB(Double
+													p.setStatAB(Double
 															.parseDouble(statValue
 																	.get(j)
 																	.text()));
@@ -286,7 +286,7 @@ public class MaxPrepsModel {
 													// p.getAB());
 												} else if (stat.get(j).text()
 														.equals("SLG")) {
-													p.setSLG(Double
+													p.setStatSLG(Double
 															.parseDouble(statValue
 																	.get(j)
 																	.text()));
@@ -295,7 +295,7 @@ public class MaxPrepsModel {
 													// p.getSLG());
 												} else if (stat.get(j).text()
 														.equals("PA")) {
-													p.setPA(Double
+													p.setStatPA(Double
 															.parseDouble(statValue
 																	.get(j)
 																	.text()));
@@ -304,7 +304,7 @@ public class MaxPrepsModel {
 													// p.getPA());
 												} else if (stat.get(j).text()
 														.equals("FP")) {
-													p.setFP(Double
+													p.setStatFP(Double
 															.parseDouble(statValue
 																	.get(j)
 																	.text()));
@@ -313,7 +313,7 @@ public class MaxPrepsModel {
 													// p.getFP());
 												} else if (stat.get(j).text()
 														.equals("AB")) {
-													p.setAB(Double
+													p.setStatAB(Double
 															.parseDouble(statValue
 																	.get(j)
 																	.text()));
@@ -322,7 +322,7 @@ public class MaxPrepsModel {
 													// p.getAB());
 												} else if (stat.get(j).text()
 														.equals("K")) {
-													p.setH(Double
+													p.setStatH(Double
 															.parseDouble(statValue
 																	.get(j)
 																	.text()));
@@ -331,7 +331,7 @@ public class MaxPrepsModel {
 													// p.getK());
 												} else if (stat.get(j).text()
 														.equals("IP")) {
-													p.setIP(Double
+													p.setStatIP(Double
 															.parseDouble(statValue
 																	.get(j)
 																	.text()));
