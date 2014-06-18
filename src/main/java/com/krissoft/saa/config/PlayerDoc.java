@@ -352,10 +352,12 @@ public class PlayerDoc extends ObjectIdSerializer {
 				+ (statAvg != 0 ? "\"" + +statAvg + "\", \"" : "\"\",\"")
 				+ "statOBP\":"
 				+ (statOBP != 0 ? "\"" + +statOBP + "\", \"" : "\"\",\"")
-				+ "statH\":" + (statH != 0 ? "\"" + +statH + "\", \"" : "\"\",\"")
+				+ "statH\":"
+				+ (statH != 0 ? "\"" + +statH + "\", \"" : "\"\",\"")
 				+ "statRBI\":"
 				+ (statRBI != 0 ? "\"" + +statRBI + "\", \"" : "\"\",\"")
-				+ "statR\":" + (statR != 0 ? "\"" + +statR + "\", \"" : "\"\",\"")
+				+ "statR\":"
+				+ (statR != 0 ? "\"" + +statR + "\", \"" : "\"\",\"")
 				+ "statSB\":"
 				+ (statSB != 0 ? "\"" + +statSB + "\", \"" : "\"\",\"")
 				+ "statAB\":"
@@ -366,8 +368,10 @@ public class PlayerDoc extends ObjectIdSerializer {
 				+ (statPA != 0 ? "\"" + +statPA + "\", \"" : "\"\",\"")
 				+ "statFP\":"
 				+ (statFP != 0 ? "\"" + +statFP + "\", \"" : "\"\",\"")
-				+ "statK\":" + (statK != 0 ? "\"" + +statK + "\", \"" : "\"\",\"")
-				+ "statIP\":" + (statIP != 0 ? "\"" + statIP + "\"" : "\"\"") + "}";
+				+ "statK\":"
+				+ (statK != 0 ? "\"" + +statK + "\", \"" : "\"\",\"")
+				+ "statIP\":" + (statIP != 0 ? "\"" + statIP + "\"" : "\"\"")
+				+ "}";
 	}
 
 	public static String[] STATE = {

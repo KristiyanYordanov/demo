@@ -10,6 +10,9 @@
 <link rel="stylesheet" type="text/css"
 	href="resources/css/font-awesome.css" />
 <style type="text/css">
+.DTE_Body_Content{
+height: 400px;
+}
 .nav-toggle {
 	background-color: #ccc;
 	-moz-border-radius: 5px;
@@ -24,9 +27,9 @@
 }
 
 .nav-toggle:hover {
-    border: none;
-    background:#A8DDE8;
-    box-shadow: 0px 0px 1px #777;
+	border: none;
+	background: #A8DDE8;
+	box-shadow: 0px 0px 1px #777;
 }
 
 #clear_filter {
@@ -41,10 +44,11 @@
 	cursor: poiner;
 	border: none;
 }
+
 #clear_filter:hover {
-    border: none;
-    background:#A8DDE8;
-    box-shadow: 0px 0px 1px #777;
+	border: none;
+	background: #A8DDE8;
+	box-shadow: 0px 0px 1px #777;
 }
 
 .exportButton {
@@ -59,11 +63,13 @@
 	cursor: poiner;
 	border: none;
 }
+
 .exportButton:hover {
-    border: none;
-    background:#A8DDE8;
-    box-shadow: 0px 0px 1px #777;
+	border: none;
+	background: #A8DDE8;
+	box-shadow: 0px 0px 1px #777;
 }
+
 .round-border {
 	border: 1px solid #eee;
 	border: 1px solid rgba(0, 0, 0, 0.05);
@@ -184,80 +190,80 @@ table.dataTable tr.selected td:first-child:before {
 			table : "#example",
 			//label are for create method
 			fields : [ {
-				label : "name:",
-				name : "name:"
+				label : "name",
+				name : "name"
 			}, {
-				label : "state:",
-				name : "state:"
+				label : "state",
+				name : "state"
 			}, {
-				label : "schoolName:",
-				name : "schoolName:"
+				label : "schoolName",
+				name : "schoolName"
 			}, {
-				label : "schoolCity:",
-				name : "schoolCity:"
+				label : "schoolCit",
+				name : "schoolCity"
 			}, {
-				label : "maxprepsUrl:",
-				name : "maxprepsUrl:"
+				label : "maxprepsUrl",
+				name : "maxprepsUrl"
 			}, {
-				label : "pos:",
-				name : "pos:"
+				label : "pos",
+				name : "pos"
 			}, {
-				label : "height:",
-				name : "height:"
+				label : "height",
+				name : "height"
 			}, {
-				label : "fortyDash:",
-				name : "fortyDash:"
+				label : "fortyDash",
+				name : "fortyDash"
 			}, {
-				label : "weight:",
-				name : "weight:"
+				label : "weight",
+				name : "weight"
 			}, {
-				label : "stars:",
-				name : "stars:"
+				label : "stars",
+				name : "stars"
 			}, {
-				label : "rating:",
-				name : "rating:"
+				label : "rating",
+				name : "rating"
 			}, {
-				label : "gradYear:",
-				name : "gradYear:"
+				label : "gradYear",
+				name : "gradYear"
 			}, {
-				label : "GP:",
-				name : "statGP:"
+				label : "GP",
+				name : "statGP"
 			}, {
-				label : "Avg:",
-				name : "statAvg:"
+				label : "Avg",
+				name : "statAvg"
 			}, {
-				label : "OBP:",
-				name : "statOBP:"
+				label : "OBP",
+				name : "statOBP"
 			}, {
-				label : "H:",
-				name : "statH:"
+				label : "H",
+				name : "statH"
 			}, {
-				label : "RBI:",
-				name : "statRBI:"
+				label : "RBI",
+				name : "statRBI"
 			}, {
-				label : "R:",
-				name : "statR:"
+				label : "R",
+				name : "statR"
 			}, {
-				label : "SB:",
-				name : "statSB:"
+				label : "SB",
+				name : "statSB"
 			}, {
-				label : "AB:",
-				name : "statAB:"
+				label : "AB",
+				name : "statAB"
 			}, {
-				label : "SLG:",
-				name : "statSLG:"
+				label : "SLG",
+				name : "statSLG"
 			}, {
-				label : "PA:",
-				name : "statPA:"
+				label : "PA",
+				name : "statPA"
 			}, {
-				label : "FP:",
-				name : "statFP:"
+				label : "FP",
+				name : "statFP"
 			}, {
-				label : "K:",
-				name : "statK:"
+				label : "K",
+				name : "statK"
 			}, {
-				label : "IP:",
-				name : "statIP:"
+				label : "IP",
+				name : "statIP"
 			} ]
 		});
 
@@ -372,9 +378,8 @@ table.dataTable tr.selected td:first-child:before {
 		<div>
 			<button style="display: inline-block; float: left;" href="#collapse1"
 				class="nav-toggle">Filter the table</button>
-				
-			<button onclick="exportFunc()"
-				class="exportButton">Export</button>
+
+			<button onclick="exportFunc()" class="exportButton">Export</button>
 		</div>
 		<div id="collapse1" style="display: none">
 			<button onclick="clearFilter()" id="clear_filter">Clear

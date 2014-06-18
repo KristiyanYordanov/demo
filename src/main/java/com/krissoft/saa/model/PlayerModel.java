@@ -42,7 +42,8 @@ public class PlayerModel {
 				}
 			}
 
-			System.out.println("last header = " + Arrays.toString(header) + ", with size = " + header.length);
+			System.out.println("last header = " + Arrays.toString(header)
+					+ ", with size = " + header.length);
 			PlayerString playerString;
 			while ((playerString = beanReader.read(PlayerString.class, header)) != null) {
 				PlayerDoc player = loadPlayerDoc(playerString);

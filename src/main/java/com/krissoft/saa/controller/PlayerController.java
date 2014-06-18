@@ -58,7 +58,7 @@ public class PlayerController {
 	@Autowired
 	PlayerRepository playerRepository;
 	UploadedFile ufile;
-	
+
 	@Autowired
 	MongoTemplate mongoTemplate;
 
@@ -95,15 +95,17 @@ public class PlayerController {
 			query.addCriteria(Criteria.where("state").regex(state, "i"));
 		}
 		if (!schoolName.equals("")) {
-			query.addCriteria(Criteria.where("schoolName").regex(schoolName, "i"));
+			query.addCriteria(Criteria.where("schoolName").regex(schoolName,
+					"i"));
 		}
 		if (!schoolCity.equals("")) {
-			query.addCriteria(Criteria.where("schoolCity").regex(schoolCity, "i"));
+			query.addCriteria(Criteria.where("schoolCity").regex(schoolCity,
+					"i"));
 		}
 		if (!pos.equals("")) {
 			query.addCriteria(Criteria.where("pos").regex(pos, "i"));
 		}
-		
+
 		String res = "";
 		Sort sort = null;
 		List<PlayerDoc> list = null;
@@ -135,13 +137,13 @@ public class PlayerController {
 						sort));
 				pageExport = page.getContent();
 				long endTimer = new Date().getTime();
-				System.out.println("if time=" + (endTimer-startTimer)/1000);
+				System.out.println("if time=" + (endTimer - startTimer) / 1000);
 			} else if (isFilterOn) {
 				list = mongoTemplate.find(query, PlayerDoc.class);
 				size = list.size();
 				if (size > pageRows && pageRows != -1) {
-					int pageLength = pageRows+start;
-					if (pageRows+start > size) {
+					int pageLength = pageRows + start;
+					if (pageRows + start > size) {
 						pageLength = size;
 					}
 					list = list.subList(start, pageLength);
@@ -156,14 +158,16 @@ public class PlayerController {
 					pageExport = page.getContent();
 				} else {
 					int pageNumber = start / pageRows;
-					page = playerRepository.findAll(new PageRequest(
-							pageNumber, pageRows, sort));
-					this.size = size;;
+					page = playerRepository.findAll(new PageRequest(pageNumber,
+							pageRows, sort));
+					this.size = size;
+					;
 					this.start = start;
 					this.sort = sort;
 				}
 				long endTimer = new Date().getTime();
-				System.out.println("else time=" + (endTimer-startTimer)/1000);
+				System.out.println("else time=" + (endTimer - startTimer)
+						/ 1000);
 			}
 		} catch (MongoServerSelectionException ex) {
 			System.out.println("No connection with DB  " + ex);
@@ -175,8 +179,7 @@ public class PlayerController {
 			jsonObject.setRecordsFiltered(size);
 			jsonObject.setRecordsTotal(size);
 			res = jsonObject.toString();
-		}
-		else {
+		} else {
 			DataTableEditorJsonObjectList jsonObject = new DataTableEditorJsonObjectList();
 			jsonObject.setAaData(list);
 			jsonObject.setDraw(draw);
@@ -184,7 +187,7 @@ public class PlayerController {
 			jsonObject.setRecordsTotal(size);
 			res = jsonObject.toString();
 		}
-		//System.out.println("res = " + res);
+		// System.out.println("res = " + res);
 		return res;
 	}
 
@@ -199,8 +202,8 @@ public class PlayerController {
 			beanWriter = new CsvBeanWriter(response.getWriter(),
 					CsvPreference.STANDARD_PREFERENCE);
 			beanWriter.writeHeader(header);
-			pageExport = playerRepository.findAll(new PageRequest(
-					start, size, sort)).getContent();
+			pageExport = playerRepository.findAll(
+					new PageRequest(start, size, sort)).getContent();
 			for (final PlayerDoc customer : pageExport) {
 				beanWriter.write(customer, header);
 			}
@@ -237,15 +240,15 @@ public class PlayerController {
 		create = create.replaceAll("data", "").replaceAll("%5D", "")
 				.replaceAll("%3A", "").replaceAll("%5B", "")
 				.replaceAll("\\+", " ");
-		System.out.println("create method = " + create);
+		//System.out.println("create method = " + create);
 
 		PlayerDoc p = new PlayerDoc();
 		for (Field field : PlayerDoc.class.getDeclaredFields()) {
-			String name = field.getName();	
+			String name = field.getName();
 			if (create.contains(field.getName())) {
-				int index = create.indexOf(name+"=") + name.length() +1 ;
+				int index = create.indexOf(name + "=") + name.length() + 1;
 				int valueIndex;
-//				System.out.println("name="+name);
+				// System.out.println("name="+name);
 				String last = create.substring(index, create.length());
 				if (last.contains("&")) {
 					valueIndex = last.indexOf("&");
@@ -253,25 +256,18 @@ public class PlayerController {
 					valueIndex = last.length();
 				}
 				String value = last.substring(0, valueIndex);
-//				System.out.println("value="+value);
+				// System.out.println("value="+value);
 				try {
 					BeanUtils.setProperty(p, name, value);
-				}
-				catch(Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
+
 			}
 		}
-		System.out.println("p =" + p);
 		playerRepository.save(p);
-
-		String res = "{\"row\":{ \"DT_RowId\":\"" + p.getId()
-				+ "\",\"name\":\"" + p.getName() + "\",\"state\":\""
-				+ p.getState() + "\",\"schoolName\":\"" + p.getSchoolName()
-				+ "\",\"schoolCity\":\"" + p.getSchoolCity() + "\"}}";
-		//System.out.println("res =" + res);
-		
+		String res = "{\"row\":"+p+"}";
+//		System.out.println("res =" + res);
 		return res;
 	}
 
@@ -279,10 +275,10 @@ public class PlayerController {
 	public @ResponseBody
 	String edit(@RequestBody String action) throws IllegalAccessException,
 			InvocationTargetException {
+		System.out.println("edit method = " + action);
 		action = action.replaceAll("data", "").replaceAll("%5D", "")
 				.replaceAll("3A=", "").replaceAll("%5B", "")
 				.replaceAll("\\+", " ");
-		System.out.println("edit method = " + action);
 
 		PlayerDoc p = new PlayerDoc();
 		for (Field field : PlayerDoc.class.getDeclaredFields()) {
@@ -296,24 +292,13 @@ public class PlayerController {
 				} else {
 					valueIndex = last.length();
 				}
-				// System.out.println("test =" + action.substring(index,
-				// action.length()));
-				// System.out.println("index =" + index);
-				// System.out.println("valueIndex =" + valueIndex);
-				// System.out.println("value =" + value);
-
 				String value = last.substring(0, valueIndex);
 				BeanUtils.setProperty(p, name, value);
 			}
 		}
 		System.out.println("p =" + p);
 		playerRepository.save(p);
-
-		String res = "{\"row\":{ \"DT_RowId\":\"" + p.getId()
-				+ "\",\"name\":\"" + p.getName() + "\",\"state\":\""
-				+ p.getState() + "\",\"schoolName\":\"" + p.getSchoolName()
-				+ "\",\"schoolCity\":\"" + p.getSchoolCity() + "\"}}";
-		System.out.println("res =" + res);
+		String res = "{\"row\":"+p+"}";
 		return res;
 	}
 
