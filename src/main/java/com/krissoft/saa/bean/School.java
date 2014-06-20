@@ -1,7 +1,9 @@
-package com.krissoft.saa.config;
+package com.krissoft.saa.bean;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.krissoft.saa.config.ObjectIdSerializer;
 
 @Document(collection = "school")
 public class School extends ObjectIdSerializer {

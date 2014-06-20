@@ -20,7 +20,7 @@ import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
-import com.krissoft.saa.config.PlayerDoc;
+import com.krissoft.saa.bean.PlayerDoc;
 import com.krissoft.saa.repository.PlayerRepository;
 
 public class MaxPrepsModel {

@@ -13,8 +13,8 @@ import org.supercsv.io.CsvListReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
 
+import com.krissoft.saa.bean.PlayerDoc;
 import com.krissoft.saa.bean.PlayerString;
-import com.krissoft.saa.config.PlayerDoc;
 import com.krissoft.saa.util.MyUtil;
 
 public class PlayerModel {

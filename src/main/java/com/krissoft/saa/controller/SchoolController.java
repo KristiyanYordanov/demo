@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.krissoft.saa.bean.School;
 import com.krissoft.saa.config.DataTableEditorJsonObject;
-import com.krissoft.saa.config.School;
 import com.krissoft.saa.repository.SchoolRepository;
 import com.mongodb.MongoServerSelectionException;
 

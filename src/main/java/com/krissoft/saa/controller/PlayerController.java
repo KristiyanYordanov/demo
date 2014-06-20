@@ -35,9 +35,9 @@ import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
+import com.krissoft.saa.bean.PlayerDoc;
 import com.krissoft.saa.config.DataTableEditorJsonObject;
 import com.krissoft.saa.config.DataTableEditorJsonObjectList;
-import com.krissoft.saa.config.PlayerDoc;
 import com.krissoft.saa.model.PlayerModel;
 import com.krissoft.saa.repository.PlayerRepository;
 import com.krissoft.saa.util.UploadedFile;
@@ -68,7 +68,7 @@ public class PlayerController {
 
 	@RequestMapping(value = "/playersjson", method = RequestMethod.GET)
 	public @ResponseBody
-	String getPlayers1(
+	String getPlayers(
 			HttpServletRequest request,
 			@RequestParam(value = "length") String length,
 			@RequestParam(value = "start") String startStr,
@@ -81,12 +81,6 @@ public class PlayerController {
 			@RequestParam(value = "columns[3][search][value]") String schoolCity,
 			@RequestParam(value = "columns[4][search][value]") String pos)
 			throws JSONException {
-		// System.out.println("length = " + length);
-		System.out.println("searchColZero = " + name);
-		System.out.println("searchColOne = " + state);
-		System.out.println("searchColTwo = " + schoolName);
-		System.out.println("searchColTree = " + schoolCity);
-		System.out.println("searchColFour = " + pos);
 		Query query = new Query();
 		if (!name.equals("")) {
 			query.addCriteria(Criteria.where("name").regex(name, "i"));
@@ -187,7 +181,6 @@ public class PlayerController {
 			jsonObject.setRecordsTotal(size);
 			res = jsonObject.toString();
 		}
-		// System.out.println("res = " + res);
 		return res;
 	}
 
@@ -318,7 +311,7 @@ public class PlayerController {
 	}
 
 	@RequestMapping(value = "/user/players", method = RequestMethod.GET)
-	public String home2(ModelMap model) {
+	public String getPlayersPage(ModelMap model) {
 		return "user/players";
 	}
 

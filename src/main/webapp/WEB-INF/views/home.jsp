@@ -307,11 +307,11 @@ body {
 					<li class='last' id="load_schedule"><a href='#'><span>Automated
 								Import</span></a></li>
 				</ul></li>
-			<li class='has-sub'><a href='#'><span>Criterias</span></a>
+			<!-- <li class='has-sub'><a href='#'><span>Criterias</span></a>
 				<ul>
 					<li><a href='#'><span>Criteria</span></a></li>
 					<li class='last'><a href='#'><span>Criteria Report</span></a></li>
-				</ul></li>
+				</ul></li> -->
 			<li><a href='#' id="load_schools"><span>High Schools</span></a></li>
 			<li><a href='/spring-jpa/j_spring_security_logout'><span>Logout</span></a>
 			</li>
@@ -358,6 +358,7 @@ var applyMapContainerHeight = function() {
 			var html = 'players/user/players';
 			$('#content').load(html);
 	});
+	
 	$("#load_csv").on("click", function() {
 		var html = 'players/user/csv';
 		$('#content').load(html);

@@ -22,7 +22,7 @@ import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
 import com.google.gson.Gson;
-import com.krissoft.saa.config.PlayerDoc;
+import com.krissoft.saa.bean.PlayerDoc;
 import com.krissoft.saa.repository.PlayerRepository;
 import com.krissoft.saa.util.MyUtil;
 
