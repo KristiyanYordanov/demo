@@ -18,8 +18,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.google.common.io.FileBackedOutputStream;
-
 public class MyUtil {
 	private final static int MAX_RETRY = 3;
 	public final static String ENCODING = "UTF-8";
