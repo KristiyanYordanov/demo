@@ -97,7 +97,7 @@ public class HudlModel {
 	}
 
 	@Async
-	public static void run() {
+	public void run() {
 		try {
 			processPages();
 		} catch (Exception e) {
@@ -107,7 +107,7 @@ public class HudlModel {
 	}
 
 	public static void main(String[] argc) throws Exception {
-		 run();
+	//	 run();
 	}
 
 	public static SchoolType getSchool(URL link) throws Exception {

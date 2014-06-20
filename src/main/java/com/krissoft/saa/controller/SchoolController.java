@@ -56,7 +56,7 @@ public class SchoolController {
 		size = (int) schoolRepository.count();
 		Page<School> page = schoolRepository.findAll(new PageRequest(start, size,
 				sort));
-		 System.out.println("page size = " + page.getNumberOfElements());
+		//System.out.println("page size = " + page.getNumberOfElements());
 		boolean noFilter = false;
 		try {
 			if (pageRows == -1 && !noFilter) {

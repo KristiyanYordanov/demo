@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.jsoup.Jsoup;
@@ -37,9 +38,8 @@ public class MaxPrepsModel {
 	@Async
 	public void run() {
 		logger.info("start maxpreps scrapping.\n");
-		// File csvFile = new File(cacheRoot + "../" + filename);
 		ICsvBeanWriter data = null;
-		File csvFile = new File("maxpreps.txt");
+		File csvFile = new File("maxpreps"+new Date()+".txt");
 		if (!csvFile.exists()) {
 			try {
 				csvFile.createNewFile();

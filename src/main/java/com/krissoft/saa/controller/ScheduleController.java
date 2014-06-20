@@ -22,9 +22,10 @@ public class ScheduleController {
 	boolean isMp = false;
 	boolean isHudlStarted = false;
 	
+	
 	// day 86400000
 	//hour 3600000
-	@Scheduled(fixedDelay=86400000)
+	@Scheduled(fixedDelay=86400000+86400000)
 	public void maxprepsSchuler() {
 		if (isMp) {	
 			System.out.println("````````````````maxpreps`````````````````````````");

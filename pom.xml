@@ -139,18 +139,7 @@
 			<version>3.18.1-GA</version>
 		</dependency>
 		<!-- PostgreSQL JDBC 4 -->
-		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.1-901.jdbc4</version>
-		</dependency>
 		<!-- Mysql JDBC -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql-connector-java.version}</version>
-			<scope>runtime</scope>
-		</dependency>
 		<!-- MongoDB -->
 		<dependency>
 			<groupId>org.mongodb</groupId>

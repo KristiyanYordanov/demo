@@ -5,16 +5,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" type="text/css"
 	href="resources/css/jquery.dataTables.css.css" />
+<style type="text/css">
+.buttonStyle {
+	background-color: #ccc;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 6px;
+	color: #fff;
+	font-family: 'Oswald';
+	font-size: 20px;
+	text-decoration: none;
+	cursor: poiner;
+	border: none;
+}
 
+.buttonStyle:hover {
+	border: none;
+	background: #A8DDE8;
+	box-shadow: 0px 0px 1px #777;
+}
+
+</style>
 </head>
 <body>
 	<br />
 	<form id="form2" method="post" action="/spring-jpa/cont/upload"
-		enctype="multipart/form-data">
+		enctype="multipart/form-data" class="buttonStyle">
 		<!-- File input -->
-		<input name="file2" id="file2" type="file" /><br />
+		<input class="buttonStyle" name="file2" id="file2" type="file" /><br />
 	</form>
-	<button value="Submit" onclick="uploadFile()">Upload</button>
+	<button value="Submit"  class="buttonStyle" onclick="uploadFile()">Upload</button>
 	
 	<table width="100%">
 		<tr id="table">
@@ -22,7 +42,7 @@
 	</table>
 	<label>Headers are just fine</label>
 	<input id="checkbox" type="checkbox" value="true" name="Headers are just fine.">
-	<button value="Submit" onclick="importFile()">Import</button>
+	<button value="Submit"  class="buttonStyle" onclick="importFile()">Import</button>
 
 	<div id="demo"></div>
 </body>
