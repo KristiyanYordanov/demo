@@ -1,1 +1,0 @@
-name,location,pos,stars,height,fortyDash,weight,gradYear,rating,state,schoolName,schoolCity,maxprepsUrl,GP,Avg,OBP,H,RBI,R,SB,AB,SLG,PA,FP,K,IP
