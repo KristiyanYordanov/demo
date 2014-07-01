@@ -24,7 +24,6 @@ public class UploadController {
 	UploadedFile ufile;
 
 	public UploadController() {
-		System.out.println("init RestController");
 		ufile = new UploadedFile();
 	}
 
@@ -61,10 +60,6 @@ public class UploadController {
 			ufile.bytes = mpf.getBytes();
 			ufile.type = mpf.getContentType();
 			ufile.name = mpf.getOriginalFilename();
-			
-
-			System.out.println(new String(ufile.bytes, "UTF-8"));
-
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -97,9 +92,6 @@ public class UploadController {
 			ufile.bytes = mpf.getBytes();
 			ufile.type = mpf.getContentType();
 			ufile.name = mpf.getOriginalFilename();
-
-			System.out.println(new String(ufile.bytes, "UTF-8"));
-
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

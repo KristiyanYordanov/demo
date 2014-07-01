@@ -36,7 +36,6 @@ public class SchoolController {
 			@RequestParam(value = "draw") String draw,
 			@RequestParam(value = "order[0][dir]") String sSortDir_0,
 			@RequestParam(value = "order[0][column]") String iSortCol_0) {
-		System.out.println("getSchools method");
 		String res = "";
 		header = new String[] { "ets", "schoolName", "schoolAddress", "schoolCity",
 				"schoolState", "schoolZip", "schoolAreaCode", "schoolPhone", "schoolCoachOffice", "schoolFax"};
@@ -56,7 +55,6 @@ public class SchoolController {
 		size = (int) schoolRepository.count();
 		Page<School> page = schoolRepository.findAll(new PageRequest(start, size,
 				sort));
-		//System.out.println("page size = " + page.getNumberOfElements());
 		boolean noFilter = false;
 		try {
 			if (pageRows == -1 && !noFilter) {
@@ -66,11 +64,6 @@ public class SchoolController {
 				pageExport = page;
 			} else if (noFilter) {
 				size = (int) schoolRepository.count();
-//				page = schoolRepository
-//						.findByNameLikeAndStateLikeAndSchoolNameLikeAndSchoolCityLikeAndPosLike(
-//								searchColZero, searchColOne, searchColTwo,
-//								searchColTree, searchColFour, new PageRequest(
-//										start, size, sort));
 				size = page.getNumberOfElements();
 				pageExport = page;
 			} else {
@@ -95,12 +88,11 @@ public class SchoolController {
 			System.out.println("No connection with DB  " + ex);
 		}
 		jsonObject.setAaData(page);
-		System.out.println("page size = " + page.getNumberOfElements());
 		jsonObject.setDraw(draw);
 		jsonObject.setRecordsFiltered(size);
 		jsonObject.setRecordsTotal(size);
 		res = jsonObject.toString();
-		System.out.println("res = " + res);
+//		System.out.println("res = " + res);
 		return res;
 	}
 	

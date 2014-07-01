@@ -106,13 +106,8 @@ public class HudlModel {
 		}
 	}
 
-	public static void main(String[] argc) throws Exception {
-	//	 run();
-	}
-
 	public static SchoolType getSchool(URL link) throws Exception {
 		String page = MyUtil.get(link).replaceAll("\r\n", "");
-		//System.out.println(page);
 		Pattern titlePatter = Pattern.compile("<h1 title=\"(.*?)\">(.*?)</h1>");
 		Matcher titleMatcher = titlePatter.matcher(page);
 		String schoolName = "";

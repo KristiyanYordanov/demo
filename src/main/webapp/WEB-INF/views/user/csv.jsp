@@ -82,7 +82,7 @@ function importFile() {
 	    	alert(data.imported);
 	    },
 	    error:function(data,status,er) { 
-	        alert("error: "+data+" status: "+status+" er:"+er);
+	      //  alert("error: "+data+" status: "+status+" er:"+er);
 	    }
 	});
 	
@@ -175,7 +175,7 @@ function uploadFile() {
 				}
 			},
 			error : function(data, status, er) {
-				alert("error: " + data + " |status: "+ status + "| er:" + er);
+				//alert("error: " + data + " |status: "+ status + "| er:" + er);
 			}
 		});
 	}

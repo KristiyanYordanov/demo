@@ -25,9 +25,9 @@ public class MyUtil {
 	public static void writeInFileBuffered(String content, File file) {
 		try {
 			// if file doesnt exists, then create it
-			if (!file.exists()) {
+			
 				file.createNewFile();
-			}
+			
 			FileWriter fw = new FileWriter(file.getAbsoluteFile());
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(content);

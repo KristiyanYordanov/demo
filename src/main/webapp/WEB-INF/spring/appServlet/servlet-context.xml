@@ -16,30 +16,25 @@
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing 
 		infrastructure -->
+		
+	<!-- define annotation driven mvc architecure-->
 	<mvc:annotation-driven />
-	<!-- Enables the Spring MVC @Controller programming model -->
-
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
 		up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
-
-	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
-		in the /WEB-INF/views directory -->
-
+	<!-- this package will be scan for config classes-->
 	<context:component-scan base-package="com.krissoft.saa.config" />
-
+	<!--enable spring security annotations-->
 	<security:global-method-security
 		secured-annotations="enabled" pre-post-annotations="enabled" />
-
 	<!-- Mongo config -->
 	<mongo:mongo host="127.0.0.1" port="27017" />
 	<mongo:db-factory dbname="yourdb" />
-
+	<!-- configuration for uploading a files-->
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<!-- setting maximum upload size -->
 		<beans:property name="maxUploadSize" value="3961234" />
 	</beans:bean>
-	
 	
 </beans:beans>

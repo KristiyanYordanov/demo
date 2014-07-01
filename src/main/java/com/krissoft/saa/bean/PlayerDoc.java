@@ -11,24 +11,8 @@ public class PlayerDoc extends ObjectIdSerializer {
 	/**
 	 * kris
 	 */
-
-	public String[] header;
-
 	public PlayerDoc() {
 		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public PlayerDoc(String[] header) {
-		super();
-		this.header = header;
-		// TODO Auto-generated constructor stub
-	}
-
-	public PlayerDoc(String name, String location) {
-		super();
-		this.name = name;
-		this.location = location;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -284,38 +268,6 @@ public class PlayerDoc extends ObjectIdSerializer {
 		int result = 1;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
-	}
-
-	public String toString55() {
-		String res = "[\"";
-		for (int i = 0; i < header.length; i++) {
-			if (header[i].equals("name")) {
-				res = res + (name != null ? name + "\",\"" : "\",\"");
-			} else if (header[i].equals("state")) {
-				res = res + (state != null ? state + "\", \"" : "\",\"");
-			} else if (header[i].equals("schoolName")) {
-				res = res
-						+ (schoolName != null ? schoolName + "\", \"" : "\",\"");
-			} else if (header[i].equals("schoolCity")) {
-				res = res
-						+ (schoolCity != null ? schoolCity + "\", \"" : "\",\"");
-			}
-		}
-		res = res.substring(0, res.length() - 2);
-		res = res + "\"]";
-		return res;
-	}
-
-	public String toString111() {
-		String res = "{" + "\"DT_RowId\":\"" + id + "\"," + "\"name\":"
-				+ (name != null ? "\"" + name + "\"," : "\",\"") + "\"state\":"
-				+ (state != null ? "\"" + state + "\"," : "\",\"")
-				+ "\"schoolName\":"
-				+ (schoolName != null ? "\"" + schoolName + "\", " : "\",\"")
-				+ "\"schoolCity\":"
-				+ (schoolCity != null ? "\"" + schoolCity + "\"" : "\"") + "}";
-
-		return res;
 	}
 
 	@Override

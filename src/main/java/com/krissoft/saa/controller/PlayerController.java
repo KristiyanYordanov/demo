@@ -5,8 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -47,13 +45,12 @@ import com.mongodb.MongoServerSelectionException;
 @RequestMapping("players")
 public class PlayerController {
 
-	// private static final Logger logger =
-	// LoggerFactory.getLogger(PlayerController.class);
-	List<PlayerDoc> pageExport;
 	String[] header;
 	int size;
 	int start;
 	Sort sort;
+	List<PlayerDoc> exportList;
+	boolean isFilterOn = false;
 
 	@Autowired
 	PlayerRepository playerRepository;
@@ -81,6 +78,7 @@ public class PlayerController {
 			@RequestParam(value = "columns[3][search][value]") String schoolCity,
 			@RequestParam(value = "columns[4][search][value]") String pos)
 			throws JSONException {
+		//TODO parse search for '/'
 		Query query = new Query();
 		if (!name.equals("")) {
 			query.addCriteria(Criteria.where("name").regex(name, "i"));
@@ -104,7 +102,7 @@ public class PlayerController {
 		Sort sort = null;
 		List<PlayerDoc> list = null;
 		Page<PlayerDoc> page = null;
-		boolean isFilterOn = isFilterOn(name, state, schoolName, schoolCity,
+		isFilterOn = isFilterOn(name, state, schoolName, schoolCity,
 				pos);
 		int start = new Integer(startStr);
 		int pageRows = new Integer(length);
@@ -125,16 +123,16 @@ public class PlayerController {
 		}
 		try {
 			if (pageRows == -1 && !isFilterOn) {
-				long startTimer = new Date().getTime();
 				size = (int) playerRepository.count();
 				page = playerRepository.findAll(new PageRequest(start, size,
 						sort));
-				pageExport = page.getContent();
-				long endTimer = new Date().getTime();
-				System.out.println("if time=" + (endTimer - startTimer) / 1000);
+				this.size = size;
+				this.start = start;
+				this.sort = sort;
 			} else if (isFilterOn) {
 				list = mongoTemplate.find(query, PlayerDoc.class);
 				size = list.size();
+				exportList  = list;
 				if (size > pageRows && pageRows != -1) {
 					int pageLength = pageRows + start;
 					if (pageRows + start > size) {
@@ -142,26 +140,23 @@ public class PlayerController {
 					}
 					list = list.subList(start, pageLength);
 				}
-				pageExport = list;
+				
 			} else {
-				long startTimer = new Date().getTime();
 				size = (int) playerRepository.count();
 				if (size < pageRows) {
 					page = playerRepository.findAll(new PageRequest(start,
 							size, sort));
-					pageExport = page.getContent();
+					this.size = size;
+					this.start = start;
+					this.sort = sort;
 				} else {
 					int pageNumber = start / pageRows;
 					page = playerRepository.findAll(new PageRequest(pageNumber,
 							pageRows, sort));
 					this.size = size;
-					;
-					this.start = start;
+					this.start = pageNumber;
 					this.sort = sort;
 				}
-				long endTimer = new Date().getTime();
-				System.out.println("else time=" + (endTimer - startTimer)
-						/ 1000);
 			}
 		} catch (MongoServerSelectionException ex) {
 			System.out.println("No connection with DB  " + ex);
@@ -186,7 +181,6 @@ public class PlayerController {
 
 	@RequestMapping(value = "/csvexport", method = RequestMethod.GET)
 	public void csvexport(HttpServletResponse response) throws IOException {
-		System.out.println("csvexport method");
 		ICsvBeanWriter beanWriter = null;
 		try {
 			response.setContentType("text/csv");
@@ -195,11 +189,20 @@ public class PlayerController {
 			beanWriter = new CsvBeanWriter(response.getWriter(),
 					CsvPreference.STANDARD_PREFERENCE);
 			beanWriter.writeHeader(header);
-			pageExport = playerRepository.findAll(
-					new PageRequest(start, size, sort)).getContent();
-			for (final PlayerDoc customer : pageExport) {
-				beanWriter.write(customer, header);
+			if (!isFilterOn ) {
+				List<PlayerDoc> pageExport  = playerRepository.findAll(
+						new PageRequest(start, size, sort)).getContent();
+				for (final PlayerDoc customer : pageExport) {
+					beanWriter.write(customer, header);
+				}
 			}
+			else {
+				for (final PlayerDoc customer : exportList) {
+					beanWriter.write(customer, header);
+				}
+				exportList.removeAll(exportList);
+			}
+			
 			beanWriter.flush();
 		} finally {
 			if (beanWriter != null) {
@@ -229,11 +232,9 @@ public class PlayerController {
 	public @ResponseBody
 	String create(@RequestBody String create) throws IllegalAccessException,
 			InvocationTargetException {
-		System.out.println("create method");
 		create = create.replaceAll("data", "").replaceAll("%5D", "")
 				.replaceAll("%3A", "").replaceAll("%5B", "")
 				.replaceAll("\\+", " ");
-		//System.out.println("create method = " + create);
 
 		PlayerDoc p = new PlayerDoc();
 		for (Field field : PlayerDoc.class.getDeclaredFields()) {
@@ -241,7 +242,6 @@ public class PlayerController {
 			if (create.contains(field.getName())) {
 				int index = create.indexOf(name + "=") + name.length() + 1;
 				int valueIndex;
-				// System.out.println("name="+name);
 				String last = create.substring(index, create.length());
 				if (last.contains("&")) {
 					valueIndex = last.indexOf("&");
@@ -249,7 +249,6 @@ public class PlayerController {
 					valueIndex = last.length();
 				}
 				String value = last.substring(0, valueIndex);
-				// System.out.println("value="+value);
 				try {
 					BeanUtils.setProperty(p, name, value);
 				} catch (Exception e) {
@@ -260,7 +259,6 @@ public class PlayerController {
 		}
 		playerRepository.save(p);
 		String res = "{\"row\":"+p+"}";
-//		System.out.println("res =" + res);
 		return res;
 	}
 
@@ -268,7 +266,6 @@ public class PlayerController {
 	public @ResponseBody
 	String edit(@RequestBody String action) throws IllegalAccessException,
 			InvocationTargetException {
-		System.out.println("edit method = " + action);
 		action = action.replaceAll("data", "").replaceAll("%5D", "")
 				.replaceAll("3A=", "").replaceAll("%5B", "")
 				.replaceAll("\\+", " ");
@@ -289,7 +286,7 @@ public class PlayerController {
 				BeanUtils.setProperty(p, name, value);
 			}
 		}
-		System.out.println("p =" + p);
+		//System.out.println("p =" + p);
 		playerRepository.save(p);
 		String res = "{\"row\":"+p+"}";
 		return res;
@@ -297,13 +294,10 @@ public class PlayerController {
 
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
 	public @ResponseBody
-	// id[]:536cf040523be7a00e1e6f08
 	String delete(@RequestBody String action) {
-		System.out.println("delete method");
 		action = action.replaceAll("action", "").replaceAll("%5D", "")
 				.replaceAll("remove", "").replaceAll("=", "")
 				.replaceAll("%5B", "").replaceAll("&id", "");
-		System.out.println("id:" + action);
 		PlayerDoc p = new PlayerDoc();
 		p.setId(action);
 		playerRepository.delete(p);
@@ -328,7 +322,6 @@ public class PlayerController {
 	@RequestMapping(value = "/import", method = RequestMethod.POST)
 	public @ResponseBody
 	String importPlayers(@RequestBody String[] header) throws Exception {
-		System.out.println(Arrays.toString(header));
 		PlayerModel playerModel = new PlayerModel();
 		File upLoadedfile = new File(System.getProperty("java.io.tmpdir")
 				+ System.getProperty("file.separator") + ufile.name);
@@ -344,14 +337,12 @@ public class PlayerController {
 	public @ResponseBody
 	String upload(MultipartHttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		System.out.println("upload method!");
 		Iterator<String> itr;
 		String res = "";
 		try {
 			itr = request.getFileNames();
 			MultipartFile mpf = request.getFile(itr.next());
 			if (!mpf.isEmpty()) {
-				System.out.println(mpf.getOriginalFilename() + " uploaded!");
 				// just temporary save file info into ufile
 				ufile.length = mpf.getBytes().length;
 				ufile.bytes = mpf.getBytes();

@@ -50,7 +50,7 @@ public class RestController {
      System.out.println(mpf.getOriginalFilename() +" uploaded!");
  
      try {
-                //just temporary save file info into ufile
+       //just temporary save file info into ufile
         ufile.length = mpf.getBytes().length;
         ufile.bytes= mpf.getBytes();
         ufile.type = mpf.getContentType();
